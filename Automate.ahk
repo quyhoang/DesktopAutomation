@@ -57,7 +57,6 @@ searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl
 Run %searchKey%
 return
 
-
 ; tab switch using forward mouse button
 ~XButton2::
 Send {Alt Down}
@@ -184,6 +183,17 @@ return
 	#IfWinActive
 	return
 */
+
+~End & Pause:: ;minimize all windows and open sleep dialog
+title := 1
+While (title)
+{
+	WinGetActiveTitle, Title
+	WinMinimize, A ;minimize windows until there is no active window
+}
+
+SendInput, ^d!{F4}{Up}
+return
 
 <+w::
 Run C:\Program Files\AutoHotkey\WindowSpy.exe
