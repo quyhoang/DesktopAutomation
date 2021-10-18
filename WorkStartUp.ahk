@@ -13,18 +13,14 @@ return
 
 RControl & Numpad1::
 ; Copy selected text and search with Google in default browser--------------------------------------------------------------
-SendInput ^c ;copy selected text
-ClipWait, 5 ;wait for the copy operation to be completed
-
-Run https://translate.google.com/ ; open google translate
-WinWaitActive, Google Translate,,5
-if ErrorLevel
-{
-    MsgBox, WinWait timed out.
-    return
-}
-Sleep 1000
-SendInput ^v{Enter} ;paste then hit Enter
+Clipboard := ""
+SendInput, ^c
+ClipWait, 2
+; replace space and newline character with the corresponding characters used in address bar of GG translate
+StringReplace, Clipboard, Clipboard, %A_Space%, +, All
+StringReplace, Clipboard, Clipboard, `n, `%0A, All
+searchKey := "https://translate.google.com/?sl=ja&tl=en&text=" . Clipboard . "&op=translate"
+Run %searchKey%
 return
 
 
@@ -37,8 +33,8 @@ return
 RControl & Numpad2::
 ; Copy selected text and search with mazzi in default browser--------------------------------------------------------------
 Clipboard := ""
-SendInput, ^c ;copy selected text
-ClipWait, 2 ;wait for the copy operation to be completed
+SendInput, ^c
+ClipWait, 2
 searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl=vi-VN"
 Run %searchKey%
 return
