@@ -3,8 +3,56 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
+
+/*
+	List of shortcuts
+	LControl Numpad*: Open **
+	RControl Numpad*: Copy selected text and search with **
+	*		**
+	0		Google
+	1		Google Translate
+	2		Mazii
+	RControl Numpad5: Open Notion
+	ScrollLock: Insert current date and time
+*/
+
 #singleInstance force
 SetTitleMatchMode, 2
+
+ScrollLock & Up:: ; lookup for a Job number and open corresponding folder if it exists
+FormatTime, currentYear,, yy
+InputBox, year , Year, Input the last 2 digits of a year, , , , , , Locale, 60, %currentYear%
+if ErrorLevel
+{
+	MsgBox,,Operation Cancelled, Operation was cancelled
+	return
+}
+
+InputBox, jobno , JobNumber, Input Job Number, , , , , , Locale, 60, 2222
+if ErrorLevel
+{
+MsgBox,,Operation Cancelled, Operation was cancelled
+return
+}
+
+path := "O:\Free\FA_data\治具_creo\20" . year 
+
+match := 0
+Loop Files, %path%\A%year%*%jobno%_*, D
+{
+	Run %A_LoopFilePath%
+	match := 1
+	Break
+}
+
+if (match = 0)
+{
+	MsgBox, The specified job does not exist.
+}
+
+;MsgBox, 4,, Open in Creo Parametric?
+return
+
 
 LControl & Numpad1::
 ; right control   1: Open Google Translate in default browser--------------------------------------------------------------
@@ -39,8 +87,8 @@ searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl
 Run %searchKey%
 return
 
-LControl & Numpad0::--------------------------------------------------------------
-; using google search
+LControl & Numpad0::
+; using google search--------------------------------------------------------------
 Run https://www.google.com
 return
 
@@ -53,12 +101,10 @@ searchKey := "https://www.google.com/search?q=" . Clipboard
 Run %searchKey%
 return
 
-
-RControl & Numpad5::--------------------------------------------------------------
-; Open Notion
+RControl & Numpad5::
+; Open Notion--------------------------------------------------------------
 Run https://www.notion.so/smk-toyama/Unified-Creo-notes-6132801b4a4b410097be05efded068cc
 return
-
 
 ; ScrollLock is also mapped to the sixth mouse button using SteelSeries Engine
 ScrollLock::

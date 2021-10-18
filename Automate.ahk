@@ -31,6 +31,10 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 	Backward mouse button and
 	WheelUp: copy text and search with Google
 	WheelDown: copy text and search in Eijiro dictionary
+	
+	End Pause: minimize all Windows and prepare to Sleep
+	
+	ScrollLock Insert: Insert current date and time
 */
 
 
@@ -109,7 +113,7 @@ return
 return
 
 ; ScrollLock is also mapped to the sixth mouse button using SteelSeries Engine
-ScrollLock::
+~ScrollLock & Insert:: ;edited 18-Oct-21 11:35:56
 :R*?:tdy::
 FormatTime, CurrentDateTime,, dd-MMM-yy hh:mm:ss
 SendInput %CurrentDateTime%
@@ -185,14 +189,18 @@ return
 */
 
 ~End & Pause:: ;minimize all windows and open sleep dialog
-title := 1
-While (title)
+SendInput, #m
+waitLimit := 0
+Title := 1
+while (Title != "Program Manager") and (waitLimit < 20) ;maximum wait time is 20*100 ms
 {
+	sleep, 100
+	waitLimit := waitLimit + 1
 	WinGetActiveTitle, Title
-	WinMinimize, A ;minimize windows until there is no active window
 }
-
-SendInput, ^d!{F4}{Up}
+SendInput, !{F4} ; Open Shutdown Windows
+WinWaitActive, Shut Down Windows
+SendInput, {Up} ; default selection is Shutdown, Send Up to move to Sleep
 return
 
 <+w::
