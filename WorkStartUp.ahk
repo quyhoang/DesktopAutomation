@@ -13,13 +13,22 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 	1		Google Translate
 	2		Mazii
 	RControl Numpad5: Open Notion
-	ScrollLock: Insert current date and time
+	ScrollLock Ins: Insert current date and time
+	
+	The comment-related hotkeys only work if active window title include .ahk
+	Ctrl Alt j: add comment mark line
+	Ctrl Shift j: uncomment line
+	Ctrl j: comment line
+	RAlt Ins: wrap word in {}
+	
+	ScrollLock & Left: Quick open folder by JobNumber
+	RCtrl ESC: exit
 */
 
 #singleInstance force
 SetTitleMatchMode, 2
 
-ScrollLock & Up:: ; lookup for a Job number and open corresponding folder if it exists
+ScrollLock & Left:: ; lookup for a Job number and open corresponding folder if it exists
 FormatTime, currentYear,, yy
 InputBox, year , Year, Input the last 2 digits of a year, , , , , , Locale, 60, %currentYear%
 if ErrorLevel
@@ -105,6 +114,31 @@ RControl & Numpad5::
 ; Open Notion--------------------------------------------------------------
 Run https://www.notion.so/smk-toyama/Unified-Creo-notes-6132801b4a4b410097be05efded068cc
 return
+
+;---------------------------------------------------------------------------
+#IfWinActive, .ahk
+; add comment mark line
+^!j:: 
+SendInput, `;---------------------------------------------------------------------------
+return
+
+; comment a line
+^j:: 
+SendInput, {Home}`;
+return
+
+; uncomment a line
+^+j:: 
+SendInput, {Home}{Del}
+return
+
+#IfWinActive
+
+; wrap word in {}
+RAlt & Ins::
+SendInput, ^{Left}{{}^{Right}{}}
+return
+;---------------------------------------------------------------------------
 
 ; ScrollLock is also mapped to the sixth mouse button using SteelSeries Engine
 ScrollLock::
