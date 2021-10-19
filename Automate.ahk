@@ -39,6 +39,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 
 Xbutton1 & WheelDown::
+Clipboard := ""
 SendInput, ^c
 ClipWait, 2
 searchKey := "https://eow.alc.co.jp/search?q=" . Clipboard
@@ -46,6 +47,7 @@ Run %searchKey%
 return
 
 Xbutton1 & WheelUp::
+Clipboard := ""
 SendInput, ^c
 ClipWait, 2
 StringReplace, Clipboard, Clipboard, %A_Space%, +, All
