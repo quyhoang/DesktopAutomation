@@ -105,11 +105,11 @@ return
 
 
 ; mouse button to copy
-#IfWinActive ahk_exe brave.exe
+;#IfWinActive ahk_exe brave.exe
 Xbutton1::
 SendInput ^c
 return
-#IfWinActive
+;#IfWinActive
 
 ::pi::𝝅 
 return
