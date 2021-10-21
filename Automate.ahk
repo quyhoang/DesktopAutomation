@@ -47,6 +47,37 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 SetTitleMatchMode, 2
 
+
+;==================================================
+; Hotstrings
+;==================================================
+
+:R0*:ntd:: ; send today in Notion
+Send, @today{Enter}
+return
+
+~ScrollLock & Insert:: ;edited 18-Oct-21 11:35:56
+:R*?:tdy::
+FormatTime, CurrentDateTime,, dd-MMM-yy hh:mm:ss
+SendInput %CurrentDateTime%
+return
+
+^+j::
+if WinActive("ahk")
+{
+	Clipboard := "`;==================================================`n"
+	SendInput, ^v
+}
+return
+
+::pi::𝝅 
+return
+
+;==================================================
+; Mouse-only functions
+;==================================================
+
+;==================================================
 ; tab switch using forward mouse button
 ~XButton2 & LButton::
 Send {Alt Down}
@@ -63,6 +94,8 @@ while GetKeyState("Alt")
 }
 return
 
+;==================================================
+; Change keyboad layout
 ~XButton2 & RButton::
 Send {LWin Down}
 while GetKeyState("LWin")
@@ -78,26 +111,13 @@ while GetKeyState("LWin")
 }
 return
 
-#IfWinNotActive, ahk_exe xtop.exe
-
-;==================================================
-; Hotstrings
-;==================================================
-
-^+j::
-if WinActive("ahk")
-{
-	Clipboard := "`;=================================================="
-	SendInput, ^v
-}
-return
-
-::pi::𝝅 
+; Open diary
+LAlt & PgDn::
+Run https://www.notion.so/smk-toyama/Nh-t-k-fbe8a99803694b23b525eec3f9dd3f22
 return
 
 ;==================================================
-; Mouse-only functions
-;==================================================
+; Copy, paste, enter
 ~Xbutton1 & LButton::
 SendInput, ^c
 return
@@ -106,15 +126,26 @@ return
 SendInput, ^v
 return
 
-; Close current windows with mouse switch and MButton
-~Ctrl & MButton::
-SendInput ^w
-return
-
 ; Enter
 ~Ctrl & LButton::
 SendInput {Enter}
 return
+
+;==================================================
+; Close current windows with mouse switch and MButton
+~Ctrl & MButton::
+;WinGetActiveTitle, beforeTitle
+WinGetActiveTitle, TitleBefore
+SendInput ^w
+Sleep, 500
+WinGetActiveTitle, TitleAfter
+If (TitleBefore = TitleAfter)
+	WinClose, A
+return
+
+
+;==================================================
+; Internet search
 
 ; Search alc
 Xbutton1 & WheelDown::
@@ -145,7 +176,15 @@ searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl
 Run %searchKey%
 return
 
+;==================================================
+; Volume control
+~LButton & WheelUp:: Send {Volume_Up}  ; Raise the master volume by 1 interval (typically 5%).
+~LButton & WheelDown:: Send {Volume_Down}  ; Lower the master volume by 3 intervals.
+~LButton & MButton:: Send {Volume_Mute}  ; Mute/unmute the master volume.
 
+;==================================================
+; Hotkeys
+;==================================================
 
 ;toggle languages, SetInputLang() def from AHK Community
 !2::
@@ -168,24 +207,9 @@ SetInputLang(Lang)
 }
 return
 
-
-
-
-; ScrollLock is also mapped to the sixth mouse button using SteelSeries Engine
-~ScrollLock & Insert:: ;edited 18-Oct-21 11:35:56
-:R*?:tdy::
-FormatTime, CurrentDateTime,, dd-MMM-yy hh:mm:ss
-SendInput %CurrentDateTime%
-return
-
 >#m::
 ; open second mail with Left Windows M
 run https://mail.google.com/mail/u/1/#inbox
-return
-
-
-:R0*:ntd:: ; send today in Notion
-Send, @today{Enter}
 return
 
 >!v::
@@ -228,20 +252,6 @@ MouseMove, 600,480
 #IfWinActive
 return
 
-; control volume with mouse
-~LButton & WheelUp:: Send {Volume_Up}  ; Raise the master volume by 1 interval (typically 5%).
-~LButton & WheelDown:: Send {Volume_Down}  ; Lower the master volume by 3 intervals.
-~LButton & MButton:: Send {Volume_Mute}  ; Mute/unmute the master volume.
-
-/*
-	#IfWinActive ahk_class Chrome_WidgetWin_1
-	:R*?:noron::
-	sendInput ^w
-	run https://www.noron.vn/explore-v2
-	#IfWinActive
-	return
-*/
-
 ~End & Pause:: ;minimize all windows and open sleep dialog
 SendInput, #m
 waitLimit := 0
@@ -266,6 +276,6 @@ Reload
 Sleep 1000 ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
 MsgBox, 4,, The script could not be reloaded. Would you like to open it for editing?
 IfMsgBox, Yes, Edit
-return
+	return
 
 ~RControl & ESC::Exitapp
