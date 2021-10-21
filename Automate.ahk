@@ -35,40 +35,24 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 	End Pause: minimize all Windows and prepare to Sleep
 	
 	ScrollLock Insert: Insert current date and time
+	
+	Buttons in Basilisk V2 is mapped keyboad buttons as follow:
+	Sensitivity switch 	- Control
+	Left roll 		- Home
+	Right roll		- End
+	Sensitivity up 	- Page Up
+	Sensitivity down 	- Page Down
+	
 */
 
-
-Xbutton1 & WheelDown::
-Clipboard := ""
-SendInput, ^c
-ClipWait, 2
-searchKey := "https://eow.alc.co.jp/search?q=" . Clipboard
-Run %searchKey%
-return
-
-Xbutton1 & WheelUp::
-Clipboard := ""
-SendInput, ^c
-ClipWait, 2
-StringReplace, Clipboard, Clipboard, %A_Space%, +, All
-searchKey := "https://www.google.com/search?q=" . Clipboard
-Run %searchKey%
-return
-
-~m & WheelUp::
-Clipboard := ""
-SendInput, ^c
-ClipWait, 2
-searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl=vi-VN"
-Run %searchKey%
-return
+SetTitleMatchMode, 2
 
 ; tab switch using forward mouse button
-~XButton2::
+~XButton2 & LButton::
 Send {Alt Down}
 while GetKeyState("Alt")
 {
-	KeyWait, XButton2, D, T1
+	KeyWait, XButton2, D, T.4
 	If ErrorLevel
 	{
 		Send {Alt Up}
@@ -79,18 +63,99 @@ while GetKeyState("Alt")
 }
 return
 
+~XButton2 & RButton::
+Send {LWin Down}
+while GetKeyState("LWin")
+{
+	KeyWait, RButton, D, T.4
+	If ErrorLevel
+	{
+		Send {LWin Up}
+	}
+	else
+		Send {Space}
+	KeyWait, RButton
+}
+return
+
+#IfWinNotActive, ahk_exe xtop.exe
+
+;==================================================
+; Hotstrings
+;==================================================
+
+^+j::
+if WinActive("ahk")
+{
+	Clipboard := "`;=================================================="
+	SendInput, ^v
+}
+return
+
+::pi::𝝅 
+return
+
+;==================================================
+; Mouse-only functions
+;==================================================
+~Xbutton1 & LButton::
+SendInput, ^c
+return
+
+~Xbutton1 & RButton::
+SendInput, ^v
+return
+
+; Close current windows with mouse switch and MButton
+~Ctrl & MButton::
+SendInput ^w
+return
+
+; Enter
+~Ctrl & LButton::
+SendInput {Enter}
+return
+
+; Search alc
+Xbutton1 & WheelDown::
+Clipboard := ""
+
+SendInput, ^c
+ClipWait, 2
+searchKey := "https://eow.alc.co.jp/search?q=" . Clipboard
+Run %searchKey%
+return
+
+; Search Google
+Xbutton1 & WheelUp::
+Clipboard := ""
+SendInput, ^c
+ClipWait, 2
+StringReplace, Clipboard, Clipboard, %A_Space%, +, All
+searchKey := "https://www.google.com/search?q=" . Clipboard
+Run %searchKey%
+return
+
+; Search Mazii
+Xbutton1 & MButton::
+Clipboard := ""
+SendInput, ^c
+ClipWait, 2
+searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl=vi-VN"
+Run %searchKey%
+return
+
+
+
 ;toggle languages, SetInputLang() def from AHK Community
-~Xbutton1 & MButton::
 !2::
 SetInputLang(0x042a) ; Vietnamese
 return
 
-~Xbutton1 & LButton::
 !1::
 SetInputLang(0x0409) ; English (USA)
 return
 
-~Xbutton1 & RButton::
 !3::
 SetInputLang(0x0411) ; Japanese
 return
@@ -104,15 +169,7 @@ SetInputLang(Lang)
 return
 
 
-; mouse button to copy
-;#IfWinActive ahk_exe brave.exe
-Xbutton1::
-SendInput ^c
-return
-;#IfWinActive
 
-::pi::𝝅 
-return
 
 ; ScrollLock is also mapped to the sixth mouse button using SteelSeries Engine
 ~ScrollLock & Insert:: ;edited 18-Oct-21 11:35:56
@@ -126,13 +183,8 @@ return
 run https://mail.google.com/mail/u/1/#inbox
 return
 
->!m::
-FormatTime, CurrentDateTime,, MMM-yy
-SendInput %CurrentDateTime%
-return
 
-
-:R0*:ntd::
+:R0*:ntd:: ; send today in Notion
 Send, @today{Enter}
 return
 
