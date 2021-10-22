@@ -47,6 +47,41 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 SetTitleMatchMode, 2
 
+;==================================================
+; YouTube only
+;==================================================
+
+
+#IfWinActive, YouTube - Brave
+Home::Left
+return
+End::Right
+return
+
+Ctrl & WheelUp::Send {Volume_Up}  ; Raise the master volume by 1 interval (typically 5%).
+Ctrl & WheelDown:: Send {Volume_Down}  ; Lower the master volume by 3 intervals.
+Ctrl & MButton:: Send {Volume_Mute}  ; Mute/unmute the master volume.
+return
+#IfWinActive
+
+;==================================================
+; N1 Stage 1 videos
+;==================================================
+#IfWinActive, N1GD1
+Home::R ; Hotkey in video controller extension to reset speed
+return
+End::G ; Hotkey in video controller extension to set speed to favourite speed
+return
+XButton1::Z ; rewind (video controller)
+return
+Xbutton2::X ; advance (video controller)
+return
+
+Ctrl & WheelUp::Send {Volume_Up}  ; Raise the master volume by 1 interval (typically 5%).
+Ctrl & WheelDown:: Send {Volume_Down}  ; Lower the master volume by 3 intervals.
+Ctrl & MButton:: Send {Volume_Mute}  ; Mute/unmute the master volume.
+return
+#IfWinActive
 
 ;==================================================
 ; Hotstrings
@@ -72,6 +107,32 @@ return
 
 ::pi::𝝅 
 return
+
+;==================================================
+; Hotkeys
+;==================================================
+
+;toggle languages, SetInputLang() def from AHK Community
+!2::
+SetInputLang(0x042a) ; Vietnamese
+return
+
+!1::
+SetInputLang(0x0409) ; English (USA)
+return
+
+!3::
+SetInputLang(0x0411) ; Japanese
+return
+
+SetInputLang(Lang)
+{
+	WinExist("A")
+	ControlGetFocus, CtrlInFocus
+	PostMessage, 0x50, 0, % Lang, %CtrlInFocus%
+}
+return
+
 
 ;==================================================
 ; Mouse-only functions
@@ -116,24 +177,24 @@ LAlt & PgDn::
 Run https://www.notion.so/smk-toyama/Nh-t-k-fbe8a99803694b23b525eec3f9dd3f22
 return
 
+;====================================================================================================
+#IfWinNotActive ahk_exe xtop.exe
+;====================================================================================================
+
+
 ;==================================================
-; Copy, paste, enter
-~Xbutton1 & LButton::
+; Copy, paste
+Xbutton1 & LButton::
 SendInput, ^c
 return
 
-~Xbutton1 & RButton::
+Xbutton1 & RButton::
 SendInput, ^v
 return
 
-; Enter
-~Ctrl & LButton::
-SendInput {Enter}
-return
-
 ;==================================================
-; Close current windows with mouse switch and MButton
-~Xbutton1 & MButton::
+; Close current windows
+Xbutton1 & MButton::
 ;WinGetActiveTitle, beforeTitle
 WinGetActiveTitle, TitleBefore
 SendInput ^w
@@ -182,30 +243,6 @@ return
 ~LButton & WheelDown:: Send {Volume_Down}  ; Lower the master volume by 3 intervals.
 ~LButton & MButton:: Send {Volume_Mute}  ; Mute/unmute the master volume.
 
-;==================================================
-; Hotkeys
-;==================================================
-
-;toggle languages, SetInputLang() def from AHK Community
-!2::
-SetInputLang(0x042a) ; Vietnamese
-return
-
-!1::
-SetInputLang(0x0409) ; English (USA)
-return
-
-!3::
-SetInputLang(0x0411) ; Japanese
-return
-
-SetInputLang(Lang)
-{
-	WinExist("A")
-	ControlGetFocus, CtrlInFocus
-	PostMessage, 0x50, 0, % Lang, %CtrlInFocus%
-}
-return
 
 >#m::
 ; open second mail with Left Windows M
@@ -241,27 +278,9 @@ WinMenuSelectItem, ahk_class wxWindowNR, ,File,Export,Export as MP3
 #IfWinActive
 return
 
-#IfWinActive ahk_class Chrome_WidgetWin_1
-<+f::
-Click, 1801,55
-Sleep, 50
-Click, 1801, 55
-MouseMove, 600,480
-; activate IPA furigana
-; this is the position gotten by Windows Spy
-#IfWinActive
-return
-
 ~End & Pause:: ;minimize all windows and open sleep dialog
 SendInput, #m
-waitLimit := 0
-Title := 1
-while (Title != "Program Manager") and (waitLimit < 20) ;maximum wait time is 20*100 ms
-{
-	sleep, 100
-	waitLimit := waitLimit + 1
-	WinGetActiveTitle, Title
-}
+Sleep, 500
 SendInput, !{F4} ; Open Shutdown Windows
 WinWaitActive, Shut Down Windows
 SendInput, {Up} ; default selection is Shutdown, Send Up to move to Sleep
