@@ -133,7 +133,7 @@ return
 
 ;==================================================
 ; Close current windows with mouse switch and MButton
-~Ctrl & MButton::
+~Xbutton1 & MButton::
 ;WinGetActiveTitle, beforeTitle
 WinGetActiveTitle, TitleBefore
 SendInput ^w
@@ -168,7 +168,7 @@ Run %searchKey%
 return
 
 ; Search Mazii
-Xbutton1 & MButton::
+Xbutton1 & Enter::
 Clipboard := ""
 SendInput, ^c
 ClipWait, 2
