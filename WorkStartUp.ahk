@@ -1,4 +1,4 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -13,21 +13,46 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 	1		Google Translate
 	2		Mazii
 	RControl Numpad5: Open Notion
-	ScrollLock Ins: Insert current date and time
-	
-	The comment-related hotkeys only work if active window title include .ahk
-	Ctrl Alt j: add comment mark line
-	Ctrl Shift j: uncomment line
-	Ctrl j: comment line
-	RAlt Ins: wrap word in {}
-	
-	ScrollLock & Left: Quick open folder by JobNumber
-	RCtrl ESC: exit
+	ScrollLock Insert: Insert current date and time
+	ScrollLock Left arrow: Quick open job directory
+	RAlt & Ins: Wrap word in {}
 */
+
 
 #singleInstance force
 SetTitleMatchMode, 2
 
+;---------------------------------------------------------------------------
+; Open mail
+;---------------------------------------------------------------------------
+InputBox, message, Let's do great things today!, I promise to be true to the best I know!, Hide
+Run "C:\Program Files (x86)\NotesUp\NotesUp.exe"
+WinWaitActive, NotesUp,,60
+if ErrorLevel
+{
+MsgBox, WinWait timed out.
+; Return (continue to the next line)
+}
+else
+{
+	WinActivate
+	Click, 230 104 ; open NotesUp
+	WinWaitActive, IBM Notes,,3
+	;WinActivate ; for some reason the activated window is not in the front
+	SendInput, %message%
+	SendInput, {Enter}
+	WinWaitActive, Workspace,,3
+	WinWaitActive
+	Click, 231 200 2
+	; Return (continue to the next line)	
+}
+;---------------------------------------------------------------------------
+
+Run "C:\Program Files\PTC\Creo 7.0.3.0\Parametric\bin\parametric.exe"
+Run "X:\SMKTOY\G-FA\Personal\Hoang\Creo_Companion\Creo7_Companion.exe"
+Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+
+;this run even if Creo is not active ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 ScrollLock & Left:: ; lookup for a Job number and open corresponding folder if it exists
 FormatTime, currentYear,, yy
 InputBox, year , Year, Input the last 2 digits of a year, , , , , , Locale, 60, %currentYear%
@@ -37,7 +62,7 @@ if ErrorLevel
 	return
 }
 
-InputBox, jobno , JobNumber, Input Job Number, , , , , , Locale, 60, 2222
+InputBox, jobno , JobNumber, Input Job Number, , , , , , Locale, 60, ????
 if ErrorLevel
 {
 MsgBox,,Operation Cancelled, Operation was cancelled
@@ -50,6 +75,7 @@ match := 0
 Loop Files, %path%\A%year%*%jobno%_*, D
 {
 	Run %A_LoopFilePath%
+	currentDir := A_LoopFilePath
 	match := 1
 	Break
 }
@@ -58,9 +84,28 @@ if (match = 0)
 {
 	MsgBox, The specified job does not exist.
 }
-
-;MsgBox, 4,, Open in Creo Parametric?
+else
+{
+	MsgBox, 4,, Open in Creo Parametric with original configuration?
+	SetTitleMatchMode, RegEx
+	WinMaximize, A%year%*%jobno%_*	
+	SetTitleMatchMode, 2
+	ifMsgBox Yes
+	{
+		Loop Files, %currentDir%/*Creo*SMK*
+		{
+			Run %A_LoopFilePath%
+			match := 2
+			Break
+		}
+		if (match = 1) ; could not find the short cut Creo SMK
+		{
+			msgBox,,Shortcut not found, Could not find Creo SMK start file
+		}
+	}
+}
 return
+; =====================================================================================
 
 
 LControl & Numpad1::
@@ -103,6 +148,7 @@ return
 
 RControl & Numpad0::
 ; Copy selected text and search with Google in default browser--------------------------------------------------------------
+Clipboard := ""
 SendInput ^c ;copy selected text
 ClipWait, 2
 StringReplace, Clipboard, Clipboard, %A_Space%, +, All
@@ -115,7 +161,6 @@ RControl & Numpad5::
 Run https://www.notion.so/smk-toyama/Unified-Creo-notes-6132801b4a4b410097be05efded068cc
 return
 
-;---------------------------------------------------------------------------
 #IfWinActive, .ahk
 ; add comment mark line
 ^!j:: 
@@ -134,14 +179,43 @@ return
 
 #IfWinActive
 
+
+
 ; wrap word in {}
 RAlt & Ins::
 SendInput, ^{Left}{{}^{Right}{}}
 return
-;---------------------------------------------------------------------------
+
+; Close current tab
+~Xbutton1 & Mbutton::
+If not winactive("ahk_exe xtop.exe")
+{
+	If winactive("IBM Notes")
+	{
+		SendInput, {esc}
+		Return
+	}
+	else
+	{
+		SendInput, ^w
+		return
+	}
+}
 
 ; ScrollLock is also mapped to the sixth mouse button using SteelSeries Engine
-ScrollLock::
+~ScrollLock & Ins::
 FormatTime, CurrentDateTime,, dd-MMM-yy hh:mm:ss
 SendInput %CurrentDateTime%
 return
+
+^!r:: ; Ctrl Alt R to reload
+Reload
+Sleep 1000 ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
+MsgBox, 4,, The script could not be reloaded. Would you like to open it for editing?
+IfMsgBox, Yes, Edit
+return
+
+~RControl & ESC::Exitapp
+; I tried a combination of Pause and another key, it did not work
+; Pause alone work
+; Start with RControl, like this, work
