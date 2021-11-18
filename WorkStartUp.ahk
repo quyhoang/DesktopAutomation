@@ -18,41 +18,81 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 	RAlt & Ins: Wrap word in {}
 */
 
-
 #singleInstance force
 SetTitleMatchMode, 2
+
+FileReadLine, wdir, D:\lastWorkingDir.txt, 1
+SetWorkingDir %wdir%
+
+if not WinExist("ahk_exe xtop.exe") ;if Creo Parametric is not currently running
+{
+Run "C:\Program Files\PTC\Creo 7.0.3.0\Parametric\bin\parametric.exe"
+}
+Run "O:\Free\FA_data\治具_creo\STD_\_All\Creo7_Companion.ahk"
+SetWorkingDir %A_ScriptDir% 
+
+if not WinExist("ahk_exe msedge.exe")
+{
+Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+}
+
+if not WinExist("ahk_exe NLNOTES.EXE")
+{
+	Run "C:\Program Files (x86)\NotesUp\NotesUp.exe"
 
 ;---------------------------------------------------------------------------
 ; Open mail
 ;---------------------------------------------------------------------------
-InputBox, message, Let's do great things today!, I promise to be true to the best I know!, Hide
-Run "C:\Program Files (x86)\NotesUp\NotesUp.exe"
-WinWaitActive, NotesUp,,60
-if ErrorLevel
-{
-MsgBox, WinWait timed out.
-; Return (continue to the next line)
+
+; InputBox, message, Let's do great things today!, I promise to be true to the best I know!, Hide
+	if WinExist("ahk_exe NotesUp.exe")
+	{
+	mailfunction()
+	}
+	else
+	{	
+	WinWaitActive, NotesUp,,240
+	if ErrorLevel
+	{
+		MsgBox, WinWait timed out.
+		; Return (continue to the next line)
+	}
+	else
+	{
+		mailfunction()		
+	}
+	}
 }
-else
+
+mailfunction()
 {
-	WinActivate
+
+If WinExist("SMKMSG")
+{
+WinClose
+}
+	message := "" ; DEBUG HERE
+	WinActivate, ahk_exe NotesUp.exe
 	Click, 230 104 ; open NotesUp
-	WinWaitActive, IBM Notes,,3
+	WinWaitActive, IBM Notes,,180
 	;WinActivate ; for some reason the activated window is not in the front
 	SendInput, %message%
 	SendInput, {Enter}
 	WinWaitActive, Workspace,,3
 	WinWaitActive
-	Click, 231 200 2
-	; Return (continue to the next line)	
+	Sleep, 1000
+	Click, 231 200
+	Sleep, 100
+	Click, 231 200
+	Return
 }
+
 ;---------------------------------------------------------------------------
 
-Run "C:\Program Files\PTC\Creo 7.0.3.0\Parametric\bin\parametric.exe"
-Run "X:\SMKTOY\G-FA\Personal\Hoang\Creo_Companion\Creo7_Companion.exe"
-Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
-;this run even if Creo is not active ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+
+
 ScrollLock & Left:: ; lookup for a Job number and open corresponding folder if it exists
 FormatTime, currentYear,, yy
 InputBox, year , Year, Input the last 2 digits of a year, , , , , , Locale, 60, %currentYear%
@@ -107,6 +147,9 @@ else
 return
 ; =====================================================================================
 
+RControl & Numpad3::
+Run https://mazii.net/note?hl=vi-VN
+return
 
 LControl & Numpad1::
 ; right control   1: Open Google Translate in default browser--------------------------------------------------------------
@@ -126,20 +169,7 @@ Run %searchKey%
 return
 
 
-LControl & Numpad2::
-; right control   2: Open Mazii dictionary in default browser--------------------------------------------------------------
-Run https://mazii.net/search
-return
 
-
-RControl & Numpad2::
-; Copy selected text and search with mazzi in default browser--------------------------------------------------------------
-Clipboard := ""
-SendInput, ^c
-ClipWait, 2
-searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl=vi-VN"
-Run %searchKey%
-return
 
 LControl & Numpad0::
 ; using google search--------------------------------------------------------------
@@ -215,7 +245,89 @@ MsgBox, 4,, The script could not be reloaded. Would you like to open it for edit
 IfMsgBox, Yes, Edit
 return
 
-~RControl & ESC::Exitapp
-; I tried a combination of Pause and another key, it did not work
-; Pause alone work
-; Start with RControl, like this, work
+
+
+
+#IfWinNotActive ahk_exe xtop.exe
+;==========================================================================================================================
+LControl & Numpad2::
+; right control   2: Open Mazii dictionary in default browser--------------------------------------------------------------
+Run https://mazii.net/search
+return
+
+~Xbutton2 & RButton::
+RControl & Numpad2::
+; Copy selected text and search with mazzi in default browser--------------------------------------------------------------
+Clipboard := ""
+SendInput, ^c
+ClipWait, 2
+searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl=vi-VN"
+Run %searchKey%
+return
+
+
+; Close current windows
+~Xbutton2 & LButton::
+;WinGetActiveTitle, beforeTitle
+WinGetActiveTitle, TitleBefore
+SendInput ^w
+Sleep, 500
+WinGetActiveTitle, TitleAfter
+If (TitleBefore = TitleAfter)
+	WinClose, A
+return
+;==================================================
+
+
+;==================================================
+; Open daily report
+;==================================================
+Control & Numpad7:: ; Open daily report
+SetInputLang(0x0409) ; English (USA)
+Run \\TOYAMA-SV41\Dept\SMKTOY\G-FA\G-FA2\412_日報集計\日報集計2019.accdb
+WinWaitActive, 日報集計,, 180
+if ErrorLevel
+{
+    MsgBox, WinWait timed out. Please open work log manually.
+    return
+}
+Click, 670 420
+WinWaitActive, ) - 日報集計,, 180
+if ErrorLevel
+{
+    MsgBox, WinWait timed out. Could not open your profile.
+    return
+}
+return
+
+
+Control & Numpad8::
+repeatInput:
+InputBox, minute , Time, Input Number of hours, , , , , , Locale, 60
+if ErrorLevel
+{
+MsgBox,,Operation Cancelled, Operation was cancelled
+return
+}
+if (minute = 0)
+{
+	return
+}
+minute := minute*60
+FormatTime, CurrentDateTime,, yyyy/MM/dd
+SendInput, %CurrentDateTime%{Tab}5505{Tab}0{Tab}%minute%{Tab}{Tab}{Tab}
+goto, repeatInput
+return
+
+;=================================================
+; FUNCTIONS
+;=================================================
+SetInputLang(Lang)
+{
+	WinExist("A")
+	ControlGetFocus, CtrlInFocus
+	PostMessage, 0x50, 0, % Lang, %CtrlInFocus%
+}
+return
+
+~RControl & Esc::Exitapp
