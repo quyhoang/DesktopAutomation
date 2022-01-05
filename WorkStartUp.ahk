@@ -66,12 +66,12 @@ if not WinExist("ahk_exe NLNOTES.EXE")
 
 mailfunction()
 {
-
+Sleep 1000 ; wait for Notesup to start and the button to fully show up. Sometimes the windows appears but there is no button.
 If WinExist("SMKMSG")
 {
 WinClose
 }
-	message := "" ; DEBUG HERE
+	message := "somemysteriousmessagemustbewrittenhere"
 	WinActivate, ahk_exe NotesUp.exe
 	Click, 230 104 ; open NotesUp
 	WinWaitActive, IBM Notes,,180
@@ -234,7 +234,7 @@ If not winactive("ahk_exe xtop.exe")
 
 ; ScrollLock is also mapped to the sixth mouse button using SteelSeries Engine
 ~ScrollLock & Ins::
-FormatTime, CurrentDateTime,, dd-MMM-yy hh:mm:ss
+FormatTime, CurrentDateTime,, yy-MM-dd hh:mm:ss
 SendInput %CurrentDateTime%
 return
 
@@ -249,13 +249,20 @@ return
 
 
 #IfWinNotActive ahk_exe xtop.exe
+
+
+XButton1::^c
+return
+XButton2::^v
+return
+
 ;==========================================================================================================================
 LControl & Numpad2::
 ; right control   2: Open Mazii dictionary in default browser--------------------------------------------------------------
 Run https://mazii.net/search
 return
 
-~Xbutton2 & RButton::
+
 RControl & Numpad2::
 ; Copy selected text and search with mazzi in default browser--------------------------------------------------------------
 Clipboard := ""
@@ -277,6 +284,26 @@ If (TitleBefore = TitleAfter)
 	WinClose, A
 return
 ;==================================================
+
+; Get full path of a file
+~Xbutton2 & RButton::
+SendInput {F2}^a
+Clipboard := ""
+Sleep 100
+SendInput ^c
+ClipWait, 2
+name := Clipboard
+Clipboard := ""
+Sleep 100
+SendInput {Enter}!d
+Sleep 100
+SendInput ^c
+ClipWait, 2
+fullPathName := Clipboard . "\" . name
+Clipboard := fullPathName
+; msgBox, % fullPathName
+return
+
 
 
 ;==================================================
