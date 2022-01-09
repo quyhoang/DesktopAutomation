@@ -51,24 +51,54 @@ SetTitleMatchMode, 2
 	return
 */
 
-RControl & F1:: ; mapped to mouse buttons
+; Open Japanese assignments
+F24::
+IfWinExist, Japanese Assignments
+	WinActivate 
+else
+	Run https://onedrive.live.com/edit.aspx?cid=c00a6c307ebf80da&page=view&resid=C00A6C307EBF80DA!1116&parId=C00A6C307EBF80DA!1074&app=Excel
+return
+
+F22::
 if WinActive("YouTube - Brave")
 {
 	SendInput {Left}
 	return
 }
-else
+else if WinActive("N1GD1")
+{
+	SendInput z
+	return
+}	
+else	
 {
 	SendInput ^c
 	return
 }
 return
 
-RControl & F2::
+
+F23::
 if WinActive("YouTube - Brave")
 {
 	SendInput {Right}
 	return
+}
+else if WinActive("N1GD1")
+{
+	SendInput x
+	return
+}
+else if WinActive("Hideki - Anki") ; Yomichan search in Anki
+{
+Clipboard := ""
+SendInput ^c ; select all and copy
+ClipWait, 2
+
+WinActivate, Yomichan Search
+SendInput, {Home}
+Click, 172 110
+SendInput ^a^v{Enter}
 }
 else
 {
@@ -76,6 +106,49 @@ else
 	return
 }
 return
+
+F21 & F22:: ; refer synapse/razer
+send ^x
+return
+
+F21 & F23:: ; yomichan search. Yomichan seperate search windows must exist.
+Clipboard := ""
+SendInput ^c ; select all and copy
+ClipWait, 2
+
+WinActivate, Yomichan Search
+SendInput, {Home}
+Click, 172 110
+SendInput ^a^v{Enter}
+return
+
+/*
+	RControl & F1:: ; mapped to mouse buttons
+	if WinActive("YouTube - Brave")
+	{
+		SendInput {Left}
+		return
+	}
+	else
+	{
+		SendInput ^c
+		return
+	}
+	return
+	
+	RControl & F2::
+	if WinActive("YouTube - Brave")
+	{
+		SendInput {Right}
+		return
+	}
+	else
+	{
+		SendInput ^v
+		return
+	}
+	return
+*/
 
 /*
 	~MButton:: ;double Mbutton to close current window
@@ -99,14 +172,16 @@ return
 */
 
 
-~MButton:: ;Mbutton to close current window
+F21 & MButton:: ;Mbutton to close current window
 {
-	WinGetActiveTitle, TitleBefore
+	;WinGetActiveTitle, TitleBefore
 	SendInput ^w
-	Sleep, 500
-	WinGetActiveTitle, TitleAfter
-	If (TitleBefore = TitleAfter)
-		WinClose, A
+	/*
+		Sleep, 500
+		WinGetActiveTitle, TitleAfter
+		If (TitleBefore = TitleAfter)
+			WinClose, A
+	*/
 	return
 }
 
@@ -130,7 +205,7 @@ return
 
 ~ScrollLock & Insert:: ;edited 18-Oct-21 11:35:56
 :R*?:tdy::
-FormatTime, CurrentDateTime,, dd-MMM-yy hh:mm:ss
+FormatTime, CurrentDateTime,, dd-MMM-yy
 SendInput %CurrentDateTime%
 return
 
@@ -172,14 +247,34 @@ return
 	;==================================================	
 */
 {
+	; Search thivien.net
+	LShift & F23::
+	Clipboard := ""
+	SendInput, ^c
+	ClipWait, 2
+	searchKey := "https://hvdic.thivien.net/whv/" . Clipboard
+	Run %searchKey%
+	return
+	
+	; Search similar Kanji
+	RShift & F23::
+	Clipboard := ""
+	SendInput, ^c
+	ClipWait, 2
+	searchKey := "https://niai.mrahhal.net/similar?q=" . Clipboard
+	Run %searchKey%
+	return
+	
 	; Search alc
-	Xbutton2 & WheelDown::
+	Xbutton2 & NumpadEnter::
 	Clipboard := ""
 	
 	SendInput, ^c
 	ClipWait, 2
 	searchKey := "https://eow.alc.co.jp/search?q=" . Clipboard
 	Run %searchKey%
+	sleep 1000
+	click MButton
 	return
 	
 ; Search Google
@@ -190,15 +285,19 @@ return
 	StringReplace, Clipboard, Clipboard, %A_Space%, +, All
 	searchKey := "https://www.google.com/search?q=" . Clipboard
 	Run %searchKey%
+	sleep 1000
+	click MButton
 	return
 	
 ; Search Mazii
-	Xbutton2 & Enter::
+	Xbutton2 & WheelDown::
 	Clipboard := ""
 	SendInput, ^c
 	ClipWait, 2
 	searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl=vi-VN"
 	Run %searchKey%
+	sleep 1000
+	click MButton
 	return
 }
 
@@ -207,10 +306,13 @@ return
 	Volume control
 	;==================================================	
 */
-{
-	~LAlt & WheelUp:: Send {Volume_Up}  ; Raise the master volume by 1 interval (typically 5%).
-	~LAlt & WheelDown:: Send {Volume_Down}  ; Lower the master volume by 3 intervals.
-	~LAlt & MButton:: Send {Volume_Mute}  ; Mute/unmute the master volume.
+{ ;*[Automate]
+	F21 & WheelUp:: Send {Volume_Up}  ; Raise the master volume by 1 interval (typically 5%).
+	return
+	F21 & WheelDown:: Send {Volume_Down}  ; Lower the master volume by 3 intervals.
+	return
+	;F21 & MButton:: Send {Volume_Mute}  ; Mute/unmute the master volume.
+	return
 }
 
 /*
@@ -232,6 +334,38 @@ return
 ;set full screen (to get position of the A-B repeat symbol
 	return
 }
+
+
+~XButton2 & F23:: ; run GoldenDict as a pop up
+if WinActive("ahk_exe GoldenDict.exe") ; close the app if it is open
+{
+	WinMinimize, A
+	return
+}
+else
+{
+	Clipboard := ""
+	SendInput ^c
+	ClipWait  ; Wait for the clipboard to contain text.
+	
+	WinActivate, ahk_exe GoldenDict.exe
+	WinWaitActive, ahk_exe GoldenDict.exe,,1
+	if ErrorLevel
+	{
+		; invoke the program if it is not currently running
+		Run C:\Program Files (x86)\GoldenDict\GoldenDict.exe
+		WinActivate, GoldenDict
+		WinWaitActive, GoldenDict,,5
+		if ErrorLevel
+		{
+			MsgBox,,, Cannot start GoldenDict,2
+			return
+		}
+	}
+	ControlSend, QWidget14, %Clipboard%{Enter}
+	MouseMove, -10, -10, 0, R ; move mouse to close Lingoes pop-up
+}
+return
 
 /*
 ;==================================================
@@ -295,24 +429,42 @@ return
 */
 { ; Anki
 	#IfWinActive, ahk_exe anki.exe
-	XButton1:: ; return
-	Send ^z
+	
+	XButton1 & RButton::
+	SendInput {f5}
 	return
 	
-	XButton2 & LButton:: ; hard - repeat in one minute
-	Send 1
+	XButton1 & LButton::
+	SendInput ^z
 	return
 	
-	XButton2 & MButton:: ; easy
-	Send 3
-	return
-	
-	XButton2 & RButton:: ; medium
+	XButton2 & LButton:: ; hard 
 	Send 2
 	return
 	
-	Alt & PgDn:: ; red flag
-	Send ^1
+	XButton2 & MButton:: ; blue flag
+	Send ^4
+	return
+	
+	End::
+	XButton2 & RButton:: ; easy
+	Send 4
+	Send 3
+	Send 2
+	return
+	
+	XButton1 & NumpadEnter:: ; blue flag
+	SendInput d
+	return
+	
+	F21 & WheelUp:: ; edit card
+	Send e
+	return
+	
+	F21 & WheelDown:: ; close editing box from the last editing field
+	Send {Tab}
+	Sleep 100
+	Send {Tab}{Enter}
 	return
 	#IfWinActive 
 }
@@ -323,7 +475,7 @@ return
 */
 { ;Brave
 	#IfWinActive, ahk_class Chrome_WidgetWin_1
-	Alt & PgDn:: ; open Diary
+	LControl & F24:: ; open Diary
 	Run https://www.notion.so/smk-toyama/Nh-t-k-fbe8a99803694b23b525eec3f9dd3f22
 	return
 	
@@ -379,6 +531,14 @@ Sleep, 500
 SendInput, !{F4} ; Open Shutdown Windows
 WinWaitActive, Shut Down Windows
 SendInput, {Up} ; default selection is Shutdown, Send Up to move to Sleep
+return
+
+
+
+
+Pause & PgUp::LButton
+return
+Pause & PgDn::RButton
 return
 
 ~RControl & ESC::Exitapp
