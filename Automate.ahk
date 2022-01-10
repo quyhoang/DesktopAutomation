@@ -60,8 +60,14 @@ else
 return
 
 F22::
-if WinActive("YouTube - Brave")
-{
+if WinActive("YouTube - Brave") ; when Youtube is opened, F22/F23 is used for winding
+	; but if XButton2 is pressed, the two keys will be used for copy/paste
+	{
+	if GetKeyState("XButton2", "P")
+	{
+		SendInput ^c
+		return
+	}
 	SendInput {Left}
 	return
 }
@@ -81,7 +87,12 @@ return
 F23::
 if WinActive("YouTube - Brave")
 {
-	SendInput {Right}
+	if GetKeyState("XButton2", "P")
+	{
+		SendInput ^v
+		return
+	}
+	SendInput {Right} 
 	return
 }
 else if WinActive("N1GD1")
@@ -91,14 +102,14 @@ else if WinActive("N1GD1")
 }
 else if WinActive("Hideki - Anki") ; Yomichan search in Anki
 {
-Clipboard := ""
-SendInput ^c ; select all and copy
-ClipWait, 2
-
-WinActivate, Yomichan Search
-SendInput, {Home}
-Click, 172 110
-SendInput ^a^v{Enter}
+	Clipboard := ""
+	SendInput ^c ; select all and copy
+	ClipWait, 2
+	
+	WinActivate, Yomichan Search
+	SendInput, {Home}
+	Click, 172 110
+	SendInput ^a^v{Enter}
 }
 else
 {
@@ -188,7 +199,12 @@ F21 & MButton:: ;Mbutton to close current window
 Xbutton1 & Xbutton2:: ; quick switch window; exclude Creo Parametric
 {
 	if not WinActive("ahk_exe xtop.exe") 
-		SendInput !{Tab}
+	{
+		If GetKeyState("LControl", "P")
+			sendInput, #{Tab}
+		else
+			SendInput !{Tab}
+	}
 	return
 }
 
@@ -301,6 +317,36 @@ return
 	return
 }
 
+~XButton1 & WheelDown:: ; run GoldenDict as a pop up
+if WinActive("ahk_exe GoldenDict.exe") ; close the app if it is open
+{
+	WinMinimize, A
+	return
+}
+else
+{
+	Clipboard := ""
+	SendInput ^c
+	ClipWait  ; Wait for the clipboard to contain text.
+	
+	WinActivate, ahk_exe GoldenDict.exe
+	WinWaitActive, ahk_exe GoldenDict.exe,,1
+	if ErrorLevel
+	{
+		; invoke the program if it is not currently running
+		Run C:\Program Files (x86)\GoldenDict\GoldenDict.exe
+		WinActivate, GoldenDict
+		WinWaitActive, GoldenDict,,5
+		if ErrorLevel
+		{
+			MsgBox,,, Cannot start GoldenDict,2
+			return
+		}
+	}
+	ControlSend, QWidget14, %Clipboard%{Enter}
+	MouseMove, -10, -10, 0, R ; move mouse to close Lingoes pop-up
+}
+return
 /*
 	;==================================================	
 	Volume control
@@ -336,36 +382,7 @@ return
 }
 
 
-~XButton2 & F23:: ; run GoldenDict as a pop up
-if WinActive("ahk_exe GoldenDict.exe") ; close the app if it is open
-{
-	WinMinimize, A
-	return
-}
-else
-{
-	Clipboard := ""
-	SendInput ^c
-	ClipWait  ; Wait for the clipboard to contain text.
-	
-	WinActivate, ahk_exe GoldenDict.exe
-	WinWaitActive, ahk_exe GoldenDict.exe,,1
-	if ErrorLevel
-	{
-		; invoke the program if it is not currently running
-		Run C:\Program Files (x86)\GoldenDict\GoldenDict.exe
-		WinActivate, GoldenDict
-		WinWaitActive, GoldenDict,,5
-		if ErrorLevel
-		{
-			MsgBox,,, Cannot start GoldenDict,2
-			return
-		}
-	}
-	ControlSend, QWidget14, %Clipboard%{Enter}
-	MouseMove, -10, -10, 0, R ; move mouse to close Lingoes pop-up
-}
-return
+
 
 /*
 ;==================================================
@@ -422,8 +439,8 @@ return
 	}
 	#IfWinActive
 }
-	
-	
+
+
 /*
 	Anki - Context specific
 */
