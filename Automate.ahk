@@ -51,6 +51,7 @@ SetTitleMatchMode, 2
 	return
 */
 
+
 ; Open Japanese assignments
 F24::
 IfWinExist, Japanese Assignments
@@ -62,7 +63,7 @@ return
 F22::
 if WinActive("YouTube - Brave") ; when Youtube is opened, F22/F23 is used for winding
 	; but if XButton2 is pressed, the two keys will be used for copy/paste
-	{
+{
 	if GetKeyState("XButton2", "P")
 	{
 		SendInput ^c
@@ -76,6 +77,16 @@ else if WinActive("N1GD1")
 	SendInput z
 	return
 }	
+
+else if WinActive("- Yomichan Search")
+{
+	if GetKeyState("XButton2", "P")
+		SendInput !{Left}
+	else
+		SendInput ^c
+	return
+}	
+
 else	
 {
 	SendInput ^c
@@ -200,10 +211,16 @@ Xbutton1 & Xbutton2:: ; quick switch window; exclude Creo Parametric
 {
 	if not WinActive("ahk_exe xtop.exe") 
 	{
-		If GetKeyState("LControl", "P")
-			sendInput, #{Tab}
-		else
-			SendInput !{Tab}
+		sendInput, #{Tab}
+	}
+	return
+}
+
+Xbutton2 & Xbutton1:: ; quick switch window; exclude Creo Parametric
+{
+	if not WinActive("ahk_exe xtop.exe") 
+	{
+		SendInput !{Tab}
 	}
 	return
 }
@@ -264,6 +281,7 @@ return
 */
 {
 	; Search thivien.net
+	F21 & RButton::
 	LShift & F23::
 	Clipboard := ""
 	SendInput, ^c
@@ -301,8 +319,8 @@ return
 	StringReplace, Clipboard, Clipboard, %A_Space%, +, All
 	searchKey := "https://www.google.com/search?q=" . Clipboard
 	Run %searchKey%
-	sleep 1000
-	click MButton
+	;sleep 1000
+	;click MButton
 	return
 	
 ; Search Mazii
@@ -318,12 +336,6 @@ return
 }
 
 ~XButton1 & WheelDown:: ; run GoldenDict as a pop up
-if WinActive("ahk_exe GoldenDict.exe") ; close the app if it is open
-{
-	WinMinimize, A
-	return
-}
-else
 {
 	Clipboard := ""
 	SendInput ^c
@@ -343,8 +355,10 @@ else
 			return
 		}
 	}
-	ControlSend, QWidget14, %Clipboard%{Enter}
-	MouseMove, -10, -10, 0, R ; move mouse to close Lingoes pop-up
+	Click, 100 64
+	SendInput ^a^v{Enter}
+	; ControlSend, QWidget14, %Clipboard%{Enter}
+	; MouseMove, -10, -10, 0, R ; move mouse to close Lingoes pop-up
 }
 return
 /*
@@ -486,6 +500,12 @@ return
 	#IfWinActive 
 }
 
+#IfWinActive, Foxit PDF Reader
+F21 & WheelUp::
+Send ^2
+return
+#IfWinActive 
+
 
 /*
 	Brave
@@ -559,3 +579,8 @@ Pause & PgDn::RButton
 return
 
 ~RControl & ESC::Exitapp
+
+; temporary
+
+:R*?:rt::→
+return
