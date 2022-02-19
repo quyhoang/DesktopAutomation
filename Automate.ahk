@@ -579,8 +579,3 @@ Pause & PgDn::RButton
 return
 
 ~RControl & ESC::Exitapp
-
-; temporary
-
-:R*?:rt::→
-return
