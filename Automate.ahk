@@ -77,7 +77,18 @@ else if WinActive("N1GD1")
 	SendInput z
 	return
 }	
-
+else if WinActive("Google Slides - Brave")
+{
+	Clipboard := ""
+	SendInput, ^c
+	ClipWait, 2
+	; replace space and newline character with the corresponding characters used in address bar of GG translate
+	StringReplace, Clipboard, Clipboard, %A_Space%, +, All
+	StringReplace, Clipboard, Clipboard, `n, `%0A, All
+	searchKey := "https://translate.google.com/?sl=en&tl=ja&text=" . Clipboard . "&op=translate"
+	Run %searchKey%
+	return
+}
 else if WinActive("- Yomichan Search")
 {
 	if GetKeyState("XButton2", "P")
@@ -109,6 +120,11 @@ if WinActive("YouTube - Brave")
 else if WinActive("N1GD1")
 {
 	SendInput x
+	return
+}
+else if WinActive("Google Slides - Brave")
+{
+	Send ^+v
 	return
 }
 else if WinActive("Hideki - Anki") ; Yomichan search in Anki
@@ -561,6 +577,25 @@ return
 	Script control
 ;==================================================	
 */
+
+; Get full path of a file
+~Xbutton2 & RButton::
+SendInput {F2}^a
+Clipboard := ""
+Sleep 100
+SendInput ^c
+ClipWait, 2
+name := Clipboard
+Clipboard := ""
+Sleep 100
+SendInput {Enter}!d
+Sleep 100
+SendInput ^c
+ClipWait, 2
+fullPathName := Clipboard . "\" . name
+Clipboard := fullPathName
+; msgBox, % fullPathName
+return
 
 ~End & Pause:: ;minimize all windows and open sleep dialog
 SendInput, #m
