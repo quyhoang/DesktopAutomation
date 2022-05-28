@@ -414,11 +414,34 @@ return
 	;==================================================	
 */
 { ;*[Automate]
-	F21 & WheelUp:: Send {Volume_Up}  ; Raise the master volume by 1 interval (typically 5%).
+	F21 & WheelUp:: 
+	if WinActive("ahk_exe Acrobat.exe")
+	{
+	SendInput ^{=}
 	return
-	F21 & WheelDown:: Send {Volume_Down}  ; Lower the master volume by 3 intervals.
+	}
+	else
+	Send {Volume_Up}  ; Raise the master volume by 1 interval (typically 5%).
 	return
-	;F21 & MButton:: Send {Volume_Mute}  ; Mute/unmute the master volume.
+
+	F21 & WheelDown:: 
+	if WinActive("ahk_exe Acrobat.exe")
+	{
+	SendInput ^-
+	return
+	}
+	else
+	Send {Volume_Down}  ; Lower the master volume by 3 intervals.
+	return
+
+	;F21 & MButton:: 
+	if WinActive(".pdf")
+	{
+	SendInput ^2
+	return
+	}
+	else
+	Send {Volume_Mute}  ; Mute/unmute the master volume.
 	return
 }
 
