@@ -51,6 +51,14 @@ SetTitleMatchMode, 2
 	return
 */
 
+XButton1 & F24::
+	Clipboard := ""
+	SendInput, ^c
+	ClipWait, 2
+	searchKey := "https://youglish.com/pronounce/" . Clipboard . "/japanese?"
+	Run %searchKey%
+	return
+
 
 ; Open Japanese assignments
 F24::
@@ -70,6 +78,16 @@ if WinActive("YouTube - Brave") ; when Youtube is opened, F22/F23 is used for wi
 		return
 	}
 	SendInput {Left}
+	return
+}
+else if WinActive("VNU Lic")
+{
+	if GetKeyState("XButton2", "P")
+	{
+		SendInput ^c
+		return
+	}
+	SendInput {Right}
 	return
 }
 else if WinActive("N1GD1")
@@ -117,6 +135,17 @@ if WinActive("YouTube - Brave")
 	SendInput {Right} 
 	return
 }
+else if WinActive("VNU Lic")
+{
+	if GetKeyState("XButton2", "P")
+	{
+		SendInput ^v
+		return
+	}
+	SendInput {Left} 
+	return
+}
+
 else if WinActive("N1GD1")
 {
 	SendInput x
@@ -124,7 +153,9 @@ else if WinActive("N1GD1")
 }
 else if WinActive("Google Slides - Brave")
 {
-	Send ^+v
+	MouseClick, Right
+	SendInput {Down}{Down}{Down}{Down}
+	SendInput {Enter}
 	return
 }
 else if WinActive("Hideki - Anki") ; Yomichan search in Anki
