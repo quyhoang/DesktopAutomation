@@ -22,6 +22,10 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 2
 
 FileReadLine, wdir, D:\lastWorkingDir.txt, 1
+If (wdir = "")
+{
+wdir := "O:\Free\FA_data\治具_creo\STD_\Experiment"
+}
 SetWorkingDir %wdir%
 
 if not WinExist("ahk_exe xtop.exe") ;if Creo Parametric is not currently running
@@ -71,7 +75,7 @@ If WinExist("SMKMSG")
 {
 WinClose
 }
-	message := "somemysteriousmessagemustbewrittenhere"
+	message := "1012@timeflies"
 	WinActivate, ahk_exe NotesUp.exe
 	Click, 230 104 ; open NotesUp
 	WinWaitActive, IBM Notes,,180
@@ -210,12 +214,14 @@ return
 #IfWinActive
 
 
-
+/*
 ; wrap word in {}
 RAlt & Ins::
 SendInput, ^{Left}{{}^{Right}{}}
 return
+*/
 
+/*
 ; Close current tab
 ~Xbutton1 & Mbutton::
 If not winactive("ahk_exe xtop.exe")
@@ -231,12 +237,8 @@ If not winactive("ahk_exe xtop.exe")
 		return
 	}
 }
+*/
 
-; ScrollLock is also mapped to the sixth mouse button using SteelSeries Engine
-~ScrollLock & Ins::
-FormatTime, CurrentDateTime,, yy-MM-dd hh:mm:ss
-SendInput %CurrentDateTime%
-return
 
 ^!r:: ; Ctrl Alt R to reload
 Reload
@@ -250,11 +252,13 @@ return
 
 #IfWinNotActive ahk_exe xtop.exe
 
+/*NumpadDot::^w
+return
 
 XButton1::^c
 return
 XButton2::^v
-return
+return*/
 
 ;==========================================================================================================================
 LControl & Numpad2::
@@ -262,7 +266,7 @@ LControl & Numpad2::
 Run https://mazii.net/search
 return
 
-
+Numpad3::
 RControl & Numpad2::
 ; Copy selected text and search with mazzi in default browser--------------------------------------------------------------
 Clipboard := ""
@@ -272,7 +276,7 @@ searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl
 Run %searchKey%
 return
 
-
+/*
 ; Close current windows
 ~Xbutton2 & LButton::
 ;WinGetActiveTitle, beforeTitle
@@ -283,26 +287,9 @@ WinGetActiveTitle, TitleAfter
 If (TitleBefore = TitleAfter)
 	WinClose, A
 return
+*/
 ;==================================================
 
-; Get full path of a file
-~Xbutton2 & RButton::
-SendInput {F2}^a
-Clipboard := ""
-Sleep 100
-SendInput ^c
-ClipWait, 2
-name := Clipboard
-Clipboard := ""
-Sleep 100
-SendInput {Enter}!d
-Sleep 100
-SendInput ^c
-ClipWait, 2
-fullPathName := Clipboard . "\" . name
-Clipboard := fullPathName
-; msgBox, % fullPathName
-return
 
 
 
@@ -318,7 +305,7 @@ if ErrorLevel
     MsgBox, WinWait timed out. Please open work log manually.
     return
 }
-Click, 670 420
+Click, 365 431
 WinWaitActive, ) - 日報集計,, 180
 if ErrorLevel
 {
@@ -358,3 +345,12 @@ SetInputLang(Lang)
 return
 
 ~RControl & Esc::Exitapp
+
+/*
+<#>+o:: ; LWin RShift o to open folder from selected text
+Clipboard := ""
+SendInput ^c
+ClipWait, 2
+Run, %Clipboard%
+return
+*/
