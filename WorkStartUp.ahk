@@ -151,9 +151,34 @@ else
 return
 ; =====================================================================================
 
-RControl & Numpad3::
-Run https://mazii.net/note?hl=vi-VN
+
+
+
+
+;=======================================================================================
+; Numpad
+; ======================================================================================
+
+
+; ------------------Numpad 0----------------------------
+
+LControl & Numpad0::
+; using google search--------------------------------------------------------------
+Run https://www.google.com
 return
+
+RControl & Numpad0::
+; Copy selected text and search with Google in default browser--------------------------------------------------------------
+Clipboard := ""
+SendInput ^c ;copy selected text
+ClipWait, 2
+StringReplace, Clipboard, Clipboard, %A_Space%, +, All
+searchKey := "https://www.google.com/search?q=" . Clipboard
+Run %searchKey%
+return
+
+
+;-------------------Numpad 1----------------------------
 
 LControl & Numpad1::
 ; right control   1: Open Google Translate in default browser--------------------------------------------------------------
@@ -173,27 +198,37 @@ Run %searchKey%
 return
 
 
+;-------------------Numpad 2----------------------------
 
-
-LControl & Numpad0::
-; using google search--------------------------------------------------------------
-Run https://www.google.com
+LControl & Numpad2::
+; right control   2: Open Mazii dictionary in default browser--------------------------------------------------------------
+Run https://mazii.net/search
 return
 
-RControl & Numpad0::
-; Copy selected text and search with Google in default browser--------------------------------------------------------------
+RControl & Numpad2::
+; Copy selected text and search with mazzi in default browser--------------------------------------------------------------
 Clipboard := ""
-SendInput ^c ;copy selected text
+SendInput, ^c
 ClipWait, 2
-StringReplace, Clipboard, Clipboard, %A_Space%, +, All
-searchKey := "https://www.google.com/search?q=" . Clipboard
+searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl=vi-VN"
 Run %searchKey%
 return
+
+
+
+;-------------------Numpad 5----------------------------
+
 
 RControl & Numpad5::
 ; Open Notion--------------------------------------------------------------
 Run https://www.notion.so/smk-toyama/Unified-Creo-notes-6132801b4a4b410097be05efded068cc
 return
+
+
+;=======================================
+; Ahk editor shortcut
+; ======================================
+
 
 #IfWinActive, .ahk
 ; add comment mark line
@@ -240,6 +275,8 @@ If not winactive("ahk_exe xtop.exe")
 */
 
 
+; ======================================
+
 ^!r:: ; Ctrl Alt R to reload
 Reload
 Sleep 1000 ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
@@ -252,29 +289,12 @@ return
 
 #IfWinNotActive ahk_exe xtop.exe
 
-/*NumpadDot::^w
-return
-
 XButton1::^c
 return
 XButton2::^v
-return*/
-
-;==========================================================================================================================
-LControl & Numpad2::
-; right control   2: Open Mazii dictionary in default browser--------------------------------------------------------------
-Run https://mazii.net/search
 return
 
-Numpad3::
-RControl & Numpad2::
-; Copy selected text and search with mazzi in default browser--------------------------------------------------------------
-Clipboard := ""
-SendInput, ^c
-ClipWait, 2
-searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl=vi-VN"
-Run %searchKey%
-return
+
 
 /*
 ; Close current windows
