@@ -6,6 +6,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ;Run Automate_Anki.ahk
 ;Run Automate_Brave.ahk
 
+
 #singleinstance, force
 
 SetTitleMatchMode, 2
@@ -321,6 +322,17 @@ return
 	return
 }
 
+
+
+F21 & NumpadEnter::
+Clipboard := ""
+	SendInput, ^c
+	ClipWait, 2
+	Run https://keep.google.com/u/2/
+	sleep, 2000
+	SendInput, ^v
+	return
+
 /*
 	;==================================================	
 	Internet search
@@ -382,6 +394,7 @@ return
 	return
 }
 
+/*
 ~XButton1 & WheelDown:: ; run GoldenDict as a pop up
 {
 	Clipboard := ""
@@ -408,6 +421,9 @@ return
 	; MouseMove, -10, -10, 0, R ; move mouse to close Lingoes pop-up
 }
 return
+
+*/
+
 /*
 	;==================================================	
 	Volume control
@@ -530,7 +546,13 @@ return
 */
 { ; Anki
 	#IfWinActive, ahk_exe anki.exe
-	
+
+	F12::
+	sendInput {Enter}
+	8::
+	SendInput *
+	return	
+
 	XButton1 & RButton::
 	SendInput {f5}
 	return
@@ -659,7 +681,18 @@ WinWaitActive, Shut Down Windows
 SendInput, {Up} ; default selection is Shutdown, Send Up to move to Sleep
 return
 
-
+/*
+~Backspace::
+if (A_PriorHotkey != "~Backspace" or A_TimeSincePriorHotkey > 400)
+{
+    ; Too much time between presses, so this isn't a double-press.
+	KeyWait, Backspace
+	return
+}
+else 
+sendInput ^{Backspace}
+return
+*/
 
 
 Pause & PgUp::LButton
@@ -668,3 +701,38 @@ Pause & PgDn::RButton
 return
 
 ~RControl & ESC::Exitapp
+
+!r:: ; run ahk from notepad**
+If WinActive("ahk - Notepad++")
+{
+SendInput ^s
+Sleep 500
+WinGetActiveTitle, Title
+scriptNameEnd := InStr(Title,".ahk")
+scriptName := SubStr(Title,1,scriptNameEnd+3)
+Run, %scriptName%
+return
+}
+
+~Xbutton1 & WheelUp::
+send, {Ctrl down}
+While GetKeyState("Xbutton1")
+{
+SendInput {WheelUp}
+Sleep 150
+}
+;KeyWait Xbutton1
+send, {Ctrl Up}
+return
+
+
+~Xbutton1 & WheelDown::
+send, {Ctrl down}
+While GetKeyState("Xbutton1")
+{
+SendInput {WheelDown}
+Sleep 150
+}
+;KeyWait Xbutton1
+send, {Ctrl Up}
+return
