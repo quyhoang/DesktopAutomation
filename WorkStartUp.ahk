@@ -366,6 +366,7 @@ return
 
 ~RControl & Esc::Exitapp
 
+
 /*
 <#>+o:: ; LWin RShift o to open folder from selected text
 Clipboard := ""
@@ -374,3 +375,22 @@ ClipWait, 2
 Run, %Clipboard%
 return
 */
+
+:*?:editahk:: ; edit CreoAutomation.ahk
+Run, edit "O:\Free\FA_data\治具_creo\STD_\_All\CreoAutomation.ahk"
+return
+
+:*?:openahkfolder:: ; open CreoAutomation.ahk containing folder
+Run, O:\Free\FA_data\治具_creo\STD_\_All
+return
+
+!r:: ; run ahk from notepad**
+If WinActive("ahk - Notepad++")
+{
+WinGetActiveTitle, Title
+scriptNameEnd := InStr(Title,".ahk")
+scriptName := SubStr(Title,1,scriptNameEnd+3)
+Run, %scriptName%
+return
+}
+
