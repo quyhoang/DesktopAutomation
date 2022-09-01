@@ -69,8 +69,8 @@ else
 	Run https://onedrive.live.com/edit.aspx?cid=c00a6c307ebf80da&page=view&resid=C00A6C307EBF80DA!1116&parId=C00A6C307EBF80DA!1074&app=Excel
 return
 
-F22::
-if WinActive("YouTube - Brave") ; when Youtube is opened, F22/F23 is used for winding
+F10::
+if WinActive("YouTube - Brave") ; when Youtube is opened, F10/F11 is used for winding
 	; but if XButton2 is pressed, the two keys will be used for copy/paste
 {
 	if GetKeyState("XButton2", "P")
@@ -125,7 +125,7 @@ else
 return
 
 
-F23::
+F11::
 if WinActive("YouTube - Brave")
 {
 	if GetKeyState("XButton2", "P")
@@ -177,11 +177,11 @@ else
 }
 return
 
-F21 & F22:: ; refer synapse/razer
+F9 & F10:: ; refer synapse/razer
 send ^x
 return
 
-F21 & F23:: ; yomichan search. Yomichan seperate search windows must exist.
+F9 & F11:: ; yomichan search. Yomichan seperate search windows must exist.
 Clipboard := ""
 SendInput ^c ; select all and copy
 ClipWait, 2
@@ -242,7 +242,7 @@ return
 */
 
 
-F21 & MButton:: ;Mbutton to close current window
+F9 & MButton:: ;Mbutton to close current window
 {
 	;WinGetActiveTitle, TitleBefore
 	SendInput ^w
@@ -324,7 +324,7 @@ return
 
 
 
-F21 & NumpadEnter::
+F9 & NumpadEnter::
 Clipboard := ""
 	SendInput, ^c
 	ClipWait, 2
@@ -340,8 +340,9 @@ Clipboard := ""
 */
 {
 	; Search thivien.net
-	F21 & RButton::
-	LShift & F23::
+	NumpadAdd::
+	F9 & RButton::
+	LShift & F11::
 	Clipboard := ""
 	SendInput, ^c
 	ClipWait, 2
@@ -350,7 +351,7 @@ Clipboard := ""
 	return
 	
 	; Search similar Kanji
-	RShift & F23::
+	RShift & F11::
 	Clipboard := ""
 	SendInput, ^c
 	ClipWait, 2
@@ -383,6 +384,7 @@ Clipboard := ""
 	return
 	
 ; Search Mazii
+	NumpadSub::
 	Xbutton2 & WheelDown::
 	Clipboard := ""
 	SendInput, ^c
@@ -430,7 +432,7 @@ return
 	;==================================================	
 */
 { ;*[Automate]
-	F21 & WheelUp:: 
+	F9 & WheelUp:: 
 	if WinActive("ahk_exe Acrobat.exe")
 	{
 	SendInput ^{=}
@@ -440,7 +442,7 @@ return
 	Send {Volume_Up}  ; Raise the master volume by 1 interval (typically 5%).
 	return
 
-	F21 & WheelDown:: 
+	F9 & WheelDown:: 
 	if WinActive("ahk_exe Acrobat.exe")
 	{
 	SendInput ^-
@@ -450,7 +452,7 @@ return
 	Send {Volume_Down}  ; Lower the master volume by 3 intervals.
 	return
 
-	;F21 & MButton:: 
+	;F9 & MButton:: 
 	if WinActive(".pdf")
 	{
 	SendInput ^2
@@ -580,11 +582,11 @@ return
 	SendInput d
 	return
 	
-	F21 & WheelUp:: ; edit card
+	F9 & WheelUp:: ; edit card
 	Send e
 	return
 	
-	F21 & WheelDown:: ; close editing box from the last editing field
+	F9 & WheelDown:: ; close editing box from the last editing field
 	Send {Tab}
 	Sleep 100
 	Send {Tab}{Enter}
@@ -593,7 +595,7 @@ return
 }
 
 #IfWinActive, Foxit PDF Reader
-F21 & WheelUp::
+F9 & WheelUp::
 Send ^2
 return
 #IfWinActive 
@@ -605,7 +607,7 @@ return
 { ;Brave
 	#IfWinActive, ahk_class Chrome_WidgetWin_1
 	LControl & F24:: ; open Diary
-	Run https://www.notion.so/smk-toyama/Nh-t-k-fbe8a99803694b23b525eec3f9dd3f22
+	Run https://www.notion.so/smk-toyama/Nh-t-k-fbe8a99803694b23b525eec3f9dd3F10
 	return
 	
 	>#m:: ; open second mail with Left Windows M
@@ -714,6 +716,7 @@ Run, %scriptName%
 return
 }
 
+/*
 ~Xbutton1 & WheelUp::
 send, {Ctrl down}
 While GetKeyState("Xbutton1")
@@ -736,3 +739,15 @@ Sleep 150
 ;KeyWait Xbutton1
 send, {Ctrl Up}
 return
+*/
+
+F12::
+Clipboard := ""
+SendInput ^c ; select all and copy
+ClipWait, 2
+
+WinActivate, Yomichan Search
+SendInput, {Home}
+Click, 172 110
+SendInput ^a^v{Enter}
+Return
