@@ -549,8 +549,19 @@ return
 { ; Anki
 	#IfWinActive, ahk_exe anki.exe
 
+	~RControl::
+	SendInput ^+d;
+	Sleep 100
+	Clipboard := "1"
+	SendInput ^v
+	SendInput {Enter}
+	return
+	
+
 	F12::
 	sendInput {Enter}
+	return
+	
 	8::
 	SendInput *
 	return	
