@@ -63,6 +63,7 @@ XButton1 & F24::
 
 ; Open Japanese assignments
 F24::
+:*:onedrive::
 IfWinExist, Japanese Assignments
 	WinActivate 
 else
@@ -753,12 +754,15 @@ return
 */
 
 F12::
+if not WinActive("ahk_exe xtop.exe") 
+{
 Clipboard := ""
 SendInput ^c ; select all and copy
-ClipWait, 2
+ClipWait, 1
 
 WinActivate, Yomichan Search
 SendInput, {Home}
 Click, 172 110
 SendInput ^a^v{Enter}
+}
 Return
