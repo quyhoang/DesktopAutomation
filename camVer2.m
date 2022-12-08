@@ -208,12 +208,13 @@ p_num = (s.^2 + v_theta.^2).^(3/2);
 p_denom = s.^2 + 2*v_theta.^2 - s.*a_theta;
 p = p_num./p_denom;
 
-function [radius,radArg] = radCurv(f,arg,step)
+function [radius,radArg] = radCurv(f,arg)
+    step = arg(2)-arg(1);
     f1 = diff(f)/step;
     f2 = diff(f1)/step;
     f1 = regulate(f1,f2);
     ff = regulate(f,f2);
-    radArg = regulate(arg,refLen);
+    radArg = regulate(arg,f2);
     
     k1 = 2*sqrVec(f1) + sqrVec(ff) - ff.*f2;
     k2 = (sqrVec(f1) + sqrVec(ff)).^(3/2);
