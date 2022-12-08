@@ -199,14 +199,20 @@ ylabel({'圧角','degree'},'FontSize',15,'FontWeight','light','Color','b');
 % p = {[(rb + s)^2 + (ds/dtheta)^2]^(3/2)}/[(rb + s)^2 + 2*(ds/dtheta)^2 - (rb+s)*d^2s/dtheta^2]
 
 %second order differentiation of s with respect to theta
-v_theta = diff(s)/step; %differentiate s with respect to theta in radian
-v_theta = [v_theta v_theta(length(v_theta))]; %add one more element to make the lengh equal to that of theta 
-a_theta = diff(v_theta)/step; %differentiate s with respect to theta in radian
-a_theta = [a_theta a_theta(length(a_theta))]; %add one more element to make the lengh equal to that of theta 
 
-p_num = (s.^2 + v_theta.^2).^(3/2);
-p_denom = s.^2 + 2*v_theta.^2 - s.*a_theta;
-p = p_num./p_denom;
+set(gca,'ThetaZeroLocation','top')
+
+%Converting Polar to Cartesian Coordinate System
+[x,y] = pol2cart(theta2,s);
+x_cord = transpose(x);
+y_cord = transpose(y);
+z_cord = zeros(361,1);
+
+cam_profile = [x_cord y_cord z_cord];
+
+%Export Cam Profile to Excel as XYZ Coordinates
+writematrix(cam_profile,'cam_profile.xls')
+
 
 function [radius,radArg] = radCurv(f,arg)
     step = arg(2)-arg(1);
