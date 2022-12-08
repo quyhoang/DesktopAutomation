@@ -204,13 +204,13 @@ ylabel({'圧角','degree'},'FontSize',15,'FontWeight','light','Color','b');
 [x,y] = pol2cart(theta2,s);
 x_cord = transpose(x);
 y_cord = transpose(y);
-z_cord = zeros(length(theta2),1);
+z_cord = zeros(length(,1);
 
 cam_profile = [x_cord y_cord z_cord];
 
 %Export Cam Profile to Excel as XYZ Coordinates
-writematrix(cam_profile,'cam_profile.xlsx');
-writematrix(cam_profile,'cam_profile.txt');
+writematrix(cam_profile,'cam_profile.xls')
+writematrix(cam_profile,'cam_profile.pts')
 
 
 function [radius,radArg] = radCurv(f,arg)
