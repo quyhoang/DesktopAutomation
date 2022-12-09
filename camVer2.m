@@ -17,7 +17,7 @@ clc; close all; clear;
 
 eventAngle = [30 70 190 230]; % degree at which the rise/return starts/ends
 rRoller = 60; % roller radius in mm
-h = 15; % stroke in mm
+h = 25; % stroke in mm
 rBase = 50; % mm - Cam base radius
 RPM = 200; % motor velocity in rounds per minutes
 
@@ -197,6 +197,33 @@ end
 hold on;
 plot(camSurfX,camSurfY,'color','g')
 
+% Animating cam rotation
+figure;
+hold on
+p = plot(0,0,'o','MarkerFaceColor','red');
+
+rotatedCam = rotateCw([x;y],pi/2);
+pl = plot(rotatedCam(1,:),rotatedCam(2,:));
+axis equal;
+maxDim = rBase + 2*rRoller + 10;
+xlim([-maxDim maxDim]);
+ylim([-maxDim maxDim]);
+hold on;
+grid on;
+pl.XDataSource = 'xx';
+pl.YDataSource = 'yy';
+
+
+for i = pi/2:2*pi/360:2.5*pi
+rotatedCam = rotateCw([x;y],i);
+xx = rotatedCam(1,:);
+yy = rotatedCam(2,:);
+refreshdata
+pause(0.001)
+end
+
+
+
 % Export Cam Profile to Excel as XYZ Coordinates
 % x_cord = transpose(camSurfX);
 % y_cord = transpose(camSurfY);
@@ -206,6 +233,13 @@ plot(camSurfX,camSurfY,'color','g')
 
 % writematrix(cam_profile,'cam_profile.xlsx');
 % writematrix(cam_profile,'cam_profile.txt');
+
+function Y = rotateCw(X,theta)
+% rotate clockwise
+
+rotMat = [cos(theta) sin(theta); -sin(theta) cos(theta)];
+Y = rotMat * X;
+end
 
 function [xo,yo] = normalp(x,y,R)
 % x and y are row vector of length 3 (longer vectors don't cause problem,
@@ -221,6 +255,7 @@ function [xo,yo] = normalp(x,y,R)
 a = y(1)-y(3);
 b = x(3)-x(1);
 k = R/sqrt(a^2+b^2); 
+
 % temporary factor
 xo = k*a + x(2);
 yo = k*b + y(2);
