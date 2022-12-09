@@ -16,12 +16,12 @@ clc; close all; clear;
 %============================================
 
 eventAngle = [30 70 190 230]; % degree at which the rise/return starts/ends
-rRoller = 8; % roller radius in mm
+rRoller = 60; % roller radius in mm
 h = 15; % stroke in mm
 rBase = 50; % mm - Cam base radius
 RPM = 200; % motor velocity in rounds per minutes
 
-sampleRate = 2; % showing roller on pitch curve with distance in degree
+sampleRate = 5; % showing roller on pitch curve with distance in degree
 
 %　END　OF　INPUT　=====================================
 
@@ -164,18 +164,10 @@ title({'';'圧角　vs　角度';''},'Color','b','FontSize',15,'FontWeight','lig
 
 %second order differentiation of s with respect to theta
 
-%Converting Polar to Cartesian Coordinate System
+% Converting Polar to Cartesian Coordinate System
 [x,y] = pol2cart(theta2,s);
-x_cord = transpose(x);
-y_cord = transpose(y);
-z_cord = zeros(length(theta2),1);
 
-cam_profile = [x_cord y_cord z_cord];
-
-% %Export Cam Profile to Excel as XYZ Coordinates
-% writematrix(cam_profile,'cam_profile.xlsx');
-% writematrix(cam_profile,'cam_profile.txt');
-
+% Draw roller around cam curve and on pitch curve 
 % sample rate is defined in input region
 sampleRate = round(sampleRate*length(theta2)/360);
 x_sample = x_cord(1:sampleRate:length(x_cord));
@@ -190,20 +182,55 @@ grid on;
 hold on;
 plot(x,y);
 
-% figure;
-% plot(x,y);
-% hold on;
-% p = viscircles([x_sample(1),y_sample(1)],8,'LineWidth',1);
-% hold off;
-% axis equal;
-% grid on;
+% Plot cam profile
+camSurfX = zeros(size(x));
+camSurfY = zeros(size(x));
+
+[camSurfX(1),camSurfY(1)] = normalp([x(length(x)) x(1) x(2)],[y(length(y)) y(1) y(2)],rRoller);
+[camSurfX(length(x)),camSurfY(length(y))] = normalp([x(length(x)-1) x(length(x)) x(1)],[y(length(y)-1) y(length(y)) y(1)],rRoller);
+
+for k = 1:1:length(x)-2
+X = x(k:1:k+2);
+Y = y(k:1:k+2);
+[camSurfX(k+1),camSurfY(k+1)] = normalp(X,Y,rRoller);
+end
+hold on;
+plot(camSurfX,camSurfY,'color','g')
+
+% Export Cam Profile to Excel as XYZ Coordinates
+% x_cord = transpose(camSurfX);
+% y_cord = transpose(camSurfY);
+% z_cord = zeros(length(theta2),1);
 % 
-% for k = 2:1:length(x_sample)
-%     p = viscircles([x_sample(k),y_sample(k)],8,'LineWidth',1);
-%     drawnow
-% end
+% cam_profile = [x_cord y_cord z_cord];
+
+% writematrix(cam_profile,'cam_profile.xlsx');
+% writematrix(cam_profile,'cam_profile.txt');
+
+function [xo,yo] = normalp(x,y,R)
+% x and y are row vector of length 3 (longer vectors don't cause problem,
+% but only the first 3 elements will be used. 
+
+% Call the three point represented by x and y A, B and C
+% This function return the coordinates of point D such that
+% * DB is perpendicular to AC
+% * DB has length R
+% * D is on the left hand side when moving on the curve ABC from A to C
+
+% calculate normal vector <a,b>
+a = y(1)-y(3);
+b = x(3)-x(1);
+k = R/sqrt(a^2+b^2); 
+% temporary factor
+xo = k*a + x(2);
+yo = k*b + y(2);
+end
+
 
 function [radius,radArg] = radCurv(f,arg)
+
+% Numerically computing radius of curvature
+% arg is used only to define step. In this program arg is array of angles
     step = arg(2)-arg(1);
     f1 = diff(f)/step;
     f2 = diff(f1)/step;
@@ -223,3 +250,17 @@ end
 function regulated = regulate(x,ref)
     regulated = x(1:length(ref));
 end
+
+
+% figure;
+% plot(x,y);
+% hold on;
+% p = viscircles([x_sample(1),y_sample(1)],8,'LineWidth',1);
+% hold off;
+% axis equal;
+% grid on;
+% 
+% for k = 2:1:length(x_sample)
+%     p = viscircles([x_sample(k),y_sample(k)],8,'LineWidth',1);
+%     drawnow
+% end
