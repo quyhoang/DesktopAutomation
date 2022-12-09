@@ -170,8 +170,8 @@ title({'';'圧角　vs　角度';''},'Color','b','FontSize',15,'FontWeight','lig
 % Draw roller around cam curve and on pitch curve 
 % sample rate is defined in input region
 sampleRate = round(sampleRate*length(theta2)/360);
-x_sample = x_cord(1:sampleRate:length(x_cord));
-y_sample = y_cord(1:sampleRate:length(y_cord));
+x_sample = transpose(x(1:sampleRate:length(x)));
+y_sample = transpose(y(1:sampleRate:length(y)));
 
 centers = [x_sample y_sample];
 radii = rRoller*ones(length(y_sample),1);
