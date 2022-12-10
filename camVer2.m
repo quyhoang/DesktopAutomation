@@ -23,8 +23,9 @@ RPM = 200; % motor velocity in rounds per minutes
 
 sampleRate = 5; % showing roller on pitch curve with distance in degree
 
-%　END　OF　INPUT　=====================================
-
+%============================================
+% PRELIMINARY CALCULATION
+%============================================
 rPrime = rBase + rRoller; %mm - Pitch circle prime radius
 
 bRise = eventAngle(2) - eventAngle(1) ; %rise period
@@ -38,6 +39,7 @@ theta = 0:step:360;
 T = 60/RPM; % period of moving 360 degree, in second
 time = linspace(0,T,length(theta));
 timeStep = T/size(time,2); % convert step in degree to step in time
+
 
 %============================================
 % DISPLACEMENT
@@ -71,13 +73,6 @@ sDwe3 = zeros(size(temp));
 
 % Entire trajectory
 s = [sDwe1 sRise1 sRise2 sRise3 sDwe2 sReturn1 sReturn2 sReturn3 sDwe3] + rPrime;
-
-% Plot position in polar coordinate
-figure;
-theta2 = deg2rad(theta);
-polarplot(theta2,s);
-grid on;
-[title1,] = title({'';'位置　vs　角度';''},'Color','b','FontSize',15,'FontWeight','light');
 
 % Plot position vs angle in cartesian coordinate
 figure;
@@ -135,6 +130,8 @@ ylabel({'加速','mm/s^2'},'FontSize',15,'FontWeight','light','Color','b');
     'Color','blue');
 tit.FontSize = 15;
 
+disp('PRESS ENTER TO CONTINUE');
+pause; % Wait for user to press enter to proceed
 %============================================
 % PRESSURE ANGLE 圧角
 %============================================
@@ -181,9 +178,27 @@ title({'';'圧角・位置　vs　回転角度';''},'Color','b','FontSize',15,'F
 %============================================
 % p = {[(rb + s)^2 + (ds/dtheta)^2]^(3/2)}/[(rb + s)^2 + 2*(ds/dtheta)^2 - (rb+s)*d^2s/dtheta^2]
 
+disp('PRESS ENTER TO CONTINUE');
+pause; % Wait for user to press enter to proceed
+%============================================
+% POSITION IN POLAR COORDINATES
+%============================================
+
+% Plot position in polar coordinate
+figure;
+theta2 = deg2rad(theta);
+polarplot(theta2,s);
+grid on;
+[title1,] = title({'';'位置　vs　角度';''},'Color','b','FontSize',15,'FontWeight','light');
+
 % Converting Polar to Cartesian Coordinate System
 [x,y] = pol2cart(theta2,s);
 
+disp('PRESS ENTER TO CONTINUE');
+pause; % Wait for user to press enter to proceed
+%============================================
+% CAM PROFILE AFTER MACHINING
+%============================================
 % Draw roller around cam curve and on pitch curve 
 % sample rate is defined in input region
 sampleRate = round(sampleRate*length(theta2)/360);
@@ -215,14 +230,17 @@ end
 hold on;
 plot(camSurfX,camSurfY,'color','b')
 
+
+disp('PRESS ENTER TO CONTINUE');
+pause; % Wait for user to press enter to proceed to animation
 % ====================================
-% Animating cam rotation
+% ANIMATING CAM ROTATION
 % ====================================
 
 % Pitch Circle
 figure;
 hold on
-p = plot(0,0,'o','MarkerFaceColor','red');
+plot(0,0,'o','MarkerFaceColor','red');
 
 rotatedPitch = rotateCw([x;y],-pi/2);
 pl = plot(rotatedPitch(1,:),rotatedPitch(2,:),'color','c');
@@ -299,6 +317,31 @@ pause(0.001)
 end
 
 
+% Cam Machining process
+% pause; % Wait for user to press enter to proceed to animation
+prompt = "Show machining process? Y/N [Y]: ";
+txt = input(prompt,"s");
+if isempty(txt)
+    txt = 'Y';
+end
+
+if (txt == 'n')
+    return
+end
+
+figure;
+plot(x,y);
+hold on;
+p = viscircles([x_sample(1),y_sample(1)],8,'LineWidth',1);
+hold off;
+axis equal;
+grid on;
+
+for k = 2:1:length(x_sample)
+    p = viscircles([x_sample(k),y_sample(k)],8,'LineWidth',1);
+    drawnow
+end
+
 
 % Export Cam Profile to Excel as XYZ Coordinates
 % x_cord = transpose(camSurfX);
@@ -361,16 +404,3 @@ function regulated = regulate(x,ref)
     regulated = x(1:length(ref));
 end
 
-
-% figure;
-% plot(x,y);
-% hold on;
-% p = viscircles([x_sample(1),y_sample(1)],8,'LineWidth',1);
-% hold off;
-% axis equal;
-% grid on;
-% 
-% for k = 2:1:length(x_sample)
-%     p = viscircles([x_sample(k),y_sample(k)],8,'LineWidth',1);
-%     drawnow
-% end
