@@ -21,7 +21,8 @@ h = 15; % stroke in mm
 rBase = 50; % mm - Cam base radius
 RPM = 200; % motor velocity in rounds per minutes
 
-sampleRate = 5; % showing roller on pitch curve with distance in degree
+sampleRate = 5; % for showing roller on pitch curve with distance in degree
+step = 1; % for caculation, the smaller the more accurate, sampling rate in degree
 
 %============================================
 % PRELIMINARY CALCULATION
@@ -33,7 +34,7 @@ bReturn = eventAngle(4) - eventAngle(3) ; %return period
 % point in time with acceleration change
 % points of events = [1-rise, 2-rise +1/8, 3-rise +7/8, 4-rise end, 5-return, 6-return +1/8, 7-return +7/8, 8-return end]
 point = [eventAngle(1) eventAngle(1)+bRise/8 eventAngle(1)+7*bRise/8 eventAngle(2) eventAngle(3) eventAngle(3)+bReturn/8 eventAngle(3)+7*bReturn/8 eventAngle(4)];
-step = 1;
+
 
 theta = 0:step:360;
 T = 60/RPM; % period of moving 360 degree, in second
@@ -194,19 +195,41 @@ grid on;
 % Converting Polar to Cartesian Coordinate System
 [x,y] = pol2cart(theta2,s);
 
+
 disp('PRESS ENTER TO CONTINUE');
 pause; % Wait for user to press enter to proceed
 %============================================
-% CAM PROFILE AFTER MACHINING
+% CAM PROFILE 
 %============================================
-% Draw roller around cam curve and on pitch curve 
-% sample rate is defined in input region
+% Cam Machining process
+figure;
+
 sampleRate = round(sampleRate*length(theta2)/360);
 x_sample = transpose(x(1:sampleRate:length(x)));
 y_sample = transpose(y(1:sampleRate:length(y)));
 
 centers = [x_sample y_sample];
 radii = rRoller*ones(length(y_sample),1);
+
+plot(x,y);
+hold on;
+p = viscircles([x_sample(1),y_sample(1)],8,'LineWidth',1);
+hold off;
+axis equal;
+grid on;
+
+for k = 2:1:length(x_sample)
+    p = viscircles([x_sample(k),y_sample(k)],8,'LineWidth',1);
+    drawnow
+end
+
+
+disp('PRESS ENTER TO CONTINUE'); 
+pause; % Wait for user to press enter to proceed
+% ==========================
+% Draw roller around cam curve and on pitch curve 
+% sample rate is defined in input region
+
 figure;
 viscircles(centers,radii,'LineWidth',1,'color','c');
 axis equal;
@@ -270,8 +293,6 @@ pl2.YDataSource = 'yy2';
 
 % Roller
 
-
-
 index = linspace(0,2*pi,100);
 xC = rRoller*cos(index);
 yC = rRoller*sin(index) + s(1);
@@ -317,30 +338,17 @@ pause(0.001)
 end
 
 
-% Cam Machining process
+
 % pause; % Wait for user to press enter to proceed to animation
-prompt = "Show machining process? Y/N [Y]: ";
-txt = input(prompt,"s");
-if isempty(txt)
-    txt = 'Y';
-end
-
-if (txt == 'n')
-    return
-end
-
-figure;
-plot(x,y);
-hold on;
-p = viscircles([x_sample(1),y_sample(1)],8,'LineWidth',1);
-hold off;
-axis equal;
-grid on;
-
-for k = 2:1:length(x_sample)
-    p = viscircles([x_sample(k),y_sample(k)],8,'LineWidth',1);
-    drawnow
-end
+% prompt = "Show machining process? Y/N [Y]: ";
+% txt = input(prompt,"s");
+% if isempty(txt)
+%     txt = 'Y';
+% end
+% 
+% if (txt == 'n')
+%     return
+% end
 
 
 % Export Cam Profile to Excel as XYZ Coordinates
