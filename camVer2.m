@@ -278,7 +278,7 @@ pause; % Wait for user to press enter to proceed to animation
 % Pitch Circle
 figure;
 
-for index = 1:3
+for loopNumber = 1:3
 
 hold on
 plot(0,0,'o','MarkerFaceColor','r');
