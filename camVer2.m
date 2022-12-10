@@ -16,8 +16,8 @@ clc; close all; clear;
 %============================================
 
 eventAngle = [30 70 190 230]; % degree at which the rise/return starts/ends
-rRoller = 60; % roller radius in mm
-h = 25; % stroke in mm
+rRoller = 8; % roller radius in mm
+h = 15; % stroke in mm
 rBase = 50; % mm - Cam base radius
 RPM = 200; % motor velocity in rounds per minutes
 
@@ -71,31 +71,30 @@ sDwe3 = zeros(size(temp));
 
 % Entire trajectory
 s = [sDwe1 sRise1 sRise2 sRise3 sDwe2 sReturn1 sReturn2 sReturn3 sDwe3] + rPrime;
+
+% Plot position in polar coordinate
 figure;
+theta2 = deg2rad(theta);
+polarplot(theta2,s);
+grid on;
+[title1,] = title({'';'位置　vs　角度';''},'Color','b','FontSize',15,'FontWeight','light');
 
-% plot(theta,s);
-% grid on;
-% xlim([0 360]);
-% xlabel({'角度','degree'},'FontSize',15,'FontWeight','light','Color','b');
-
-
+% Plot position vs angle in cartesian coordinate
+figure;
+subplot(3,1,1);
 plot(time,s);
 grid on;
+grid minor;
 xlim([0 T]);
-xlabel({'t','秒'},'FontSize',15,'FontWeight','light','Color','b');
-ylim([rPrime-2*abs(h) rPrime+2*abs(h)]);
+xlabel({'t(s)'},'FontSize',15,'FontWeight','light','Color','b');
+ylim([rPrime-2*abs(h)+h/2 rPrime+2*abs(h)+h/2]);
 ylabel({'位置','mm'},'FontSize',15,'FontWeight','light','Color','b');
-legend("位置 s");
+% legend("位置 s");
 [tit,] = title({'';'位置　vs　時間'},{['モーター回転速度 ',num2str(RPM),'rpm   ','T = ', num2str(T),'s'];''},...
     'Color','blue');
 tit.FontSize = 15;
 
-%title({'';'位置　vs　時間';['モーターの回転速度',num2str(RPM),'rpm   ','T = ', num2str(T),'s'];''},'Color','b','FontSize',15,'FontWeight','light');
 
-theta2 = deg2rad(theta);
-figure;
-polarplot(theta2,s)
-title({'';'位置　vs　角度';''},'Color','b','FontSize',15,'FontWeight','light');
 
 
 %============================================
@@ -103,13 +102,14 @@ title({'';'位置　vs　角度';''},'Color','b','FontSize',15,'FontWeight','lig
 %============================================
 % velocity with respect to time
 vv = diff(s)/timeStep;
-vv = [vv vv(length(vv))]; %add the last element to make the length of vv and theta equal
-figure;
-
+vv = [vv s(1)-s(length(s))]; %add the last element to make the length of vv and theta equal
+% figure;
+subplot(3,1,2);
 plot(time,vv);
 grid on;
+grid minor;
 xlim([0 T]);
-xlabel({'t','秒'},'FontSize',15,'FontWeight','light','Color','b');
+xlabel({'t(s)'},'FontSize',15,'FontWeight','light','Color','b');
 ylabel({'速度','mm/s'},'FontSize',15,'FontWeight','light','Color','b');
 %title({'';'速度　vs　時間';''},'Color','b','FontSize',15,'FontWeight','light');
 [tit,] = title({'';'速度　vs　時間'},{['モーター回転速度 ',num2str(RPM),'rpm   ','T = ', num2str(T),'s'];''},...
@@ -121,13 +121,14 @@ tit.FontSize = 15;
 %============================================
 % acceleration with respect to time
 aa = diff(vv)/timeStep;
-aa = [aa 0];
-figure;
-
+aa = [aa vv(1)-vv(length(vv))];
+% figure;
+subplot(3,1,3);
 plot(time,aa);
 grid on;
+grid minor;
 xlim([0 T]);
-xlabel({'t','秒'},'FontSize',15,'FontWeight','light','Color','b');
+xlabel({'t(s)'},'FontSize',15,'FontWeight','light','Color','b');
 ylabel({'加速','mm/s^2'},'FontSize',15,'FontWeight','light','Color','b');
 %title({'';'加速　vs　時間';''},'Color','b','FontSize',15,'FontWeight','light');
 [tit,subtit] = title({'';'加速　vs　時間'},{['モーター回転速度 ',num2str(RPM),'rpm   ','T = ', num2str(T),'s'];''},...
@@ -149,20 +150,36 @@ pressureAngle = rad2deg(atan(tanPressureAngle));
 
 figure;
 
-plot(theta, pressureAngle);
+yyaxis left
+angleColor = 'b';
+plot(theta, pressureAngle,'Color',angleColor);
+ax = gca;
+ax.YColor = angleColor;
 grid on;
+grid minor;
 xlim([0 360]);
-xlabel({'角度','degree'},'FontSize',15,'FontWeight','light','Color','b');
-ylabel({'圧角','degree'},'FontSize',15,'FontWeight','light','Color','b');
+xlabel({'回転角度','degree'},'FontSize',15,'FontWeight','light','Color',angleColor);
+ylabel({'圧角','degree'},'FontSize',15,'FontWeight','light','Color',angleColor);
 
-title({'';'圧角　vs　角度';''},'Color','b','FontSize',15,'FontWeight','light');
+yyaxis right
+strokeColor = 'm';
+plot(theta,s,'Color',strokeColor);
+ax = gca;
+ax.YColor = strokeColor;
+grid on;
+grid minor;
+xlim([0 360]);
+ylim([rPrime-2*abs(h)+h/2 rPrime+2*abs(h)+h/2]);
+% xlabel({'角度','degree'},'FontSize',15,'FontWeight','light','Color','b');
+ylabel({'位置','mm'},'FontSize',15,'FontWeight','light','Color',strokeColor);
+hold on
+
+title({'';'圧角・位置　vs　回転角度';''},'Color','b','FontSize',15,'FontWeight','light');
 
 %============================================
 % RADIUS OF CURVATURE 曲率半径
 %============================================
 % p = {[(rb + s)^2 + (ds/dtheta)^2]^(3/2)}/[(rb + s)^2 + 2*(ds/dtheta)^2 - (rb+s)*d^2s/dtheta^2]
-
-%second order differentiation of s with respect to theta
 
 % Converting Polar to Cartesian Coordinate System
 [x,y] = pol2cart(theta2,s);
@@ -176,11 +193,12 @@ y_sample = transpose(y(1:sampleRate:length(y)));
 centers = [x_sample y_sample];
 radii = rRoller*ones(length(y_sample),1);
 figure;
-viscircles(centers,radii,'LineWidth',1);
+viscircles(centers,radii,'LineWidth',1,'color','c');
 axis equal;
 grid on;
+grid minor;
 hold on;
-plot(x,y);
+plot(x,y,'color','r');
 
 % Plot cam profile
 camSurfX = zeros(size(x));
@@ -195,29 +213,87 @@ Y = y(k:1:k+2);
 [camSurfX(k+1),camSurfY(k+1)] = normalp(X,Y,rRoller);
 end
 hold on;
-plot(camSurfX,camSurfY,'color','g')
+plot(camSurfX,camSurfY,'color','b')
 
+% ====================================
 % Animating cam rotation
+% ====================================
+
+% Pitch Circle
 figure;
 hold on
 p = plot(0,0,'o','MarkerFaceColor','red');
 
-rotatedCam = rotateCw([x;y],pi/2);
-pl = plot(rotatedCam(1,:),rotatedCam(2,:));
+rotatedPitch = rotateCw([x;y],-pi/2);
+pl = plot(rotatedPitch(1,:),rotatedPitch(2,:),'color','c');
 axis equal;
-maxDim = rBase + 2*rRoller + 10;
+maxDim = rBase + abs(h) + 2*rRoller + 10;
 xlim([-maxDim maxDim]);
 ylim([-maxDim maxDim]);
+
 hold on;
 grid on;
+grid minor;
 pl.XDataSource = 'xx';
 pl.YDataSource = 'yy';
 
 
-for i = pi/2:2*pi/360:2.5*pi
-rotatedCam = rotateCw([x;y],i);
-xx = rotatedCam(1,:);
-yy = rotatedCam(2,:);
+% Cam Profile
+rotatedCam = rotateCw([camSurfX;camSurfY],-pi/2);
+pl2 = plot(rotatedCam(1,:),rotatedCam(2,:),'color','b');
+axis equal;
+maxDim = rBase + abs(h) + 2*rRoller + 10;
+xlim([-maxDim maxDim]);
+ylim([-maxDim maxDim]);
+
+hold on;
+pl2.XDataSource = 'xx2';
+pl2.YDataSource = 'yy2';
+
+% Roller
+
+
+
+index = linspace(0,2*pi,100);
+xC = rRoller*cos(index);
+yC = rRoller*sin(index) + s(1);
+pl3 = plot(xC,yC);
+pl3.YDataSource = 'yC';
+
+rollerCenterY = s(1);
+pl4 = plot(0,rollerCenterY,'o','MarkerFaceColor','m'); % Roller center
+pl4.YDataSource = 'rollerCenterY';
+
+maxDim = rBase + abs(h) + 2*rRoller + 10;
+xlim([-maxDim maxDim]);
+ylim([-maxDim maxDim]);
+hold on;
+
+
+
+% startAngle = -pi/2;
+% stopAngle = startAngle + 2*pi;
+% for i = startAngle:2*pi/360:stopAngle
+for i = 1:length(theta2)
+j = theta2(i)-pi/2;
+
+rotatedPitch = rotateCw([x;y],j);
+xx = rotatedPitch(1,:);
+yy = rotatedPitch(2,:);
+
+rotatedCam = rotateCw([camSurfX;camSurfY],j);
+xx2 = rotatedCam(1,:);
+yy2 = rotatedCam(2,:);
+
+yC = rRoller*sin(index) + s(i);
+rollerCenterY = s(i);
+
+temp1 = strcat(num2str(time(i)),' s     '); 
+temp2 = strcat(num2str(s(i)),' mm     ');
+temp3 = strcat(num2str(theta(i)),' ^o   ');
+updatedTitle = strcat({temp1; temp2; temp3});
+[titleAni,] = title(updatedTitle);
+
 refreshdata
 pause(0.001)
 end
@@ -260,7 +336,6 @@ k = R/sqrt(a^2+b^2);
 xo = k*a + x(2);
 yo = k*b + y(2);
 end
-
 
 function [radius,radArg] = radCurv(f,arg)
 
