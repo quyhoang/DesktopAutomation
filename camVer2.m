@@ -13,13 +13,13 @@ clc; close all; clear;
 % eventAngle = [rise start - rise end - return start- return end]
 eventAngle = [30 70 190 230]; % degree at which the rise/return starts/ends
 
-h = -15; % stroke in mm
-maxPressureAngle_deg = 30; % in degree
+h = 15; % stroke in mm
+maxPressureAngle_deg = 25; % in degree
 
 RPM = 200; % motor velocity in rounds per minutes
 
 sampleRate = 5; % for showing roller on pitch curve with distance in degree
-step = 1; % for caculation, the smaller the more accurate, sampling rate in degree
+step = .1; % for caculation, the smaller the more accurate, sampling rate in degree
 
 %============================================
 % PRELIMINARY CALCULATION
@@ -35,7 +35,7 @@ point = [eventAngle(1) eventAngle(1)+bRise/8 eventAngle(1)+7*bRise/8 eventAngle(
 %============================================
 % CHOOSING BASE RADIUS AND ROLLER RADIUS
 %============================================
-Cv = 1.78; % Modified sinusoidal
+Cv = 1.7596; % Modified sinusoidal
 if h >= 0
     B = deg2rad(bRise);
 elseif h < 0
@@ -49,6 +49,7 @@ list_rBase = list_rBase .* (list_rBase>0);
 
 figure;
 plot(list_rRoller,list_rBase);
+
 tempMin = min(list_rRoller);
 tempMax = max(list_rRoller);
 xScaleDiv = tempMin:1:tempMax;
@@ -56,7 +57,6 @@ xticks(xScaleDiv);
 
 tempMin = min(list_rBase);
 tempMax = max(list_rBase);
-
 yScaleDiv = round(min(list_rBase)):round((max(list_rBase)-min(list_rBase))/20):max(list_rBase);
 yticks(yScaleDiv);
 
