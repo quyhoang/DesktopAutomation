@@ -4,16 +4,13 @@ Dwell - Rise - Dwell - Return CAM
 2022-12-07
 %}
 
-% Variable declaration
-% All values in degree
-% eventAngle = [rise start - rise end - return start- return end]
-
+%%
 clc; close all; clear;
-
 %============================================
 % INPUT 入力
 %============================================
-%%
+% All values in degree
+% eventAngle = [rise start - rise end - return start- return end]
 eventAngle = [30 70 190 230]; % degree at which the rise/return starts/ends
 
 h = -15; % stroke in mm
@@ -85,7 +82,7 @@ T = 60/RPM; % period of moving 360 degree, in second
 time = linspace(0,T,length(theta));
 timeStep = T/size(time,2); % convert step in degree to step in time
 
-%%
+%% 
 %============================================
 % DISPLACEMENT
 %============================================
