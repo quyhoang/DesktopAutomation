@@ -10,15 +10,15 @@ Dwell - Rise - Dwell - Return CAM
 
 clc; close all; clear;
 
-
 %============================================
 % INPUT 入力
 %============================================
 %%
 eventAngle = [30 70 190 230]; % degree at which the rise/return starts/ends
-rRoller = 10; % roller radius in mm
-h = 15; % stroke in mm
-rBase = 50; % mm - Cam base radius
+
+h = -15; % stroke in mm
+maxPressureAngle_deg = 30; % in degree
+
 RPM = 200; % motor velocity in rounds per minutes
 
 sampleRate = 5; % for showing roller on pitch curve with distance in degree
@@ -27,7 +27,9 @@ step = 1; % for caculation, the smaller the more accurate, sampling rate in degr
 %============================================
 % PRELIMINARY CALCULATION
 %============================================
-rPrime = rBase + rRoller; %mm - Pitch circle prime radius
+
+maxPressureAngle = deg2rad(maxPressureAngle_deg);
+
 
 bRise = eventAngle(2) - eventAngle(1) ; %rise period
 bReturn = eventAngle(4) - eventAngle(3) ; %return period
@@ -35,6 +37,41 @@ bReturn = eventAngle(4) - eventAngle(3) ; %return period
 % points of events = [1-rise, 2-rise +1/8, 3-rise +7/8, 4-rise end, 5-return, 6-return +1/8, 7-return +7/8, 8-return end]
 point = [eventAngle(1) eventAngle(1)+bRise/8 eventAngle(1)+7*bRise/8 eventAngle(2) eventAngle(3) eventAngle(3)+bReturn/8 eventAngle(3)+7*bReturn/8 eventAngle(4)];
 
+Cv = 1.78; % Modified sinusoidal
+
+if h >= 0
+    B = deg2rad(bRise);
+elseif h < 0
+    B = deg2rad(bReturn);
+end
+
+list_rRoller = linspace(5,40,200); % roller radius in mm
+primeRadius = Cv*abs(h)/B/tan(maxPressureAngle)-abs(h)/2;
+list_rBase = primeRadius - list_rRoller;
+list_rBase = list_rBase .* (list_rBase>0);
+
+figure;
+plot(list_rRoller,list_rBase);
+tempMin = min(list_rRoller);
+tempMax = max(list_rRoller);
+xScaleDiv = tempMin:1:tempMax;
+xticks(xScaleDiv);
+
+tempMin = min(list_rBase);
+tempMax = max(list_rBase);
+
+yScaleDiv = round(min(list_rBase)):round((max(list_rBase)-min(list_rBase))/20):max(list_rBase);
+yticks(yScaleDiv);
+
+grid on
+grid minor
+
+
+rRoller = input('ローラー半径(mm) を入力してください: '); 
+
+rBase = input('カムベース円の半径(mm) を入力してください: ');
+
+rPrime = rBase + rRoller; %mm - Pitch circle prime radius
 
 theta = 0:step:360;
 T = 60/RPM; % period of moving 360 degree, in second
@@ -89,9 +126,6 @@ ylabel({'位置','mm'},'FontSize',15,'FontWeight','light','Color','b');
 [tit,] = title({'';'位置・速度・加速　vs　時間'},{['モーター回転速度 ',num2str(RPM),'rpm   ','T = ', num2str(T),'s'];''},...
     'Color','blue');
 tit.FontSize = 15;
-
-
-
 
 %============================================
 % VELOCITY
@@ -178,10 +212,12 @@ hold on
 
 temp = strcat('最大圧角 ',num2str(max(pressureAngle)));
 temp = strcat(temp,'^o');
-title(temp,'Color','b','FontSize',15,'FontWeight','light');
+%  title(temp,'Color','b','FontSize',15,'FontWeight','light');
 
 title({'';'圧角・位置　vs　回転角度';temp;''},'Color','b','FontSize',15,'FontWeight','light');
 %%
+
+
 disp('PRESS ENTER TO CONTINUE');
 pause; % Wait for user to press enter to proceed
 %============================================
@@ -348,7 +384,7 @@ yC = rRoller*sin(index) + s(i);
 rollerCenterY = s(i);
 
 temp1 = strcat(num2str(time(i)),' s     '); 
-temp2 = strcat(num2str(s(i)),' mm     ');
+temp2 = strcat(num2str(s(i)-rPrime),' mm     ');
 temp3 = strcat(num2str(theta(i)),'^o   ');
 updatedTitle = strcat({temp1; temp2; temp3});
 [titleAni,] = title(updatedTitle);
