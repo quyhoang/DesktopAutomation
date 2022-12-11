@@ -29,16 +29,16 @@ step = 1; % for caculation, the smaller the more accurate, sampling rate in degr
 %============================================
 
 maxPressureAngle = deg2rad(maxPressureAngle_deg);
-
-
 bRise = eventAngle(2) - eventAngle(1) ; %rise period
 bReturn = eventAngle(4) - eventAngle(3) ; %return period
 % point in time with acceleration change
 % points of events = [1-rise, 2-rise +1/8, 3-rise +7/8, 4-rise end, 5-return, 6-return +1/8, 7-return +7/8, 8-return end]
 point = [eventAngle(1) eventAngle(1)+bRise/8 eventAngle(1)+7*bRise/8 eventAngle(2) eventAngle(3) eventAngle(3)+bReturn/8 eventAngle(3)+7*bReturn/8 eventAngle(4)];
 
+%============================================
+% CHOOSING BASE RADIUS AND ROLLER RADIUS
+%============================================
 Cv = 1.78; % Modified sinusoidal
-
 if h >= 0
     B = deg2rad(bRise);
 elseif h < 0
