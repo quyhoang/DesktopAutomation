@@ -297,16 +297,34 @@ camSurfY = zeros(size(x));
 
 % Boundary. Note that the first and the last points on pitch curve are the
 % same
-[camSurfX(1),camSurfY(1)] = normalp([x(length(x)-1) x(1) x(2)],[y(length(y)-1) y(1) y(2)],rRoller); 
-[camSurfX(length(x)),camSurfY(length(y))] = normalp([x(length(x)-1) x(length(x)) x(2)],[y(length(y)-1) y(length(y)) y(2)],rRoller);
+[camSurfX(1),camSurfY(1)] = normalIn([x(length(x)-1) x(1) x(2)],[y(length(y)-1) y(1) y(2)],rRoller); 
+[camSurfX(length(x)),camSurfY(length(y))] = normalIn([x(length(x)-1) x(length(x)) x(2)],[y(length(y)-1) y(length(y)) y(2)],rRoller);
 
 for k = 1:1:length(x)-2
 X = x(k:1:k+2);
 Y = y(k:1:k+2);
-[camSurfX(k+1),camSurfY(k+1)] = normalp(X,Y,rRoller);
+[camSurfX(k+1),camSurfY(k+1)] = normalIn(X,Y,rRoller);
 end
+
 hold on;
 plot(camSurfX,camSurfY,'color','b')
+
+% Visualize angle of pressure
+angleEndPointX = zeros(size(x));
+angleEndPointY = zeros(size(x));
+
+% Boundary. Note that the first and the last points on pitch curve are the
+% same
+angleLineFactor = 4;
+[angleEndPointX(1),angleEndPointY(1)] = normalOut([x(length(x)-1) x(1) x(2)],[y(length(y)-1) y(1) y(2)],angleLineFactor*rRoller); 
+[angleEndPointX(length(x)),angleEndPointY(length(y))] = normalOut([x(length(x)-1) x(length(x)) x(2)],[y(length(y)-1) y(length(y)) y(2)],angleLineFactor*rRoller);
+
+for k = 1:1:length(x)-2
+X = x(k:1:k+2);
+Y = y(k:1:k+2);
+[angleEndPointX(k+1),angleEndPointY(k+1)] = normalOut(X,Y,angleLineFactor*rRoller);
+end
+
 
 %%
 disp('Enter キーを押して続行します');
@@ -368,7 +386,19 @@ xlim([-maxDim maxDim]);
 ylim([-maxDim maxDim]);
 hold on;
 
+% Pressure angle
+rollerCenterY_angle = s(1)+angleLineFactor*rRoller;
+angle1y = [rollerCenterY rollerCenterY_angle];
+pl5 = plot([0 0],angle1y,'MarkerFaceColor',[0 0.4470 0.7410]); 
+pl5.YDataSource = 'angle1y';
+hold on;
 
+rotatedAngleEnd = rotateCw([angleEndPointX(1);angleEndPointY(1)],-pi/2);
+angle2x = [0 rotatedAngleEnd(1)];
+angle2y = [rollerCenterY rotatedAngleEnd(2)];
+pl6 = plot(angle2x,angle2y,'MarkerFaceColor',[0 0.4470 0.7410]); 
+pl6.XDataSource = 'angle2x';
+pl6.YDataSource = 'angle2y';
 
 % startAngle = -pi/2;
 % stopAngle = startAngle + 2*pi;
@@ -388,22 +418,23 @@ yy2 = rotatedCam(2,:);
 
 yC = rRoller*sin(index) + s(i);
 rollerCenterY = s(i);
+rollerCenterY_angle = s(i)+angleLineFactor*rRoller;
+angle1y = [rollerCenterY rollerCenterY_angle];
 
-temp1 = strcat(num2str(time(i)),' s     ');
-temp1 = strcat('経過時間　',temp1);
-temp2 = strcat(num2str(s(i)-rPrime),' mm     ');
-temp2 = strcat('トローク　',temp2);
-temp3 = strcat(num2str(theta(i)),'^o   ');
-temp3 = strcat('回転角度　',temp3);
-updatedTitle = strcat({temp1; temp2; temp3});
-[titleAni,] = title(updatedTitle);
+rotatedAngleEnd = rotateCw([angleEndPointX(i);angleEndPointY(i)],j);
+angle2x = [0 rotatedAngleEnd(1)];
+angle2y = [rollerCenterY rotatedAngleEnd(2)];
 
-temp4 = strcat(num2str(s(i)),' mm     ');
-temp4 = strcat('位置　',temp4);
+temp5 = strcat('圧角　',num2str(pressureAngle(i)),'^o     ');
+temp2 = strcat('トローク　',num2str(s(i)-rPrime),' mm     ');
+temp3 = strcat('回転角度　',num2str(theta(i)),'^o   ');
+updatedTitle = {temp3; temp2; temp5};
+[titleAni,] = title(updatedTitle,'Color',[0 0.4470 0.7410],'FontSize',14);
+
+temp4 = strcat('位置　',num2str(s(i)),' mm     ');
 ylabel(temp4,'Color',angleColor,'FontSize',15);
-temp5 = strcat(num2str(pressureAngle(i)),'^o     ');
-temp5 = strcat('圧角　',temp5);
-xlabel(temp5,'Color',angleColor,'FontSize',15);
+temp1 = strcat('経過時間　',num2str(time(i)),' s     ');
+xlabel(temp1,'Color',angleColor,'FontSize',15);
 
 
 
@@ -444,7 +475,7 @@ rotMat = [cos(theta) sin(theta); -sin(theta) cos(theta)];
 Y = rotMat * X;
 end
 
-function [xo,yo] = normalp(x,y,R)
+function [xo,yo] = normalIn(x,y,R)
 % x and y are row vector of length 3 (longer vectors don't cause problem,
 % but only the first 3 elements will be used. 
 
@@ -463,6 +494,27 @@ k = R/sqrt(a^2+b^2);
 xo = k*a + x(2);
 yo = k*b + y(2);
 end
+
+function [xo,yo] = normalOut(x,y,R)
+% x and y are row vector of length 3 (longer vectors don't cause problem,
+% but only the first 3 elements will be used. 
+
+% Call the three point represented by x and y A, B and C
+% This function return the coordinates of point D such that
+% * DB is perpendicular to AC
+% * DB has length R
+% * D is on the right hand side when moving on the curve ABC from A to C
+
+% calculate normal vector <a,b>
+a = y(1)-y(3);
+b = x(3)-x(1);
+k = -R/sqrt(a^2+b^2); 
+
+% temporary factor
+xo = k*a + x(2);
+yo = k*b + y(2);
+end
+
 
 function [radius,radArg] = radCurv(f,arg)
 
