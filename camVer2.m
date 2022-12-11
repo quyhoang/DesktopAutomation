@@ -19,7 +19,7 @@ maxPressureAngle_deg = 25; % in degree
 RPM = 200; % motor velocity in rounds per minutes
 
 sampleRate = 5; % for showing roller on pitch curve with distance in degree
-step = .1; % for caculation, the smaller the more accurate, sampling rate in degree
+step = 1; % for caculation, the smaller the more accurate, sampling rate in degree
 
 %============================================
 % PRELIMINARY CALCULATION
@@ -295,8 +295,10 @@ plot(x,y,'color','r');
 camSurfX = zeros(size(x));
 camSurfY = zeros(size(x));
 
-[camSurfX(1),camSurfY(1)] = normalp([x(length(x)) x(1) x(2)],[y(length(y)) y(1) y(2)],rRoller);
-[camSurfX(length(x)),camSurfY(length(y))] = normalp([x(length(x)-1) x(length(x)) x(1)],[y(length(y)-1) y(length(y)) y(1)],rRoller);
+% Boundary. Note that the first and the last points on pitch curve are the
+% same
+[camSurfX(1),camSurfY(1)] = normalp([x(length(x)-1) x(1) x(2)],[y(length(y)-1) y(1) y(2)],rRoller); 
+[camSurfX(length(x)),camSurfY(length(y))] = normalp([x(length(x)-1) x(length(x)) x(2)],[y(length(y)-1) y(length(y)) y(2)],rRoller);
 
 for k = 1:1:length(x)-2
 X = x(k:1:k+2);
