@@ -66,9 +66,16 @@ yticks(yScaleDiv);
 grid on
 grid minor
 
+xlabel({'ローラー半径(mm)'},'FontWeight','light','Color','b');
+ylabel({'カムベース円の半径(mm)'},'FontWeight','light','Color','b');
 
+temp = strcat('最大圧角  ', num2str(maxPressureAngle_deg));
+temp = strcat(temp,'^o');
+temp = {'ローラー半径 vs カムベース円の半径';temp};
+title(temp,'Color','b','FontSize',15,'FontWeight','light');
+
+% Ask for user input (user can use the previous figure as reference)
 rRoller = input('ローラー半径(mm) を入力してください: '); 
-
 rBase = input('カムベース円の半径(mm) を入力してください: ');
 
 rPrime = rBase + rRoller; %mm - Pitch circle prime radius
@@ -167,7 +174,7 @@ temp = strcat(temp,' mm/s^2');
 title(temp,'Color','b','FontSize',15,'FontWeight','light');
 
 %%
-disp('PRESS ENTER TO CONTINUE');
+disp('Enter キーを押して続行します');
 pause; % Wait for user to press enter to proceed
 %%
 %============================================
@@ -218,7 +225,7 @@ title({'';'圧角・位置　vs　回転角度';temp;''},'Color','b','FontSize',
 %%
 
 
-disp('PRESS ENTER TO CONTINUE');
+disp('Enter キーを押して続行します');
 pause; % Wait for user to press enter to proceed
 %============================================
 % RADIUS OF CURVATURE 曲率半径
@@ -243,7 +250,7 @@ grid on;
 [x,y] = pol2cart(theta2,s);
 
 %%
-disp('PRESS ENTER TO CONTINUE');
+disp('Enter キーを押して続行します');
 pause; % Wait for user to press enter to proceed
 %%
 %============================================
@@ -273,7 +280,7 @@ for k = 2:1:length(x_sample)
 end
 
 
-% disp('PRESS ENTER TO CONTINUE'); 
+% disp('Enter キーを押して続行します'); 
 % pause; % Wait for user to press enter to proceed
 % ==========================
 % Draw roller around cam curve and on pitch curve 
@@ -303,7 +310,7 @@ hold on;
 plot(camSurfX,camSurfY,'color','b')
 
 %%
-disp('PRESS ENTER TO CONTINUE');
+disp('Enter キーを押して続行します');
 pause; % Wait for user to press enter to proceed to animation
 %%
 % ====================================
