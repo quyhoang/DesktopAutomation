@@ -66,8 +66,7 @@ grid minor
 xlabel({'ローラー半径(mm)'},'FontWeight','light','Color','b');
 ylabel({'カムベース円の半径(mm)'},'FontWeight','light','Color','b');
 
-temp = strcat('最大圧角  ', num2str(maxPressureAngle_deg));
-temp = strcat(temp,'^o');
+temp = strcat('最大圧角  ', num2str(maxPressureAngle_deg),'^o');
 temp = {'ローラー半径 vs カムベース円の半径';temp};
 title(temp,'Color','b','FontSize',15,'FontWeight','light');
 
@@ -147,8 +146,7 @@ xlabel({'t(s)'},'FontSize',15,'FontWeight','light','Color','b');
 ylabel({'速度','mm/s'},'FontSize',15,'FontWeight','light','Color','b');
 %title({'';'速度　vs　時間';''},'Color','b','FontSize',15,'FontWeight','light');
 %[tit,] = title({'';'速度　vs　時間'},{['モーター回転速度 ',num2str(RPM),'rpm   ','T = ', num2str(T),'s'];''},'Color','blue');
-temp = strcat('最大速度 ',num2str(max(vv)));
-temp = strcat(temp,' mm/s');
+temp = strcat('最大速度 ',num2str(max(vv)),' mm/s');
 title(temp,'Color','b','FontSize',15,'FontWeight','light');
 
 %============================================
@@ -166,8 +164,7 @@ xlim([0 T]);
 xlabel({'t(s)'},'FontSize',15,'FontWeight','light','Color','b');
 ylabel({'加速','mm/s^2'},'FontSize',15,'FontWeight','light','Color','b');
 %title({'';'加速　vs　時間';''},'Color','b','FontSize',15,'FontWeight','light');
-temp = strcat('最大加速  ', num2str(max(aa)));
-temp = strcat(temp,' mm/s^2');
+temp = strcat('最大加速  ', num2str(max(aa)),' mm/s^2');
 title(temp,'Color','b','FontSize',15,'FontWeight','light');
 
 %%
@@ -214,8 +211,7 @@ ylim([rPrime-2*abs(h)+h/2 rPrime+2*abs(h)+h/2]);
 ylabel({'位置','mm'},'FontSize',15,'FontWeight','light','Color',strokeColor);
 hold on
 
-temp = strcat('最大圧角 ',num2str(max(pressureAngle)));
-temp = strcat(temp,'^o');
+temp = strcat('最大圧角 ',num2str(max(pressureAngle)),'^o');
 %  title(temp,'Color','b','FontSize',15,'FontWeight','light');
 
 title({'';'圧角・位置　vs　回転角度';temp;''},'Color','b','FontSize',15,'FontWeight','light');
@@ -426,7 +422,7 @@ angle2x = [0 rotatedAngleEnd(1)];
 angle2y = [rollerCenterY rotatedAngleEnd(2)];
 
 temp5 = strcat('圧角　',num2str(pressureAngle(i)),'^o     ');
-temp2 = strcat('トローク　',num2str(s(i)-rPrime),' mm     ');
+temp2 = strcat('変位　',num2str(s(i)-rPrime),' mm     ');
 temp3 = strcat('回転角度　',num2str(theta(i)),'^o   ');
 updatedTitle = {temp3; temp2; temp5};
 [titleAni,] = title(updatedTitle,'Color',[0 0.4470 0.7410],'FontSize',14);
