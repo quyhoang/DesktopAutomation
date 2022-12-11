@@ -389,11 +389,23 @@ yy2 = rotatedCam(2,:);
 yC = rRoller*sin(index) + s(i);
 rollerCenterY = s(i);
 
-temp1 = strcat(num2str(time(i)),' s     '); 
+temp1 = strcat(num2str(time(i)),' s     ');
+temp1 = strcat('経過時間　',temp1);
 temp2 = strcat(num2str(s(i)-rPrime),' mm     ');
+temp2 = strcat('トローク　',temp2);
 temp3 = strcat(num2str(theta(i)),'^o   ');
+temp3 = strcat('回転角度　',temp3);
 updatedTitle = strcat({temp1; temp2; temp3});
 [titleAni,] = title(updatedTitle);
+
+temp4 = strcat(num2str(s(i)),' mm     ');
+temp4 = strcat('位置　',temp4);
+ylabel(temp4,'Color',angleColor,'FontSize',15);
+temp5 = strcat(num2str(pressureAngle(i)),'^o     ');
+temp5 = strcat('圧角　',temp5);
+xlabel(temp5,'Color',angleColor,'FontSize',15);
+
+
 
 refreshdata
 pause(0.001)
