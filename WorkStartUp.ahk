@@ -30,7 +30,7 @@ SetWorkingDir %wdir%
 
 if not WinExist("ahk_exe xtop.exe") ;if Creo Parametric is not currently running
 {
-Run "C:\Program Files\PTC\Creo 7.0.3.0\Parametric\bin\parametric.exe"
+Run "C:\Program Files\PTC\Creo 7.0.9.0\Parametric\bin\parametric.exe" O:\Free\FA_data\Creo7CustomConfig2022\import_customconfig.txt
 }
 Run "O:\Free\FA_data\治具_creo\STD_\_All\Creo7_Companion.ahk"
 SetWorkingDir %A_ScriptDir% 
@@ -85,16 +85,30 @@ WinClose
 	WinWaitActive, Workspace,,3
 	WinWaitActive
 	Sleep, 1000
-	Click, 231 200
+	Click, 300 230
 	Sleep, 100
-	Click, 231 200
+	Click, 300 230
 	Return
 }
 
 ;---------------------------------------------------------------------------
 
 
-
+~F20::
+	SendInput ^c
+	return
+	
+~F21::
+	SendInput ^v
+	return
+	
+~F19 & F20::
+	SendInput ^x
+	return
+	
+~F19 & Mbutton::
+	SendInput ^w
+	return
 
 
 ScrollLock & Left:: ; lookup for a Job number and open corresponding folder if it exists
@@ -130,6 +144,7 @@ if (match = 0)
 }
 else
 {
+/*
 	MsgBox, 4,, Open in Creo Parametric with original configuration?
 	SetTitleMatchMode, RegEx
 	WinMaximize, A%year%*%jobno%_*	
@@ -147,12 +162,11 @@ else
 			msgBox,,Shortcut not found, Could not find Creo SMK start file
 		}
 	}
+	*/
+	return
 }
 return
 ; =====================================================================================
-
-
-
 
 
 ;=======================================================================================
@@ -166,6 +180,7 @@ LControl & Numpad0::
 ; using google search--------------------------------------------------------------
 Run https://www.google.com
 return
+
 
 RControl & Numpad0::
 ; Copy selected text and search with Google in default browser--------------------------------------------------------------
@@ -185,8 +200,9 @@ LControl & Numpad1::
 Run https://translate.google.com/
 return
 
+~F19 & F21::
 RControl & Numpad1::
-; Copy selected text and search with Google in default browser--------------------------------------------------------------
+; Copy selected text and translate with Google in default browser--------------------------------------------------------------
 Clipboard := ""
 SendInput, ^c
 ClipWait, 2
@@ -246,8 +262,29 @@ return
 SendInput, {Home}{Del}
 return
 
+!r:: ; run ahk from notepad**
+If WinActive("ahk - Notepad++")
+{
+SendInput ^s
+Sleep 500
+WinGetActiveTitle, Title
+scriptNameEnd := InStr(Title,".ahk")
+scriptName := SubStr(Title,1,scriptNameEnd+3)
+Run, %scriptName%
+return
+}
+return 
+
 #IfWinActive
 
+#IfWinActive, - Notepad++
+!f:: ; open containing folder
+;If WinActive(" - Notepad++")
+{
+SendInput !ff{Enter}
+return
+}
+#IfWinActive
 
 /*
 ; wrap word in {}
@@ -289,11 +326,26 @@ return
 
 #IfWinNotActive ahk_exe xtop.exe
 
+~XButton1 & WheelUp::
+; Copy selected text and search with Google in default browser--------------------------------------------------------------
+Clipboard := ""
+SendInput ^c ;copy selected text
+ClipWait, 2
+StringReplace, Clipboard, Clipboard, %A_Space%, +, All
+searchKey := "https://www.google.com/search?q=" . Clipboard
+Run %searchKey%
+return
+
+~XButton2 & XButton1::
+SendInput !{Tab}
+return
+
+/*
 XButton1::^c
 return
 XButton2::^v
 return
-
+*/
 
 
 /*
@@ -325,7 +377,7 @@ if ErrorLevel
     MsgBox, WinWait timed out. Please open work log manually.
     return
 }
-Click, 365 431
+Click, 365 331
 WinWaitActive, ) - 日報集計,, 180
 if ErrorLevel
 {
@@ -384,13 +436,10 @@ return
 Run, O:\Free\FA_data\治具_creo\STD_\_All
 return
 
-!r:: ; run ahk from notepad**
-If WinActive("ahk - Notepad++")
-{
-WinGetActiveTitle, Title
-scriptNameEnd := InStr(Title,".ahk")
-scriptName := SubStr(Title,1,scriptNameEnd+3)
-Run, %scriptName%
+:*?:sj::
+SendInput 切断治具
 return
-}
 
+:*?:jg::
+SendInput 治具
+return
