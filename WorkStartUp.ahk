@@ -21,6 +21,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #singleInstance force
 SetTitleMatchMode, 2
 
+
+
 FileReadLine, wdir, D:\lastWorkingDir.txt, 1
 If (wdir = "")
 {
@@ -32,7 +34,14 @@ if not WinExist("ahk_exe xtop.exe") ;if Creo Parametric is not currently running
 {
 Run "C:\Program Files\PTC\Creo 7.0.9.0\Parametric\bin\parametric.exe" O:\Free\FA_data\Creo7CustomConfig2022\import_customconfig.txt
 }
-Run "O:\Free\FA_data\治具_creo\STD_\_All\Creo7_Companion.ahk"
+DetectHiddenWindows, On
+Process, Exist , CreoAutomation.exe
+If (ErrorLevel = 0) ; CreoAutomation is not running
+{
+	Run O:\Free\FA_data\Creo7CustomConfig2022\Creo7_Companion.exe
+}
+DetectHiddenWindows, Off
+
 SetWorkingDir %A_ScriptDir% 
 
 if not WinExist("ahk_exe msedge.exe")
@@ -68,6 +77,10 @@ if not WinExist("ahk_exe NLNOTES.EXE")
 	}
 }
 
+; For unknown reason Teams is open on start
+if WinExist("ahk_exe Teams.exe")
+WinClose, Teams
+
 mailfunction()
 {
 Sleep 1000 ; wait for Notesup to start and the button to fully show up. Sometimes the windows appears but there is no button.
@@ -88,28 +101,85 @@ WinClose
 	Click, 300 230
 	Sleep, 100
 	Click, 300 230
-	Return
+;	Return
 }
 
-;---------------------------------------------------------------------------
+; Run ShareX. Evokable with last mouse button
+if not WinExist("ahk_exe ShareX.exe")
+{
+Run D:\ShareX-15.0.0-portable\ShareX.exe
+WinWait, ShareX 15.0 Portable,, 5
+WinActivate, ShareX 15.0 Portable,, 5
+WinMinimize
+;WinMinimize ; Minimize the window
+;TrayTip, Minimized, ShareX has been minimized to the system tray.,1, 17
+return
+}
+
+
+;==================================================
+; Open daily report
+;==================================================
+:*?:dreport:: ; Open daily report
+SetInputLang(0x0409) ; English (USA)
+Run X:\SMKTOY\G-FA\G-FA2\412_日報集計\日報集計2019.accdb
+WinWaitActive, 日報集計,, 180
+if ErrorLevel
+{
+    MsgBox, WinWait timed out. Please open work log manually.
+    return
+}
+MouseMove,375,474
+Sleep 3000
+Click, 375 474
+WinWaitActive,日報集計,, 180
+if ErrorLevel
+{
+    MsgBox, WinWait timed out. Could not open your profile.
+    return
+}
+return
 
 
 ~F20::
-	SendInput ^c
+	Clipboard := ""
+	SendInput ^c ;copy selected text
+	ClipWait, 0.5
+	if ErrorLevel
+{
+    SendInput {Left}
+}
 	return
 	
 ~F21::
 	SendInput ^v
+	if (Clipboard == "")
+	SendInput {Right}
 	return
 	
 ~F19 & F20::
 	SendInput ^x
+	if WinActive("ahk_exe xtop.exe")
+	{
+		sendInput ^c{Delete}
+	}
 	return
 	
 ~F19 & Mbutton::
 	SendInput ^w
 	return
 
+
+~XButton2 & WheelUp::
+Clipboard := ""
+SendInput, ^c
+ClipWait, 2
+; replace space and newline character with the corresponding characters used in address bar of GG translate
+StringReplace, Clipboard, Clipboard, %A_Space%, +, All
+StringReplace, Clipboard, Clipboard, `n, `%0A, All
+searchKey := "https://www.bing.com/search?q=" . Clipboard . "&showconv=1&FORM=hpcodx"
+Run %searchKey%
+return 
 
 ScrollLock & Left:: ; lookup for a Job number and open corresponding folder if it exists
 FormatTime, currentYear,, yy
@@ -174,6 +244,19 @@ return
 ; ======================================================================================
 
 
+~F19 & F21:: ; yomichan search. Yomichan seperate search windows must exist.
+Clipboard := ""
+SendInput ^c ; select all and copy
+ClipWait, 2
+
+WinActivate, Yomichan Search
+SendInput, {Home}
+Click, 191 96
+SendInput ^a^v{Enter}
+return
+
+
+
 ; ------------------Numpad 0----------------------------
 
 LControl & Numpad0::
@@ -200,8 +283,7 @@ LControl & Numpad1::
 Run https://translate.google.com/
 return
 
-~F19 & F21::
-RControl & Numpad1::
+~F19 & WheelUp::
 ; Copy selected text and translate with Google in default browser--------------------------------------------------------------
 Clipboard := ""
 SendInput, ^c
@@ -230,23 +312,27 @@ searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl
 Run %searchKey%
 return
 
-
-
-;-------------------Numpad 5----------------------------
-
-
-RControl & Numpad5::
-; Open Notion--------------------------------------------------------------
-Run https://www.notion.so/smk-toyama/Unified-Creo-notes-6132801b4a4b410097be05efded068cc
-return
-
-
 ;=======================================
 ; Ahk editor shortcut
 ; ======================================
 
 
-#IfWinActive, .ahk
+#IfWinActive ahk_exe Notepad++.exe
+
+F1:: ;help
+If WinActive("ahk - Notepad++")
+{
+prefix := "https://www.autohotkey.com/docs/v1/lib/"
+suffix := ".htm"
+clipboard := ""
+sendInput ^c
+ClipWait
+searchKey := clipboard
+address := prefix . searchKey . suffix
+run, %address%
+}
+return
+
 ; add comment mark line
 ^!j:: 
 SendInput, `;---------------------------------------------------------------------------
@@ -262,6 +348,7 @@ return
 SendInput, {Home}{Del}
 return
 
+~Mbutton & RButton::
 !r:: ; run ahk from notepad**
 If WinActive("ahk - Notepad++")
 {
@@ -271,13 +358,28 @@ WinGetActiveTitle, Title
 scriptNameEnd := InStr(Title,".ahk")
 scriptName := SubStr(Title,1,scriptNameEnd+3)
 Run, %scriptName%
+SoundPlay *-1
 return
 }
-return 
 
-#IfWinActive
+F5:: ; compile ahk from notepad**
+If WinActive("ahk - Notepad++")
+{
+SendInput ^s
+Sleep 500
+WinGetActiveTitle, Title
+scriptNameEnd := InStr(Title,".ahk")
+scriptName := SubStr(Title,1,scriptNameEnd+3)
+Run C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe /in %scriptName%
+TrayTip, Success, %scriptName% is compiled, 1, 17
 
-#IfWinActive, - Notepad++
+StrReplace(Title,"\",,count)		
+folderEnd := InStr(Title,"\",,,count)
+folder := SubStr(Title,1,folderEnd-1)
+Run, %folder%
+return
+}
+
 !f:: ; open containing folder
 ;If WinActive(" - Notepad++")
 {
@@ -365,28 +467,9 @@ return
 
 
 
-;==================================================
-; Open daily report
-;==================================================
-Control & Numpad7:: ; Open daily report
-SetInputLang(0x0409) ; English (USA)
-Run \\TOYAMA-SV41\Dept\SMKTOY\G-FA\G-FA2\412_日報集計\日報集計2019.accdb
-WinWaitActive, 日報集計,, 180
-if ErrorLevel
-{
-    MsgBox, WinWait timed out. Please open work log manually.
-    return
-}
-Click, 365 331
-WinWaitActive, ) - 日報集計,, 180
-if ErrorLevel
-{
-    MsgBox, WinWait timed out. Could not open your profile.
-    return
-}
-return
 
 
+/*
 Control & Numpad8::
 repeatInput:
 InputBox, minute , Time, Input Number of hours, , , , , , Locale, 60
@@ -404,6 +487,9 @@ FormatTime, CurrentDateTime,, yyyy/MM/dd
 SendInput, %CurrentDateTime%{Tab}5505{Tab}0{Tab}%minute%{Tab}{Tab}{Tab}
 goto, repeatInput
 return
+*/
+
+
 
 ;=================================================
 ; FUNCTIONS
@@ -443,3 +529,4 @@ return
 :*?:jg::
 SendInput 治具
 return
+
