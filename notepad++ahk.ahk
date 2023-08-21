@@ -90,4 +90,17 @@ SendInput !ff{Enter}
 return
 }
 
+Control & Delete::
+::deletethis:: ; delete a file when it is open in notepad**
+{
+If WinActive(" - Notepad++")
+SendInput ^s
+Sleep 500
+WinGetActiveTitle, Title
+fileName := SubStr(Title, 1, StrLen(Title)-12)
+FileDelete, %fileName%
+TrayTip, Success, %fileName% is deleted, 1, 17
+return
+}
+
 #IfWinActive

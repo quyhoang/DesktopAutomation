@@ -199,7 +199,6 @@ return
 
 
 ;-------------------Numpad 1----------------------------
-
 LControl & Numpad1::
 ; right control   1: Open Google Translate in default browser--------------------------------------------------------------
 Run https://translate.google.com/
@@ -247,34 +246,12 @@ return
 ;=======================================
 ; Ahk editor shortcut
 ; ======================================
-#include D:\AHK_CreoParametric\DesktopAutomation\notepad++ahk.ahk
-
-
+#include %A_ScriptDir%\notepad++ahk.ahk
 ;=================================================
 ; Hotstrings
 ;=================================================
-:*?:editahk:: ; edit CreoAutomation.ahk
-Run, edit "O:\Free\FA_data\治具_creo\STD_\_All\CreoAutomation.ahk"
-return
+#include %A_ScriptDir%\hotstring.ahk
 
-:*?:editconfig:: ; edit config.pro
-destinationConfigFile := "O:\Free\FA_data\Creo7CustomConfig2022\config.pro"
-FileSetAttrib, -R, %destinationConfigFile%
-Run, %destinationConfigFile%
-return
-
-:*?:saveconfig:: ; done edit config.pro
-destinationConfigFile := "O:\Free\FA_data\Creo7CustomConfig2022\config.pro"
-FileSetAttrib, +R, %destinationConfigFile%
-return
-
-:*?:openahkfolder:: ; open CreoAutomation.ahk containing folder
-Run, O:\Free\FA_data\治具_creo\STD_\_All
-return
-
-:*?:jg::
-SendInput 治具
-return
 
 ;=================================================
 ; FUNCTIONS
