@@ -162,7 +162,7 @@ return
 WinGetActiveTitle, Title
 fileName := SubStr(Title, 1, StrLen(Title)-12)
 SplitPath, fileName ,, OutDir, OutExtension, OutNameNoExt
-InputBox, file2open , Opem File, `nWhich file do you want to open?, ,400 ,170 , , , Locale, 300, %OutNameNoExt%
+InputBox, file2open , Open File, `nWhich file do you want to open?, ,400 ,170 , , , Locale, 300, %OutNameNoExt%
 
 foundFile := CheckFileNameInFolder(file2open, OutDir) 
 if (foundFile)
