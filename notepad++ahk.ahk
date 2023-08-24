@@ -37,13 +37,18 @@ SendInput, {Home}{Del}
 return
 
 ; wrap word in {}
-RAlt & Ins::
+RControl & [::
 SendInput, ^{Left}{{}^{Right}{}}
 return
 
 ; wrap word in %%
-RControl & Ins::
+LControl & 5::
 SendInput, ^{Left}`%^{Right}`%
+return
+
+; wrap word in ""
+RControl & '::
+SendInput, ^{Left}`"^{Right}`"
 return
 
 ~Mbutton & RButton::
