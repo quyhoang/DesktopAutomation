@@ -1,4 +1,3 @@
-from operator import truediv
 import keyboard
 import threading
 import time
