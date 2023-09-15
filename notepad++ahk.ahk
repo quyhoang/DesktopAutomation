@@ -26,6 +26,24 @@ return
 SendInput, `;---------------------------------------------------------------------------
 return
 
++!j:: ;AHK editor
+if WinActive("ahk")
+{
+	Clipboard := "`;==================================================`n"
+	SendInput, ^v
+}
+return
+
+PgUp:: ;Reload
+if WinActive("ahk")
+{
+	Reload
+	Sleep 1000 ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
+	MsgBox, 4,, The script could not be reloaded. Would you like to open it for editing?
+	IfMsgBox, Yes, Edit
+		return
+}
+
 ; comment a line
 ^j:: 
 SendInput, {Home}`;
@@ -51,7 +69,7 @@ RControl & '::
 SendInput, ^{Left}`"^{Right}`"
 return
 
-~Mbutton & RButton::
+Mbutton & RButton::
 !r:: ; run ahk from notepad**
 If WinActive("ahk - Notepad++")
 {
@@ -90,6 +108,7 @@ If WinActive("ahk - Notepad++")
 }
 return
 
+ScrollLock & Down::
 !f:: ; open containing folder
 {
 SendInput !ff{Enter}
