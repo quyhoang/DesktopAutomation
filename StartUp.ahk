@@ -8,7 +8,7 @@ SetTitleMatchMode, 2
 FileReadLine, wdir, D:\lastWorkingDir.txt, 1
 If (wdir = "")
 {
-wdir := "O:\Free\FA_data\治具_creo\STD_\Experiment"
+wdir := "O:\PEC\治具_creo\STD_\Experiment"
 }
 SetWorkingDir %wdir%
 
