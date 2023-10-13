@@ -1,4 +1,4 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -14,13 +14,13 @@ SetWorkingDir %wdir%
 
 if not WinExist("ahk_exe xtop.exe") ;if Creo Parametric is not currently running
 {
-Run "C:\Program Files\PTC\Creo 7.0.9.0\Parametric\bin\parametric.exe" O:\Free\FA_data\Creo7CustomConfig2022\import_customconfig.txt
+Run "C:\Program Files\PTC\Creo 7.0.9.0\Parametric\bin\parametric.exe" O:\PEC\Creo7CustomConfig2022\import_customconfig.txt
 }
 DetectHiddenWindows, On
 Process, Exist , CreoAutomation.exe
 If (ErrorLevel = 0) ; CreoAutomation is not running
 {
-	Run O:\Free\FA_data\Creo7CustomConfig2022\Creo7_Companion.exe
+	Run O:\PEC\Creo7CustomConfig2022\Creo7_Companion.exe
 }
 DetectHiddenWindows, Off
 

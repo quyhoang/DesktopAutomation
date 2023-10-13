@@ -53,7 +53,7 @@ return
 
 ~Mbutton & RButton::
 !r:: ; run ahk from notepad**
-If WinActive("ahk - Notepad++")
+If WinActive(".ahk")
 {
 	SendInput ^s
 	Sleep 500
@@ -62,6 +62,7 @@ If WinActive("ahk - Notepad++")
 	scriptName := SubStr(Title,1,scriptNameEnd+3)
 	Run, %scriptName%
 	SoundPlay *-1
+	msgbox, Script executed
 	return
 }
 else
