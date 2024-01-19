@@ -26,6 +26,7 @@ return
 SendInput, `;---------------------------------------------------------------------------
 return
 
+
 +!j:: ;AHK editor
 if WinActive("ahk")
 {
@@ -68,7 +69,7 @@ return
 RControl & '::
 SendInput, ^{Left}`"^{Right}`"
 return
-
+   
 Mbutton & RButton::
 !r:: ; run ahk from notepad**
 If WinActive(".ahk")
@@ -78,14 +79,33 @@ If WinActive(".ahk")
 	WinGetActiveTitle, Title
 	scriptNameEnd := InStr(Title,".ahk")
 	scriptName := SubStr(Title,1,scriptNameEnd+3)
-	Run, %scriptName%
+	Run C:\Program Files\AutoHotkey\AutoHotkey.exe %scriptName%
 	SoundPlay *-1
-	msgbox, Script executed
+	TrayTip, Success, %scriptName% is executed, 1, 17
 	return
 }
 else
-{
+{  
 	sendInput ^s
+	return  
+}    
+return
+
+F4::
+If WinActive("ahk - Notepad++")
+{
+	SendInput ^s
+	Sleep 500
+	WinGetActiveTitle, Title
+	scriptNameEnd := InStr(Title,".ahk")
+	scriptName := SubStr(Title,1,scriptNameEnd+3)
+	Run C:\Program Files\AutoHotkey\AutoHotkey.exe %scriptName%
+	TrayTip, Success, %scriptName% is activated, 1, 17
+
+	StrReplace(Title,"\",,count)		
+	folderEnd := InStr(Title,"\",,,count)
+	folder := SubStr(Title,1,folderEnd-1)
+	Run, %folder%
 	return
 }
 return

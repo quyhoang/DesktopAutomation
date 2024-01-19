@@ -65,7 +65,7 @@ Send 4
 Send 3
 Send 2
 return
-
+			
 XButton1 & NumPadEnter:: ; back to deck list
 SendInput d
 return
@@ -79,5 +79,30 @@ Send {Tab}
 Sleep 100
 Send {Tab}{Enter}
 return
+
+F6::
+Clipboard := ""
+Send ^c
+Clipwait, 2
+If ErrorLevel
+{
+	msgbox, Could not copy
+	return
+}
+Send e
+WinWaitActive, Edit Current,,3
+If ErrorLevel
+{
+	msgbox, Could not open editing window
+	return
+}
+Sleep 500
+Send ^a
+Sleep 100
+Send ^v
+Sleep 100
+Send +{Tab}{Enter}
+return
+
 #IfWinActive 
 

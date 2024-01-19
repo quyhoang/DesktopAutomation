@@ -53,3 +53,7 @@ return
 ~Alt::MButton
 return
 #IfWinActive
+
+#IfWinActive, - Memrise - Brave
+Space::Enter
+#IfWinActive
