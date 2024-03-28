@@ -80,7 +80,7 @@ If WinActive(".ahk")
 	scriptName := SubStr(Title,1,scriptNameEnd+3)
 	Run, %scriptName%
 	SoundPlay *-1
-	msgbox, Script executed
+	msgbox,64,,Script executed,2
 	return
 }
 else
@@ -106,6 +106,28 @@ If WinActive("ahk - Notepad++")
 	folder := SubStr(Title,1,folderEnd-1)
 	Run, %folder%
 	return
+}
+return
+
+F6:: ; compile ahk from notepad** and move exe file to O:\PEC\治具_creo\STD_\_All
+; this is created specifically for CreoAutomation.exe
+If WinActive("ahk - Notepad++")
+{
+	; Set the source and destination paths
+	SourceFile := "D:\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.exe"
+	DestinationFolder := "O:\PEC\治具_creo\STD_\_All"
+	DestinationFile := "O:\PEC\治具_creo\STD_\_All\CreoAutomation.exe"
+
+	; Move the file
+	FileMove, %SourceFile%, %DestinationFolder%, 1
+
+	; Check if the move was successful
+	if ErrorLevel
+		MsgBox, Error moving file: %ErrorLevel%
+	else
+	{
+		Run, % "explorer /select," DestinationFile
+	}
 }
 return
 
