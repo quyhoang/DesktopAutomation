@@ -28,6 +28,8 @@ return
 
 
 
+
+
 +!j:: ;AHK editor
 if WinActive("ahk")
 {
