@@ -26,6 +26,8 @@ return
 SendInput, `;---------------------------------------------------------------------------
 return
 
+
+
 +!j:: ;AHK editor
 if WinActive("ahk")
 {
@@ -68,7 +70,8 @@ return
 RControl & '::
 SendInput, ^{Left}`"^{Right}`"
 return
-
+   
+   
 Mbutton & RButton::
 !r:: ; run ahk from notepad**
 If WinActive(".ahk")
@@ -78,14 +81,52 @@ If WinActive(".ahk")
 	WinGetActiveTitle, Title
 	scriptNameEnd := InStr(Title,".ahk")
 	scriptName := SubStr(Title,1,scriptNameEnd+3)
-	Run, %scriptName%
+	Run C:\Program Files\AutoHotkey\AutoHotkey.exe %scriptName%
 	SoundPlay *-1
-	msgbox, Script executed
+	msgbox,64,,Script executed,2
 	return
 }
 else
-{
+{  
 	sendInput ^s
+	return  
+}    
+return
+
+F4::
+If WinActive("ahk - Notepad++")
+{
+	SendInput ^s
+	Sleep 500
+	WinGetActiveTitle, Title
+	scriptNameEnd := InStr(Title,".ahk")
+	scriptName := SubStr(Title,1,scriptNameEnd+3)
+	Run C:\Program Files\AutoHotkey\AutoHotkey.exe %scriptName%
+	TrayTip, Success, %scriptName% is activated, 1, 17
+
+	StrReplace(Title,"\",,count)		
+	folderEnd := InStr(Title,"\",,,count)
+	folder := SubStr(Title,1,folderEnd-1)
+	Run, %folder%
+	return  
+}    
+return
+
+F4::
+If WinActive("ahk - Notepad++")
+{
+	SendInput ^s
+	Sleep 500
+	WinGetActiveTitle, Title
+	scriptNameEnd := InStr(Title,".ahk")
+	scriptName := SubStr(Title,1,scriptNameEnd+3)
+	Run C:\Program Files\AutoHotkey\AutoHotkey.exe %scriptName%
+	TrayTip, Success, %scriptName% is activated, 1, 17
+
+	StrReplace(Title,"\",,count)		
+	folderEnd := InStr(Title,"\",,,count)
+	folder := SubStr(Title,1,folderEnd-1)
+	Run, %folder%
 	return
 }
 return
@@ -106,6 +147,28 @@ If WinActive("ahk - Notepad++")
 	folder := SubStr(Title,1,folderEnd-1)
 	Run, %folder%
 	return
+}
+return
+
+F6:: ; compile ahk from notepad** and move exe file to O:\PEC\治具_creo\STD_\_All
+; this is created specifically for CreoAutomation.exe
+If WinActive("ahk - Notepad++")
+{
+	; Set the source and destination paths
+	SourceFile := "D:\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.exe"
+	DestinationFolder := "O:\PEC\治具_creo\STD_\_All"
+	DestinationFile := "O:\PEC\治具_creo\STD_\_All\CreoAutomation.exe"
+
+	; Move the file
+	FileMove, %SourceFile%, %DestinationFolder%, 1
+
+	; Check if the move was successful
+	if ErrorLevel
+		MsgBox, Error moving file: %ErrorLevel%
+	else
+	{
+		Run, % "explorer /select," DestinationFile
+	}
 }
 return
 

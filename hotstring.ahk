@@ -6,22 +6,22 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 2
 
 :*?:editahk:: ; edit CreoAutomation.ahk
-Run, edit "O:\Free\FA_data\治具_creo\STD_\_All\CreoAutomation.ahk"
+Run, edit "O:\PEC\治具_creo\STD_\_All\CreoAutomation.ahk"
 return
 
 :*?:editconfig:: ; edit config.pro
-destinationConfigFile := "O:\Free\FA_data\Creo7CustomConfig2022\config.pro"
+destinationConfigFile := "O:\PEC\Creo7CustomConfig2022\config.pro"
 FileSetAttrib, -R, %destinationConfigFile%
 Run, %destinationConfigFile%
 return
 
 :*?:saveconfig:: ; done edit config.pro
-destinationConfigFile := "O:\Free\FA_data\Creo7CustomConfig2022\config.pro"
+destinationConfigFile := "O:\PEC\Creo7CustomConfig2022\config.pro"
 FileSetAttrib, +R, %destinationConfigFile%
 return
 
 :*?:openahkfolder:: ; open CreoAutomation.ahk containing folder
-Run, O:\Free\FA_data\治具_creo\STD_\_All
+Run, O:\PEC\治具_creo\STD_\_All
 return
 
 :*?:jg::

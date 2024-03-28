@@ -5,10 +5,11 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #singleInstance force
 SetTitleMatchMode, 2
 
+
 FileReadLine, wdir, D:\lastWorkingDir.txt, 1
 If (wdir = "")
 {
-wdir := "O:\Free\FA_data\治具_creo\STD_\Experiment"
+wdir := "O:\PEC\治具_creo\STD_\Experiment"
 }
 SetWorkingDir %wdir%
 
@@ -16,6 +17,7 @@ if not WinExist("ahk_exe xtop.exe") ;if Creo Parametric is not currently running
 {
 Run "C:\Program Files\PTC\Creo 7.0.9.0\Parametric\bin\parametric.exe" O:\PEC\Creo7CustomConfig2022\import_customconfig.txt
 }
+
 DetectHiddenWindows, On
 Process, Exist , CreoAutomation.exe
 If (ErrorLevel = 0) ; CreoAutomation is not running
@@ -26,7 +28,7 @@ DetectHiddenWindows, Off
 
 SetWorkingDir %A_ScriptDir% 
 
-
+/*
 ; ---------------------------------------
 ; Write log time
 ; ---------------------------------------
@@ -47,7 +49,7 @@ Loop, Parse, FileContents, `n
 FileDelete, %LogFile%
 FileAppend, %FileContents%, %LogFile%
 ; ------------------------------------------
-
+*/
 
 
 if not WinExist("ahk_exe msedge.exe")
@@ -55,7 +57,7 @@ if not WinExist("ahk_exe msedge.exe")
 Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 }
 
-if not WinExist("ahk_exe NLNOTES.EXE")
+if not WinExist("ahk_exe notes2.exe")1012@timeflies
 {
 	Run "C:\Program Files (x86)\NotesUp\NotesUp.exe"
 
@@ -83,6 +85,20 @@ if not WinExist("ahk_exe NLNOTES.EXE")
 	}
 }
 
+if WinExist("ahk_exe NLNOTES.EXE")
+{
+	message := "1012@timeflies"
+	WinWaitActive, IBM Notes,,180
+	;WinActivate ; for some reason the activated window is not in the front
+	SendInput, %message%
+	SendInput, {Enter}
+	WinWaitActive, Workspace,,3
+	WinWaitActive
+	Sleep, 1000
+	Click, 300 230
+	Sleep, 100
+	Click, 300 230
+}
 ; For unknown reason Teams is open on start
 if WinExist("ahk_exe Teams.exe")
 WinClose, Teams
@@ -95,9 +111,10 @@ If WinExist("SMKMSG")
 WinClose
 }
 	message := "1012@timeflies"
+	if WinExist("ahk_exe NotesUp.exe")
 	WinActivate, ahk_exe NotesUp.exe
 	Click, 230 104 ; open NotesUp
-	WinWaitActive, IBM Notes,,180
+	WinWaitActive, Login to HCL Notes,,180
 	;WinActivate ; for some reason the activated window is not in the front
 	SendInput, %message%
 	SendInput, {Enter}
@@ -110,13 +127,9 @@ WinClose
 ;	Return
 }
 
-; Run ShareX. Evokable with last mouse button
-if not WinExist("ahk_exe ShareX.exe")
-{
+:*?:sharex:: ; Run ShareX. Evokable with last mouse button
 Run D:\ShareX-15.0.0-portable\ShareX.exe
 return
-}
-
 
 ;==================================================
 ; Open daily report
@@ -145,7 +158,7 @@ return
 ; Cut - Copy - Paste
 ; ======================================================================================
 
-~F20::
+~F19 & F20::
 	Clipboard := ""
 	SendInput ^c ;copy selected text
 	ClipWait, 0.5
@@ -155,24 +168,41 @@ return
 	}
 	return
 	
-~F21::
+~F19 & F21::
 	SendInput ^v
 	if (Clipboard == "")
 	SendInput {Right}
 	return
 	
-~F19 & F20::
+~F19 & Mbutton::
 	if WinActive("ahk_exe xtop.exe")
 	{
-		sendInput {Delete}
+		sendInput ^d
 	}
 	else
+	{
+		Clipboard := ""
+		SendInput, ^c
+		ClipWait, 0.2
+		if (Clipboard == "")
+		{
+			SendInput ^w
+			return
+		}
+	}
 	SendInput ^x
 	return
 	
-~F19 & Mbutton::
-	SendInput ^w
-	return
+~F20::
+SendInput {WheelUp}
+return
+	
+~F21::
+SendInput {WheelDown}
+return
+
+
+
 
 
 
@@ -197,14 +227,16 @@ searchKey := "https://www.google.com/search?q=" . Clipboard
 Run %searchKey%
 return
 
-
+/*
 ;-------------------Numpad 1----------------------------
 LControl & Numpad1::
 ; right control   1: Open Google Translate in default browser--------------------------------------------------------------
 Run https://translate.google.com/
 return
+*/
 
-~F19 & WheelUp::
+
+RControl & Numpad1::
 ; Copy selected text and translate with Google in default browser--------------------------------------------------------------
 Clipboard := ""
 SendInput, ^c
@@ -216,12 +248,14 @@ searchKey := "https://translate.google.com/?sl=ja&tl=en&text=" . Clipboard . "&o
 Run %searchKey%
 return
 
-
+/*
 ;-------------------Numpad 2----------------------------
 LControl & Numpad2::
 ; right control   2: Open Mazii dictionary in default browser--------------------------------------------------------------
 Run https://mazii.net/search
 return
+*/
+
 
 RControl & Numpad2::
 ; Copy selected text and search with mazzi in default browser--------------------------------------------------------------
@@ -232,8 +266,8 @@ searchKey := "https://mazii.net/search/word?dict=javi&query=" . Clipboard . "&hl
 Run %searchKey%
 return
 
-
-~F19 & F21:: ; yomichan search. Yomichan seperate search windows must exist.
+~F19 & WheelDown::
+RControl & Numpad3:: ; yomichan search. Yomichan seperate search windows must exist.
 Clipboard := ""
 SendInput ^c ; select all and copy
 ClipWait, 2
@@ -242,6 +276,7 @@ SendInput, {Home}
 Click, 191 96
 SendInput ^a^v{Enter}
 return
+
 
 ;=======================================
 ; Ahk editor shortcut
