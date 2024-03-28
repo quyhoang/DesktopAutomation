@@ -23,3 +23,5 @@ build/Repeater/localpycs/struct.pyc
 dist/Repeater.exe
 Repeater.spec
 test.py
+*.exe
+trail.txt*
