@@ -114,6 +114,7 @@ If WinActive("ahk - Notepad++")
 }    
 return
 
+/*
 F4::
 If WinActive("ahk - Notepad++")
 {
@@ -132,6 +133,7 @@ If WinActive("ahk - Notepad++")
 	return
 }
 return
+*/
 
 F5:: ; compile ahk from notepad**
 If WinActive("ahk - Notepad++")
@@ -143,11 +145,22 @@ If WinActive("ahk - Notepad++")
 	scriptName := SubStr(Title,1,scriptNameEnd+3)
 	Run C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe /in %scriptName%
 	TrayTip, Success, %scriptName% is compiled, 1, 17
-
-	StrReplace(Title,"\",,count)		
-	folderEnd := InStr(Title,"\",,,count)
-	folder := SubStr(Title,1,folderEnd-1)
-	Run, %folder%
+	
+	if (scriptName = "D:\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.ahk")
+	{
+		Sleep 2000
+		destinationFile := "O:\PEC\Creo7CustomConfig2022\CreoAutomation.exe"
+		FileMove, D:\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.exe, %destinationFile%, 1
+		Sleep 1000
+		Run, % "explorer /select," destinationFile
+	}
+	else
+	{
+		StrReplace(Title,"\",,count)		
+		folderEnd := InStr(Title,"\",,,count)
+		folder := SubStr(Title,1,folderEnd-1)
+		Run, %folder%
+	}
 	return
 }
 return

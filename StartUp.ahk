@@ -158,7 +158,7 @@ return
 ; Cut - Copy - Paste
 ; ======================================================================================
 
-~F19 & F20::
+~F20::
 	Clipboard := ""
 	SendInput ^c ;copy selected text
 	ClipWait, 0.5
@@ -168,10 +168,14 @@ return
 	}
 	return
 	
-~F19 & F21::
+~F21::
 	SendInput ^v
 	if (Clipboard == "")
 	SendInput {Right}
+	return
+
+~F19 & F20::
+	SendInput ^x
 	return
 	
 ~F19 & Mbutton::
@@ -192,7 +196,8 @@ return
 	}
 	SendInput ^x
 	return
-	
+
+/*	
 ~F20::
 SendInput {WheelUp}
 return
@@ -200,7 +205,7 @@ return
 ~F21::
 SendInput {WheelDown}
 return
-
+*/
 
 
 
