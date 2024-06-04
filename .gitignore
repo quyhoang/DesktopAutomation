@@ -24,4 +24,5 @@ dist/Repeater.exe
 Repeater.spec
 test.py
 *.exe
+trail.txt**.exe
 *.ico
