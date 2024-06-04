@@ -28,6 +28,15 @@ return
 SendInput 治具
 return
 
+:*?:stt::
+SendInput std::
+return
+
+:*?:incld::
+SendInput {#}include<>
+SendInput {Left}
+return
+
 ; Open Japanese assignments
 :*:1drive::
 if WinExist("Japanese Assignments")
