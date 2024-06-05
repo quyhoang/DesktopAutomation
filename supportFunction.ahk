@@ -57,3 +57,14 @@ GetActiveExplorerPath() ; This is referenced from a ahk forum
 	}
 } ; return Null if there is no Explorer Windows
 
+notifyBox(text, title := "")
+{
+	MsgBox,64, %title%, %text%, 7
+	return
+}
+
+notifyTray(text, title := "")
+{
+	TrayTip, %title%, %text%, 1, 17
+	return
+}

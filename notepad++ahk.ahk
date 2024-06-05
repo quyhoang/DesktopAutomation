@@ -175,8 +175,8 @@ return
 
 ^t:: ; open test file
 {
-;testFile = %A_Desktop%\test.ahk
-testFile = D:\AHK_CreoParametric\DesktopAutomation\test.ahk
+testFile = %A_Desktop%\test.ahk
+;testFile = D:\AHK_CreoParametric\DesktopAutomation\test.ahk
 if not FileExist(testFile) ; create test file if it does not exist
 {
 text := "
@@ -190,8 +190,8 @@ FileEncoding, UTF-8
 )"
 FileAppend, %text%, %testFile%
 }
-;Run, edit %A_Desktop%\test.ahk
-Run, edit D:\AHK_CreoParametric\DesktopAutomation\test.ahk
+Run, edit %A_Desktop%\test.ahk
+;Run, edit D:\AHK_CreoParametric\DesktopAutomation\test.ahk
 return
 }
 
