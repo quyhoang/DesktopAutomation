@@ -89,7 +89,7 @@ clipboard := CurrentDateTime
 SendInput ^v
 return
 
-:*:///::
+:*:///:: ; used with Notion
 sendInput /heading 1
 sendInput {Enter}
 return

@@ -1,4 +1,4 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -114,27 +114,6 @@ If WinActive("ahk - Notepad++")
 }    
 return
 
-/*
-F4::
-If WinActive("ahk - Notepad++")
-{
-	SendInput ^s
-	Sleep 500
-	WinGetActiveTitle, Title
-	scriptNameEnd := InStr(Title,".ahk")
-	scriptName := SubStr(Title,1,scriptNameEnd+3)
-	Run C:\Program Files\AutoHotkey\AutoHotkey.exe %scriptName%
-	TrayTip, Success, %scriptName% is activated, 1, 17
-
-	StrReplace(Title,"\",,count)		
-	folderEnd := InStr(Title,"\",,,count)
-	folder := SubStr(Title,1,folderEnd-1)
-	Run, %folder%
-	return
-}
-return
-*/
-
 F5:: ; compile ahk from notepad**
 If WinActive("ahk - Notepad++")
 {
@@ -196,7 +175,8 @@ return
 
 ^t:: ; open test file
 {
-testFile = %A_Desktop%\test.ahk
+;testFile = %A_Desktop%\test.ahk
+testFile = D:\AHK_CreoParametric\DesktopAutomation\test.ahk
 if not FileExist(testFile) ; create test file if it does not exist
 {
 text := "
@@ -210,7 +190,8 @@ FileEncoding, UTF-8
 )"
 FileAppend, %text%, %testFile%
 }
-Run, edit %A_Desktop%\test.ahk
+;Run, edit %A_Desktop%\test.ahk
+Run, edit D:\AHK_CreoParametric\DesktopAutomation\test.ahk
 return
 }
 
