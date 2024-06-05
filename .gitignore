@@ -26,3 +26,4 @@ test.py
 *.exe
 trail.txt**.exe
 *.ico
+*.txt
