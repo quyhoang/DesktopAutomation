@@ -18,6 +18,13 @@ setClipboard()
 	return Clipboard
 }
 
+copyActiveWindow()
+{
+	WinGetActiveTitle, WindowTitle ; Get the active window title
+	Clipboard := WindowTitle
+	return
+}
+
 normalizeSearchkey(searchKey, modSpace:= True, modNewline:= False)
 {
 	if modSpace

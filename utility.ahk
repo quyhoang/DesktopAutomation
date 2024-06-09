@@ -55,3 +55,10 @@ else
 		notifyTray("Notepad++ or Windows Explorer is required for this function")
 }   
 return
+
+
+; Get active window title
+~ScrollLock & a::
+copyActiveWindow()
+notifyTray(Clipboard, "Active window title copied")
+return

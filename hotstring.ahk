@@ -55,12 +55,28 @@ else
 run https://keep.google.com/u/0/
 return
 
+:R0*:gphoto:: ;open google photo
+if WinExist("Google Photos -")
+    WinActivate
+else
+run https://photos.google.com/u/0/
+return
+
 :R0*:gcal:: ;open google calendar
 if WinExist("Google Calendar")
     WinActivate ;
 else
 run https://calendar.google.com/calendar/u/0/r/week
 return
+
+:R0*:igram:: ;open google calendar
+if WinExist("Instagram -")
+    WinActivate ;
+else
+	run https://www.instagram.com/
+return
+
+
 
 :R0*:nnote:: ;open note
 if WinExist("Note - Brave")

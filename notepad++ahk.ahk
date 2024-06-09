@@ -70,7 +70,7 @@ return
 
 ; wrap word in ""
 RControl & '::
-SendInput, ^{Left}`"^{Right}`"
+SendInput, ^{Left}`"^{Right}`" ;'
 return
    
    

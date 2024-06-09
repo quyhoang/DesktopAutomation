@@ -11,20 +11,37 @@ SetTitleMatchMode, 2
 	Invoke programs
 	;==================================================
 */
-{
-	<+w:: ; windows spy
-	Run C:\Program Files\AutoHotkey\WindowSpy.exe
+
+:*?:npad:: ; open Notepad++
+Run, notepad++.exe
+return
+
+:*?:vcode:: ; open Visual Studio Code
+If WinExist("- Visual Studio Code")
 	WinActivate
-	return
-	
-	>!v:: ;VLC player
-	Run "C:\Program Files (x86)\VideoLAN\VLC\vlc.exe" 
-	WinWait, VLC media player
-	WinMaximize ; Use the window found by WinWait.
+else
+	Run, "C:\Users\Hoang\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+return
+
+:*?:xbrave:: ; open Brave
+If WinExist("- Brave")
+	WinActivate
+else
+	Run, brave.exe
+return
+
+<+w:: ; windows spy
+Run C:\Program Files\AutoHotkey\WindowSpy.ahk
+WinActivate
+return
+
+>!v:: ;VLC player
+Run "C:\Program Files (x86)\VideoLAN\VLC\vlc.exe" 
+WinWait, VLC media player
+WinMaximize ; Use the window found by WinWait.
 ;open VLC media player. Alt and v for vlc
 ;set full screen (to get position of the A-B repeat symbol
-	return
-}
+return
 
 /*
 ;==================================================
