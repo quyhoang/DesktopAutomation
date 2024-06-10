@@ -29,7 +29,7 @@ Enjoy the productivity boost with Danshari and have a nice day!
 
 initialPromptsContent =
 (
-
+ 
 Greetings,
 
 This file allows you to customize the prompts used by Danshari. Please write your own prompts into this file following the guidelines below:

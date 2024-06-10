@@ -24,16 +24,24 @@ lookup(index)
         return
     }
     
-	if (index != "0") ; Google search
+	if (linkComponentHolder[index]  == "")
+	{
+		TrayTip, Hotkey not initialized, Please check your lookup list., 1, 17
+		return
+	}
+	
+	if (index == "0") ; Google search
 	{
 		danshariSearch(Clipboard, "https://www.google.com/search?q=")
 		return
+	}
+	else
+	{
+		danshariSearch(Clipboard, linkComponentHolder[index])
+		return
 	} 
     
-	if (linkComponentHolder[index]  == "")
-		TrayTip, Hotkey not initialized, Please check your lookup list., 1, 17
-	else
-		danshariSearch(Clipboard, linkComponentHolder)
+
 	return
 }
 
