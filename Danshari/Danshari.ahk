@@ -12,7 +12,7 @@ SoundPlay *-1
 #include %A_ScriptDir%\Danshari_initialization.ahk
 
 ; #include %A_ScriptDir%\Danshari_GUI.ahk
-; MsgBox,64, Getting started, %welcomeMessage%, 300
+MsgBox,64, Getting started, %welcomeMessage%, 300
 
 #include %A_ScriptDir%\Danshari_manageclipboard.ahk
 #include %A_ScriptDir%\Danshari_autoinsert.ahk
