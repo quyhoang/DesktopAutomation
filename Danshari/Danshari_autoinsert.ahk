@@ -33,23 +33,23 @@ LAlt & F2:: ; Hotkey to capture mouse position and window title
 }
 
 ; Define the hotkeys to create a complete message
-^0::kaiwa(0)
+<^0::kaiwa(0)
 return
-^1::kaiwa(1)
+<^1::kaiwa(1)
 return
-^2::kaiwa(2)
+<^2::kaiwa(2)
 return
-^3::kaiwa(3)
+<^3::kaiwa(3)
 return
-^4::kaiwa(4)
+<^4::kaiwa(4)
 return
-^5::kaiwa(5)
+<^5::kaiwa(5)
 return
-^6::kaiwa(6)
+<^6::kaiwa(6)
 return
-^7::kaiwa(7)
+<^7::kaiwa(7)
 return
-^8::kaiwa(8)
+<^8::kaiwa(8)
 return
-^9::kaiwa(9)
-return
+<^9::kaiwa(9)
+return 

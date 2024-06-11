@@ -6,6 +6,8 @@ SetTitleMatchMode, 3
 FileEncoding, UTF-8
 
 linkComponentHolder := []
+linkComponentHolder[0] := "https://www.google.com/search?q="
+
 loop, 9
 {
 	linkComponentHolder[A_Index] := ""
@@ -29,19 +31,7 @@ lookup(index)
 		TrayTip, Hotkey not initialized, Please check your lookup list., 1, 17
 		return
 	}
-	
-	if (index == "0") ; Google search
-	{
-		danshariSearch(Clipboard, "https://www.google.com/search?q=")
-		return
-	}
-	else
-	{
-		danshariSearch(Clipboard, linkComponentHolder[index])
-		return
-	} 
-    
-
+	danshariSearch(Clipboard, linkComponentHolder[index])
 	return
 }
 

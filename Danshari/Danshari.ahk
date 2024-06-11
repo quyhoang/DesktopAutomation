@@ -11,12 +11,13 @@ SoundPlay *-1
 #include %A_ScriptDir%\Danshari_message.ahk
 #include %A_ScriptDir%\Danshari_initialization.ahk
 
-MsgBox,64, Getting started, %welcomeMessage%, 300
+; #include %A_ScriptDir%\Danshari_GUI.ahk
+; MsgBox,64, Getting started, %welcomeMessage%, 300
 
+#include %A_ScriptDir%\Danshari_manageclipboard.ahk
 #include %A_ScriptDir%\Danshari_autoinsert.ahk
 #include %A_ScriptDir%\Danshari_lookup.ahk
-
-
+#include %A_ScriptDir%\Danshari_manageclipboard.ahk
 
 ; Define hotkeys to pause/resume the script
 LShift & Esc::Suspend, Toggle

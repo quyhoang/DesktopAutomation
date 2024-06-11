@@ -23,6 +23,7 @@ https://mazii.net/vi-VN/search/word/javi/nice%20day
 https://jisho.org/search/nice%20day
 )"
 
+
 ; Check if lookup.txt file exists in the working directory
 if FileExist("lookup.txt") 
 	updateLookupList()
@@ -35,6 +36,7 @@ else
 	FileAppend,%initiallookupContent%, lookup.txt ; Write content to the file
 	Run, lookup.txt
 }
+
 
 
 ;================================================================
@@ -65,4 +67,14 @@ else
 	FileAppend,%defaultPrompts%, prompts.txt ; Write content to the file
 	FileAppend,%initialPromptsContent%, prompts.txt ; Write content to the file
 	Run, prompts.txt
+}
+
+;================================================================
+; CLIPBOARD
+;================================================================
+global savedClipboard := []
+savedClipboard[0] := ""
+loop, 9
+{
+	savedClipboard[A_Index] := ""
 }
