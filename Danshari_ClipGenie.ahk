@@ -5,7 +5,25 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 3
 FileEncoding, UTF-8
 
+bufferClip := ""
+
 ~^c::
+return
+
+^!c:: ; use together with ^!v:: to create a virtual second clipboard 
+Clipboard := ""
+SendInput ^c
+ClipWait, 2
+if ErrorLevel
+{
+	MsgBox, 64, The clipboard is empty, Could not copy., 3
+	return
+}
+bufferClip := Clipboard
+return
+
+^!v::
+SendInput, %bufferClip%
 return
 
 ; Define the hotkeys to create a complete message
