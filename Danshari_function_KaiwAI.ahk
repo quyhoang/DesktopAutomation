@@ -5,7 +5,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 3
 FileEncoding, UTF-8
 
-global MouseX, MouseY, WindowTitle, WindowExe, WindowClass
+global MouseX, MouseY, WindowTitle, WindowExe, WindowClass, prompts
+prompts := []
 
 kaiwa(index) 
 {
@@ -24,7 +25,7 @@ kaiwa(index)
 	{
 		; Combine the prompt with the selected text
 		Clipboard := prompts[index + 0] . "`n" . Clipboard ; without + 0, index can be treated as char and prompts[index] returns nothing
-	} 
+	}
     	
 	if WinExist(WindowTitle)
 	{
@@ -54,7 +55,7 @@ kaiwa(index)
 updatePromptsList()
 {
 	; Open the file for reading
-    FileRead, fileContents, prompts.txt
+    FileRead, fileContents, KaiwAI.txt
 
     ; Split the file contents into lines
     lines := StrSplit(fileContents, "`n")
@@ -73,7 +74,7 @@ updatePromptsList()
             prompts[i] := line
         }
     }
-	TrayTip, Prompt list updated, Refer prompts.txt for details, 1, 17
+	TrayTip, Prompt list updated, Refer KaiwAI.txt for details, 1, 17
 }
 
 cycleThroughAllTabs(targetTitle, ahkExe, ahkClass)

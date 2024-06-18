@@ -7,9 +7,13 @@ SetTitleMatchMode, 2
 
 ; Startup Items at work
 #include %A_ScriptDir%\startupItem.ahk
+#include %A_ScriptDir%\Danshari_initialization.ahk
 
 ; Apps used at work
 #include %A_ScriptDir%\smkApp.ahk
+
+; Danshari
+#include %A_ScriptDir%\Danshari.ahk
 
 ; For copy, cut, paste
 #include %A_ScriptDir%\copyPaste.ahk

@@ -6,19 +6,19 @@ SetTitleMatchMode, 3
 FileEncoding, UTF-8			
 
 #include %A_ScriptDir%\Danshari_message.ahk
-#include %A_ScriptDir%\Danshari_function_lookup.ahk
+#include %A_ScriptDir%\Danshari_function_Internomicon.ahk
 
 LAlt & F3::
 updateLookupList()
 return
 
 RAlt & F3:: ; Hotkey to setup lookup
-if (!FileExist("lookup.txt"))  ; Check if lookup.txt file exists
+if (!FileExist("Internomicon.txt"))  ; Check if Internomicon.txt file exists
 {
-    FileAppend, , lookup.txt ; Create the file
-	FileAppend,%initiallookupContent%, lookup.txt ; Write content to the file
+    FileAppend, , Internomicon.txt ; Create the file
+	FileAppend,%initiallookupContent%, Internomicon.txt ; Write content to the file
 }
-Run, lookup.txt
+Run, Internomicon.txt
 return
 
 ; Define the hotkeys to create a complete message

@@ -6,11 +6,14 @@ SetTitleMatchMode, 3
 FileEncoding, UTF-8			
 
 #include %A_ScriptDir%\Danshari_message.ahk
-#include %A_ScriptDir%\Danshari_function_autoinsert.ahk
-#include %A_ScriptDir%\Danshari_function_lookup.ahk
+#include %A_ScriptDir%\Danshari_function_KaiwAI.ahk
+#include %A_ScriptDir%\Danshari_function_Internomicon.ahk
+
+; Define the current version of the software
+currentVersion := "3.0.0"
 
 ;================================================================
-; LOOKUP
+; Internomicon
 ;================================================================
 ; Default lookup value
 defaultlookup := "
@@ -24,23 +27,23 @@ https://jisho.org/search/nice%20day
 )"
 
 
-; Check if lookup.txt file exists in the working directory
-if FileExist("lookup.txt") 
+; Check if Internomicon.txt file exists in the working directory
+if FileExist("Internomicon.txt") 
 	updateLookupList()
 else
 {
 	lookup := StrSplit(defaultlookup, "`n") ; Parse the long string into an array
 	; Run, https://smk-toyama.notion.site/KaiwAI-Conversation-Accelerator-9f18a2afa4154c5b84b5faafbd75b329?pvs=4
-	FileAppend, , lookup.txt ; Create the file
-	FileAppend,%defaultlookup%, lookup.txt ; Write content to the file
-	FileAppend,%initiallookupContent%, lookup.txt ; Write content to the file
-	Run, lookup.txt
+	FileAppend, , Internomicon.txt ; Create the file
+	FileAppend,%defaultlookup%, Internomicon.txt ; Write content to the file
+	FileAppend,%initiallookupContent%, Internomicon.txt ; Write content to the file
+	Run, Internomicon.txt
 }
 
 
 
 ;================================================================
-; PROMPT
+; KaiwAI
 ;================================================================
 ; Default prompts value
 defaultPrompts := "
@@ -56,21 +59,21 @@ Prepare a professional presentation based on the following data:
 Summarize the key points from this article: 
 )"
 
-; Check if prompts.txt file exists in the working directory
-if FileExist("prompts.txt") 
+; Check if KaiwAI.txt file exists in the working directory
+if FileExist("KaiwAI.txt") 
 	updatePromptsList()
 else
 {
 	promtpts := StrSplit(defaultPrompts, "`n") ; Parse the long string into an array
 	Run, https://smk-toyama.notion.site/KaiwAI-Conversation-Accelerator-9f18a2afa4154c5b84b5faafbd75b329?pvs=4
-	FileAppend, , prompts.txt ; Create the file
-	FileAppend,%defaultPrompts%, prompts.txt ; Write content to the file
-	FileAppend,%initialPromptsContent%, prompts.txt ; Write content to the file
-	Run, prompts.txt
+	FileAppend, , KaiwAI.txt ; Create the file
+	FileAppend,%defaultPrompts%, KaiwAI.txt ; Write content to the file
+	FileAppend,%initialPromptsContent%, KaiwAI.txt ; Write content to the file
+	Run, KaiwAI.txt
 }
 
 ;================================================================
-; CLIPBOARD
+; ClipGenie
 ;================================================================
 global savedClipboard := []
 savedClipboard[0] := ""

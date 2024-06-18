@@ -6,19 +6,19 @@ SetTitleMatchMode, 3
 FileEncoding, UTF-8			
 
 #include %A_ScriptDir%\Danshari_message.ahk
-#include %A_ScriptDir%\Danshari_function_autoinsert.ahk
+#include %A_ScriptDir%\Danshari_function_KaiwAI.ahk
 
 LControl & F3::
 updatePromptsList()
 return
 
 RControl & F3:: ; Hotkey to setup prompts
-if (!FileExist("prompts.txt"))  ; Check if prompts.txt file exists
+if (!FileExist("KaiwAI.txt"))  ; Check if KaiwAI.txt file exists
 {
-    FileAppend, , prompts.txt ; Create the file
-	FileAppend,%initialPromptsContent%, prompts.txt ; Write content to the file
+    FileAppend, , KaiwAI.txt ; Create the file
+	FileAppend,%initialPromptsContent%, KaiwAI.txt ; Write content to the file
 }
-Run, prompts.txt
+Run, KaiwAI.txt
 return
 
 LAlt & F2:: ; Hotkey to capture mouse position and window title

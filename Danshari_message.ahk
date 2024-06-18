@@ -16,7 +16,7 @@ Thanks for using Danshari.
 This is a productivity tool that allows you to send selected text combined with customized prompt to any input field on your Windows computer using keyboard shortcuts. 
 
 To start using Danshari, please open a window containing text input field, move your mouse cursor to the field then register window name and input position using Left Alt + F2. 
-Then each time you use the shortcuts (Ctrl + 0 to Ctrl + 9), your selected text will be sent to that input field with a corresponding prompt prefix defined in prompts.txt.
+Then each time you use the shortcuts (Ctrl + 0 to Ctrl + 9), your selected text will be sent to that input field with a corresponding prompt prefix defined in KaiwAI.txt.
 To view and edit custom prefix, press RControl & F2. To pause or resume the program, right click its icon on the minimized application tray.
 
 Danshari works with any window and input field, as long as the window title and input field position remain unchanged.
@@ -80,7 +80,7 @@ Alt + 1 will send the currently selected text to the dictionary defined in line 
 Example:
 If you want to use Jisho.org dictionary.
 Open Jisho, then type "nice day" into the search box. You will see this link on address bar.
-https://jisho.org/search/nice%20day
+https://jisho.org/search/nice`%20day
 If you copy this link and paste it into line number 6 of this file, any time you select some text and press Alt 9, Jisho.org will be opened with search result for your selected text.
 
 Please note that only the first 9 non-empty lines will be considered.

@@ -45,7 +45,7 @@ updateLookupList()
 	}
 	
 	; Open the file for reading
-    FileRead, fileContents, lookup.txt
+    FileRead, fileContents, Internomicon.txt
 
     ; Split the file contents into lines
     lines := StrSplit(fileContents, "`n")
@@ -64,7 +64,7 @@ updateLookupList()
 			linkComponentHolder[i] := analyzeSearchLink(line)
         }
     }
-	TrayTip, Lookup list updated, Refer lookup.txt for details, 1, 17
+	TrayTip, Lookup list updated, Refer Internomicon.txt for details, 1, 17
 }
 
 isInvalidLink(link)

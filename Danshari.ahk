@@ -12,13 +12,17 @@ SoundPlay *-1
 #include %A_ScriptDir%\Danshari_initialization.ahk
 
 ; #include %A_ScriptDir%\Danshari_GUI.ahk
-MsgBox,64, Getting started, %welcomeMessage%, 300
+; MsgBox,64, Getting started, %welcomeMessage%, 300
 
-#include %A_ScriptDir%\Danshari_manageclipboard.ahk
-#include %A_ScriptDir%\Danshari_autoinsert.ahk
-#include %A_ScriptDir%\Danshari_lookup.ahk
-#include %A_ScriptDir%\Danshari_manageclipboard.ahk
+#include %A_ScriptDir%\Danshari_KaiwAI.ahk
+#include %A_ScriptDir%\Danshari_Internomicon.ahk
+#include %A_ScriptDir%\Danshari_ClipGenie.ahk
+#include %A_ScriptDir%\Danshari_update.ahk
 
 ; Define hotkeys to pause/resume the script
 LShift & Esc::Suspend, Toggle
+return
+Ctrl & F1::
+; Check for updates when the script runs
+CheckForUpdates()
 return
