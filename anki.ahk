@@ -10,6 +10,14 @@ FileEncoding, UTF-8
 */
 #IfWinActive, ahk_exe anki.exe
 
+F10::
+sendInput, {Enter}
+return
+
+F11::
+sendInput, r
+return
+
 ::lalc:: ;look up on alc
 Clipboard := ""
 

@@ -33,6 +33,7 @@ sleep 1000
 click MButton
 return
 
+/*
 ; Search Google
 Xbutton2 & WheelUp::
 ::sgg::
@@ -43,3 +44,4 @@ return
 Xbutton2 & WheelDown::
 searchFunction(normalizeSearchkey(setClipboard(), False), "https://mazii.net/search/word?dict=javi&query=", "&hl=vi-VN")
 return
+*/

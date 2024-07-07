@@ -12,6 +12,14 @@ SetTitleMatchMode, 2
 	;==================================================
 */
 
+:*?:shrx:: ; open Resilio Sync
+Run, "C:\ShareX-16.1.0-portable\ShareX.exe"
+return
+
+:*?:rsync:: ; open Resilio Sync
+Run, "C:\Users\Hoang\AppData\Roaming\Resilio Sync\Resilio Sync.exe"
+return
+
 :*?:npad:: ; open Notepad++
 Run, notepad++.exe
 return

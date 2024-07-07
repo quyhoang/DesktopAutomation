@@ -80,7 +80,7 @@ If WinActive(".ahk")
 	WinGetActiveTitle, Title
 	scriptNameEnd := InStr(Title,".ahk")
 	scriptName := SubStr(Title,1,scriptNameEnd+3)
-	Run C:\Program Files\AutoHotkey\AutoHotkey.exe %scriptName%
+	Run C:\Program Files\AutoHotkey\AutoHotkey.exe "%scriptName%"
 	SoundPlay *-1
 	msgbox,64,,Script executed,2
 	return

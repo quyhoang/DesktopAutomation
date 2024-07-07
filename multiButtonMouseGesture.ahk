@@ -5,22 +5,16 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 2
 FileEncoding, UTF-8
 
-~RButton & XButton1:: ; quick switch to previous windows
-{
-Keywait, RButton
-SendInput !{Tab}
-return
-}
-
-~XButton1 & XButton2:: ; view all open windows
-SendInput, #{Tab}
-return
-
 ; Close current object
-~XButton1 & Mbutton::
 F7 & MButton::
 SendInput ^w
 return
+
+; XButton1 & MButton::
+; Keywait, MButton
+; Keywait, XButton1
+; SendInput {Alt Down}{Tab}{Alt Up}
+; return
 
 ;==================================================
 ; Mouse tilt left
