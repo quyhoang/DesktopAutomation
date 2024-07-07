@@ -7,6 +7,22 @@ SetTitleMatchMode, 2
 
 #IfWinActive ahk_exe Notepad++.exe
 
+ScrollLock & F2:: ; Duplicate file in Notepad++
+If WinActive(".ahk")
+{
+	SendInput ^s
+	Sleep 500
+	WinGetActiveTitle, Title
+	scriptNameEnd := InStr(Title,".ahk")
+	scriptName := SubStr(Title,1,scriptNameEnd+3)
+	InputBox, newNameNoExt , Rename, `nPlease input new file name, ,400 ,170 , , , Locale, 300
+	newName := newNameNoExt . ".ahk"
+	FileCopy, %scriptName%, %newName%
+	Run, notepad++.exe %newName%
+}
+return
+
+
 F1:: ; AHK help
 If WinActive("ahk - Notepad++")
 {
