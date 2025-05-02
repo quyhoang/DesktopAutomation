@@ -8,9 +8,10 @@ FileEncoding, UTF-8
 ; for searchFunction, normalizeSearchkey, setClipboard
 #include %A_ScriptDir%\supportFunction.ahk
 
+
 F7 & F11:: ; yomichan search. Yomichan seperate search windows must exist.
 setClipboard()
-WinActivate, Yomichan Search
+WinActivate, Yomitan Search
 SendInput, {Home}
 Click, 172 110
 SendInput ^a^v{Enter}

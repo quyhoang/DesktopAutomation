@@ -14,7 +14,7 @@ SetWorkingDir %wdir%
 
 if not WinExist("ahk_exe xtop.exe") ;if Creo Parametric is not currently running
 {
-Run "C:\Program Files\PTC\Creo 7.0.9.0\Parametric\bin\parametric.exe" O:\PEC\Creo7CustomConfig2022\import_customconfig.txt
+Run "C:\Program Files\PTC\Creo 7.0.12.0\Parametric\bin\parametric.exe" O:\PEC\Creo7CustomConfig2022\import_customconfig.txt
 }
 
 DetectHiddenWindows, On
@@ -28,12 +28,12 @@ DetectHiddenWindows, Off
 SetWorkingDir %A_ScriptDir%
 
 
-if not WinExist("ahk_exe msedge.exe")
+if not WinExist("ahk_exe brave.exe")
 {
-Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+Run "C:\Users\quyhoang\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe"
 }
 
-if not WinExist("ahk_exe notes2.exe")1012@timeflies
+if not WinExist("ahk_exe notes2.exe")
 {
 	Run "C:\Program Files (x86)\NotesUp\NotesUp.exe"
 
@@ -78,6 +78,11 @@ if WinExist("ahk_exe NLNOTES.EXE")
 ; For unknown reason Teams is open on start
 if WinExist("ahk_exe Teams.exe")
 WinClose, Teams
+
+if WinExist("ahk_exe UnleashRGB.exe")
+{
+WinMinimize
+}
 
 mailfunction()
 {

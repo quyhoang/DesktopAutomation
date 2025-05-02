@@ -62,3 +62,36 @@ return
 copyActiveWindow()
 notifyTray(Clipboard, "Active window title copied")
 return
+
+RControl & Numpad7:: ;save text to a file to review later
+{
+    ; Save the currently highlighted text to a variable
+    Clipboard := ""
+	Send ^c  ; Copy selected text to clipboard
+    ClipWait, 1  ; Wait for the clipboard to update (max 1 second)
+    
+    ; If the clipboard contains text, append it to the file
+    if (Clipboard != "")
+    {
+        FileAppend, %Clipboard%`n, D:/wordlist.txt  ; Append text to a new line in the file
+        MsgBox,64,,%Clipboard% added to D:/wordlist.txt!,1  ; Display confirmation message (optional)
+    }
+    else
+    {
+        MsgBox,64,,No text selected!,1  ; Show warning if no text was copied
+    }
+
+    return
+}
+
+~MButton & RButton::
+SendInput ^s
+return
+
+~XButton2 & XButton1::
+SendInput !{Tab}
+return
+
+~XButton1 & XButton2::
+SendInput #{Tab}
+return

@@ -8,7 +8,9 @@ SetTitleMatchMode, 2
 #IfWinActive ahk_exe Notepad++.exe
 
 ScrollLock & F2:: ; Duplicate file in Notepad++
-If WinActive(".ahk")
+WinGetActiveTitle, Title
+If InStr(Title,"ahk - Notepad++")
+;If WinActive("ahk - Notepad++")
 {
 	SendInput ^s
 	Sleep 500
@@ -24,7 +26,9 @@ return
 
 
 F1:: ; AHK help
-If WinActive("ahk - Notepad++")
+WinGetActiveTitle, Title
+If InStr(Title,"ahk - Notepad++")
+;If WinActive("ahk - Notepad++")
 {
 	prefix := "https://www.autohotkey.com/docs/v1/lib/"
 	suffix := ".htm"
@@ -44,7 +48,9 @@ return
 
 
 +!j:: ;AHK editor
-if WinActive("ahk")
+WinGetActiveTitle, Title
+If InStr(Title,"ahk - Notepad++")
+;If WinActive("ahk - Notepad++")
 {
 	Clipboard := "`;==================================================`n"
 	SendInput, ^v
@@ -52,7 +58,9 @@ if WinActive("ahk")
 return
 
 PgUp:: ;Reload
-if WinActive("ahk")
+WinGetActiveTitle, Title
+If InStr(Title,"ahk - Notepad++")
+;If WinActive("ahk - Notepad++")
 {
 	Reload
 	Sleep 1000 ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
@@ -89,7 +97,9 @@ return
    
 Mbutton & RButton::
 !r:: ; run ahk from notepad**
-If WinActive(".ahk")
+WinGetActiveTitle, Title
+If InStr(Title,"ahk - Notepad++")
+;If WinActive("ahk - Notepad++")
 {
 	SendInput ^s
 	Sleep 500
@@ -103,13 +113,17 @@ If WinActive(".ahk")
 }
 else
 {  
+	WinGetActiveTitle, Title
 	sendInput ^s
+	msgbox,64,,%Title%,2 
 	return  
 }    
 return
 
 F4::
-If WinActive("ahk - Notepad++")
+WinGetActiveTitle, Title
+If InStr(Title,"ahk - Notepad++")
+;If WinActive("ahk - Notepad++")
 {
 	SendInput ^s
 	Sleep 500
@@ -128,7 +142,9 @@ If WinActive("ahk - Notepad++")
 return
 
 F5:: ; compile ahk from notepad**
-If WinActive("ahk - Notepad++")
+WinGetActiveTitle, Title
+If InStr(Title,"ahk - Notepad++")
+;If WinActive("ahk - Notepad++")
 {
 	SendInput ^s
 	Sleep 500
@@ -159,7 +175,9 @@ return
 
 F6:: ; compile ahk from notepad** and move exe file to O:\PEC\治具_creo\STD_\_All
 ; this is created specifically for CreoAutomation.exe
-If WinActive("ahk - Notepad++")
+WinGetActiveTitle, Title
+If InStr(Title,"ahk - Notepad++")
+;If WinActive("ahk - Notepad++")
 {
 	; Set the source and destination paths
 	SourceFile := "D:\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.exe"
@@ -210,7 +228,9 @@ return
 
 RControl & Delete::
 ::deletethis:: ; delete a file when it is open in notepad**
-If WinActive(" - Notepad++")
+WinGetActiveTitle, Title
+If InStr(Title,"- Notepad++")
+;If WinActive(" - Notepad++")
 {
 	SendInput ^s
 	Sleep 500
@@ -223,7 +243,9 @@ If WinActive(" - Notepad++")
 return
 
 ::rn:: ; rename
-If WinActive(" - Notepad++")
+WinGetActiveTitle, Title
+If InStr(Title,"- Notepad++")
+;If WinActive(" - Notepad++")
 {
 	SendInput ^s
 	Sleep 500
@@ -265,7 +287,7 @@ foundFile := CheckFileNameInFolder(file2open, OutDir)
 if (foundFile)
 {
 	if (A_Username = "quyhoang")
-		Run D:\npp.8.4.4.portable.x64\notepad++.exe %foundFile%
+		Run "C:\Program Files\Notepad++\notepad++.exe" %foundFile%
 	else
 		Run, edit %foundFile%
 }

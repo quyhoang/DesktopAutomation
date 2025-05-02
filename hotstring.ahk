@@ -93,15 +93,21 @@ Run https://www.notion.so/smk-toyama/Morning-Pages-704073a15f0d4cd48a6ef2fcbafe6
 return
 
 :R0*:dnote:: ;open Daily Notes
-if WinExist("Nhật ký - Brave")
+if WinExist("Nhật ký 2025 - Brave")
     WinActivate ;
 else
-Run https://www.notion.so/smk-toyama/Nh-t-k-1f61aa8d4d3e40af84e1968996e161ec
+Run https://www.notion.so/smk-toyama/Nh-t-k-2025-1954cc8491b7807fa494e26ad5687802
 return
 
 :R*?:tdy::
 FormatTime, CurrentDateTime,, dd-MMM-yy
 clipboard := CurrentDateTime
+SendInput ^v
+return
+
+:R*?:pnm:: ; new photo name
+FormatTime, CurrentDateTime,, dd-MMM-yy_hhmmss
+clipboard := "JikePark_" . CurrentDateTime
 SendInput ^v
 return
 

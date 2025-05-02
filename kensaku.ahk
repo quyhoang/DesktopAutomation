@@ -8,22 +8,37 @@ SetTitleMatchMode, 2
 ; for searchFunction, normalizeSearchkey, setClipboard
 #include %A_ScriptDir%\supportFunction.ahk
 
+; Search Google
+~Xbutton2::
+if (A_PriorHotkey != "Xbutton2" or A_TimeSincePriorHotkey > 400)
+{
+    ; Too much time between presses, so this isn't a double-press.
+	KeyWait, Xbutton2
+	return
+}
+searchFunction(normalizeSearchkey(setClipboard()), "https://www.google.com/search?q=")
+return
+
 RControl & Numpad0:: ;Copy selected text and search with Google in default browser----
+!g::
 searchFunction(normalizeSearchkey(setClipboard()), "https://www.google.com/search?q=")
 return
 
 RControl & Numpad1:: ;Copy selected text and translate with Google in default browser--
+!t::
 searchFunction(normalizeSearchkey(setClipboard(),, True), "https://translate.google.com/?sl=ja&tl=en&text=", "&op=translate")
 return
 
 RControl & Numpad2:: ; Copy selected text and search with mazzi in default browser----
+!m::
 searchFunction(normalizeSearchkey(setClipboard(), False), "https://mazii.net/search/word?dict=javi&query=", "&hl=vi-VN")
 return
 
-~F19 & WheelDown:: ; Basilisk V2 mouse
 RControl & Numpad3:: ; yomichan search. Yomichan seperate search windows must exist.
+yomitanSearch:
+!y::
 setClipboard()
-WinActivate, Yomichan Search
+WinActivate, Yomitan Search
 SendInput, {Home}
 Click, 191 96
 SendInput ^a^v{Enter}
