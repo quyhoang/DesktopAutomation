@@ -29,7 +29,7 @@ RControl & Numpad1:: ;Copy selected text and translate with Google in default br
 searchFunction(normalizeSearchkey(setClipboard(),, True), "https://translate.google.com/?sl=ja&tl=en&text=", "&op=translate")
 return
 
-RControl & Numpad2:: ; Copy selected text and search with mazzi in default browser----
+RControl & Numpad2:: ; Copy selected text and search with mazii in default browser----
 !m::
 searchFunction(normalizeSearchkey(setClipboard(), False), "https://mazii.net/search/word?dict=javi&query=", "&hl=vi-VN")
 return
