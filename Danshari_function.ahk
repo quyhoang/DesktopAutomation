@@ -8,58 +8,59 @@ return
 
 showEditGui(functionGuiNumber, functionality, Data, triggerKey)
 { 
-	global Input0, Input1, Input2, Input3, Input4, Input5, Input6, Input7, Input8, Input9
-	; Ensure this is the nth GUI in your project
-	Gui, %functionGuiNumber%:New, +Label%functionality%Gui
-	Gui, %functionGuiNumber%:Font, s16, Segoe UI 
-	; Set a larger font (increased from 12 to 14)
-	Gui, %functionGuiNumber%:Font, s12
+    global Input0, Input1, Input2, Input3, Input4, Input5, Input6, Input7, Input8, Input9
+    
+    ; Create the GUI name and label prefix
+    guiName := functionGuiNumber
+    labelPrefix := functionality . "Gui"
+    
+    ; Create a new GUI with appropriate label prefix
+    Gui, %guiName%:New, +Label%labelPrefix%
+    Gui, %guiName%:Font, s16, Segoe UI 
+    ; Set a larger font (increased from 12 to 14)
+    Gui, %guiName%:Font, s12
 
-	; Create 10 groups with text and input boxes in 2 columns
-	Loop, 10
-	{
-		groupNum := A_Index - 1
-		
-		; Calculate position
-		if (A_Index <= 5) 
-		{
-			xPos := 10
-			yPos := (A_Index - 1) * 120 + 10
-		} 
-		else 
-		{
-			xPos := 470
-			yPos := (A_Index - 6) * 120 + 10
-		}
-		
-		Gui, %functionGuiNumber%:Add, GroupBox, x%xPos% y%yPos% w440 h110, %triggerKey% %groupNum%
-		entry := Data[groupNum]
-		; Add the input box with existing content (if any)
-		Gui, %functionGuiNumber%:Add, Edit, vInput%groupNum% w420 h75 xp+10 yp+30, %entry%
-	}
-	
-	; Add the save button
-	buttonWidth := 87
-	yval := 615
-	xspace := 106
+    ; Create 10 groups with text and input boxes in 2 columns
+    Loop, 10
+    {
+        groupNum := A_Index - 1
+        
+        ; Calculate position
+        if (A_Index <= 5) 
+        {
+            xPos := 10
+            yPos := (A_Index - 1) * 120 + 10
+        } 
+        else 
+        {
+            xPos := 470
+            yPos := (A_Index - 6) * 120 + 10
+        }
+        
+        Gui, %guiName%:Add, GroupBox, x%xPos% y%yPos% w440 h110, %triggerKey% %groupNum%
+        entry := Data[groupNum]
+        ; Add the input box with existing content (if any)
+        Gui, %guiName%:Add, Edit, vInput%groupNum% w420 h75 xp+10 yp+30, %entry%
+    }
+    
+    ; Add the save button
+    buttonWidth := 87
+    yval := 615
+    xspace := 106
 
-	Gui, %functionGuiNumber%:Add, Button, g%functionality%Help w%buttonWidth% xm+5 y%yval%, Guide
-	Gui, %functionGuiNumber%:Add, Button, g%functionality%DefaultValue w%buttonWidth% xp+%xspace% y%yval%, Default
-	Gui, %functionGuiNumber%:Add, Button, g%functionality%Current w%buttonWidth% xp+%xspace% y%yval%, Current
-	; Gui, %functionGuiNumber%:Add, Button, g%functionality%LoadTxt w%buttonWidth% xp+%xspace% y%yval%, Import
-	; Gui, %functionGuiNumber%:Add, Button, g%functionality%LoadTxt w%buttonWidth% xp+%xspace% y%yval%, Export
-	Gui, %functionGuiNumber%:Add, Button, g%functionality%LoadTxt w%buttonWidth% xp+%xspace% y%yval%, Read TXT
-	Gui, %functionGuiNumber%:Add, Button, g%functionality%EditTxt w%buttonWidth% xp+%xspace% y%yval%, Edit TXT
-	Gui, %functionGuiNumber%:Add, Button, g%functionality%Load w98 xp+%xspace% y%yval%, Load Saved
-	Gui, %functionGuiNumber%:Add, Button, g%functionality%Apply w76 xp+117 y%yval%, Apply
-	Gui, %functionGuiNumber%:Add, Button, g%functionality%Save w145 xp+95 y%yval%, Save and Close
-	Gui, %functionGuiNumber%:Font, s14
-	;Gui, %functionGuiNumber%:Add, Text, xm yp+60 w800 h0.2 0x10
-	;Gui, %functionGuiNumber%:Add, Text, cBlue xm+6 yp+50 g%functionality%Help, How to use %functionality%  ; Clickable Group Name with blue color
+    Gui, %guiName%:Add, Button, g%functionality%Help w%buttonWidth% xm+5 y%yval%, Guide
+    Gui, %guiName%:Add, Button, g%functionality%DefaultValue w%buttonWidth% xp+%xspace% y%yval%, Default
+    Gui, %guiName%:Add, Button, g%functionality%Current w%buttonWidth% xp+%xspace% y%yval%, Current
+    Gui, %guiName%:Add, Button, g%functionality%LoadTxt w%buttonWidth% xp+%xspace% y%yval%, Read TXT
+    Gui, %guiName%:Add, Button, g%functionality%EditTxt w%buttonWidth% xp+%xspace% y%yval%, Edit TXT
+    Gui, %guiName%:Add, Button, g%functionality%Load w98 xp+%xspace% y%yval%, Load Saved
+    Gui, %guiName%:Add, Button, g%functionality%Apply w76 xp+117 y%yval%, Apply
+    Gui, %guiName%:Add, Button, g%functionality%Save w145 xp+95 y%yval%, Save and Close
+    Gui, %guiName%:Font, s14
 
-	; Show the GUI
-	Gui, %functionGuiNumber%:Show, w925 h680, %functionality% Editor
-	return
+    ; Show the GUI
+    Gui, %guiName%:Show, w925 h680, %functionality% Editor
+    return
 }
 
 getDataFromFile(functionality)
