@@ -6,21 +6,21 @@ SetTitleMatchMode, 2
 FileEncoding, UTF-8
 
 
-; Danshari
-~XButton2 & WheelUp::
-gosub, launchHayanabi
-return
+; ; Danshari
+; ~XButton2 & WheelUp::
+; gosub, launchHayanabi
+; return
 
-~XButton1 & WheelUp::
-gosub, launchYukarilink
-return
+; ~XButton1 & WheelUp::
+; gosub, launchYukarilink
+; return
 
-~XButton2 & WheelDown::
-gosub, launchClipGenie
-return
+; ~XButton2 & WheelDown::
+; gosub, launchClipGenie
+; return
 
 ; Search
-F7 & F11:: ; yomichan search. Yomichan seperate search windows must exist.
+Shift & F12:: ; yomichan search. Yomichan seperate search windows must exist.
 gosub, yomitanSearch
 return
 
@@ -100,7 +100,7 @@ if WinActive("YouTube - Brave")
 {
 	if GetKeyState("XButton2", "P")
 	{
-		SendInput ^v
+		SendInput ^+v
 		return
 	}
 	SendInput {Right} 
@@ -110,7 +110,7 @@ else if WinActive("VNU Lic")
 {
 	if GetKeyState("XButton2", "P")
 	{
-		SendInput ^v
+		SendInput ^+v
 		return
 	}
 	SendInput {Left} 
@@ -123,7 +123,7 @@ else if WinActive("N1GD1")
 }
 else if WinActive("Edit Current") or WinActive("Add") or WinActive("Browse") ;anki
 {
-	sendInput ^v
+	sendInput ^+v
 	return
 }	
 else if WinActive("ahk_exe anki.exe")
@@ -141,23 +141,21 @@ else if WinActive("- Yomichan Search")
 	if GetKeyState("XButton2", "P")
 		SendInput !{Right}
 	else
-		SendInput ^v
+		SendInput ^+v
 	return
 }		
 else
 {
-	SendInput ^v
+	SendInput ^+v
 	return
 }
 return
 
-F7 & F10:: ; refer synapse/razer
-if WinActive("Netflix - Brave")
-{
-	SendInput a
-	return
-}
-else
-send ^x
+F7 & F10:: 
+send ^c
+return
+
+F7 & F11:: 
+send ^+v
 return
 

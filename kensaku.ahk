@@ -1,9 +1,9 @@
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-#singleInstance force
+#SingleInstance force  ; force new attempt to run the program if it is already running
 SetTitleMatchMode, 2
+FileEncoding, UTF-8
 
 ; for searchFunction, normalizeSearchkey, setClipboard
 #include %A_ScriptDir%\supportFunction.ahk
@@ -34,15 +34,9 @@ RControl & Numpad2:: ; Copy selected text and search with mazzi in default brows
 searchFunction(normalizeSearchkey(setClipboard(), False), "https://mazii.net/search/word?dict=javi&query=", "&hl=vi-VN")
 return
 
-RControl & Numpad3:: ; yomichan search. Yomichan seperate search windows must exist.
-yomitanSearch:
 !y::
+yomitanSearch:
 setClipboard()
 WinActivate, Yomitan Search
-SendInput, {Home}
-Click, 191 96
-SendInput ^a^v{Enter}
+SendInput ^v{Enter}
 return
-
-
-

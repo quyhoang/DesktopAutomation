@@ -82,10 +82,8 @@ F7 & WheelUp:: ; edit card
 Send e
 return
 
-F7 & WheelDown:: ; close editing box from the last editing field
-Send {Tab}
-Sleep 100
-Send {Tab}{Enter}
+F7 & WheelDown:: 
+Send ^z
 return
 
 F6::
