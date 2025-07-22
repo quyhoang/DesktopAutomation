@@ -17,7 +17,7 @@ global MouseX, MouseY, WindowTitle, WindowExe, WindowClass
 
 global KaiwAIFunctionGuiNumber := 11
 global KaiwAIFunctionality := "KaiwAI"
-global KaiwAITriggerKey := "Left Control + "
+global KaiwAITriggerKey := "Left Alt + "
 global KaiwAICounter := 9
 global KaiwAIInitialMessage
 
@@ -86,7 +86,7 @@ Loop, 10 ; without this loop the array will start at 1
 
 global YukarilinkFunctionGuiNumber := 22
 global YukarilinkFunctionality := "Yukarilink"
-global YukarilinkTriggerKey := "Alt + "
+global YukarilinkTriggerKey := "Left Control + "
 global YukarilinkCounter := 9
 global YukarilinkInitialMessage
 
