@@ -20,7 +20,6 @@ return
 
 ::lalc:: ;look up on alc
 Clipboard := ""
-
 SendInput, ^c
 ClipWait, 2
 searchKey := "https://eow.alc.co.jp/search?q=" . Clipboard
@@ -29,13 +28,6 @@ sleep 1000
 click MButton
 return
 
-F3::
-SendInput, ^c
-return
-
-F4::
-SendInput ^v
-return
 
 F9::
 SendInput ^+d;
@@ -49,8 +41,8 @@ return
 SendInput *
 return	
 
-XButton1 & RButton::
-SendInput {f5}
+XButton1 & F11::
+SendInput e
 return
 
 XButton1 & F10::
@@ -78,13 +70,14 @@ XButton1 & NumPadEnter:: ; back to deck list
 SendInput d
 return
 
-F7 & WheelUp:: ; edit card
-Send e
+F7 & WheelUp::
+sendInput e
 return
 
-F7 & WheelDown:: 
-Send ^z
+F7 & WheelDown::
+sendInput ^z
 return
+
 
 F6::
 Clipboard := ""

@@ -145,4 +145,3 @@ dynamicClipGenieGuiEscape:
 gosub, saveDynamicClipGenieData
 Gui, dynamicClipGenie: Destroy
 return
-

@@ -5,6 +5,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #singleInstance force
 SetTitleMatchMode, 2
 
+
 :*?:editahk:: ; edit CreoAutomation.ahk
 Run, edit "O:\PEC\治具_creo\STD_\_All\CreoAutomation.ahk"
 return
@@ -121,10 +122,12 @@ clipboard := CurrentDateTime
 SendInput ^v
 return
 
-:R*?:pnm:: ; new photo name
-FormatTime, CurrentDateTime,, dd-MMM-yy_hhmmss
-clipboard := "JikePark_" . CurrentDateTime
-SendInput ^v
+LShift & End:: ;complete code completion in VS Code
+SendInput {Tab}
+sleep 100
+SendInput {End}
+sleep 100
+SendInput {Enter}
 return
 
 :*:///:: ; used with Notion

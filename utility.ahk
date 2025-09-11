@@ -7,6 +7,43 @@ FileEncoding, UTF-8
 
 #include %A_ScriptDir%\supportFunction.ahk
 
+!s::
+{
+    ; Save the current clipboard content
+    ClipSaved := ClipboardAll
+
+    ; Clear the clipboard
+    Clipboard := ""
+    Send ^c  ; Copy selected text
+    ClipWait, 1  ; Wait up to 1 second for clipboard to contain data
+    if ErrorLevel
+    {
+        MsgBox, 48, Error, Failed to copy text. No text was selected or copy timed out.
+        return
+    }
+
+    ; Define the path to your text file
+    filePath := "D:\Code\Robotics\Daily Notes\Keep.md"  
+
+    ; Open the file in append mode and write the clipboard text
+    FileAppend, %Clipboard%`r`n`n, %filePath%
+
+    ; Optional: Tray notification
+    TrayTip, Text Saved, %Clipboard% has been appended to the file., 2
+	
+    ; Restore the original clipboard content
+    Clipboard := ClipSaved
+    ClipSaved := ""
+	
+	KeyWait, MButton, D T3
+	if GetKeyState("MButton")
+	{
+		run, %filePath%
+	}
+}
+return
+
+
 ~ScrollLock & o:: ; Open file/folder from selected text 
 Clipboard := ""
 SendInput ^c
