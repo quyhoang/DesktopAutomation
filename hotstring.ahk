@@ -93,8 +93,6 @@ else
 	run https://www.instagram.com/
 return
 
-
-
 :R0*:nnote:: ;open note
 if WinExist("Note - Brave")
     WinActivate ;

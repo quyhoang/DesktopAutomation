@@ -7,7 +7,58 @@ FileEncoding, UTF-8
 
 #include %A_ScriptDir%\supportFunction.ahk
 
-!s::
+!b:: ; bulk rename with bulk rename utility
+If not Winactive("ahk_exe explorer.exe")
+	return
+folderName := GetActiveExplorerPath()
+Run, "C:\Program Files\Bulk Rename Utility\Bulk Rename Utility.exe" %folderName%
+return
+
+!p:: ; Open current photo folder
+; Get current year and month
+FormatTime, year,, yyyy
+FormatTime, monthNumber,, M
+FormatTime, monthName,, MMM  ; Get the abbreviated month name (Jan, Feb, ...)
+
+; Compose folder path
+folder := "E:\A_ MY LIFETIME OF PHOTOS\" year "\" monthNumber " " monthName
+
+; Create folder if it doesn't exist
+IfNotExist, %folder%
+	FileCreateDir, %folder%
+
+; Open folder in Explorer
+Run, explorer.exe "%folder%"
+return
+
+RAlt & Del:: ; Delete current folder
+If not Winactive("ahk_exe explorer.exe")
+	return
+folderName := GetActiveExplorerPath()
+MsgBox, 292, DELETE FOLDER, Would you like to delete `n%folderName%?
+IfMsgBox Yes
+    FileRemoveDir, %folderName%, 1
+return
+
+	
+
+!e::   ; engineering
+filePath := "D:\Code\Robotics\Daily Notes\Engineering.md" 
+saveToFile(filePath)
+return
+
+!s::  ; japanese
+filePath := "D:\Code\Robotics\Daily Notes\日本語ノート.md" 
+saveToFile(filePath)
+return
+
+!k::  ;english
+filePath := "D:\Code\Robotics\Daily Notes\Keep.md" 
+saveToFile(filePath)
+return
+
+
+saveToFile(filePath)
 {
     ; Save the current clipboard content
     ClipSaved := ClipboardAll
@@ -21,9 +72,6 @@ FileEncoding, UTF-8
         MsgBox, 48, Error, Failed to copy text. No text was selected or copy timed out.
         return
     }
-
-    ; Define the path to your text file
-    filePath := "D:\Code\Robotics\Daily Notes\Keep.md"  
 
     ; Open the file in append mode and write the clipboard text
     FileAppend, %Clipboard%`r`n`n, %filePath%
@@ -40,8 +88,9 @@ FileEncoding, UTF-8
 	{
 		run, %filePath%
 	}
+	return
 }
-return
+
 
 
 ~ScrollLock & o:: ; Open file/folder from selected text 
