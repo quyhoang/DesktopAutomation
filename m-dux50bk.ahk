@@ -1,4 +1,4 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force  ; force new attempt to run the program if it is already running
@@ -34,33 +34,30 @@ return
 ;==================================================
 
 F10::
-if WinActive("YouTube - Brave") ; when Youtube is opened, F10/F11 is used for winding
-	; but if XButton2 is pressed, the two keys will be used for copy/paste
+SetTitleMatchMode, 2
+if WinActive(" - YouTube - Brave")
 {
-	if GetKeyState("XButton2", "P")
+	clipboard := ""
+	sendInput ^c
+	ClipWait, 0.2
+	if ErrorLevel
 	{
-		SendInput ^c
+		SendInput {Left}
 		return
 	}
-	SendInput {Left}
 	return
 }
-else if WinActive("VNU Lic")
+if WinActive("VNU Lic")
 {
-	if GetKeyState("XButton2", "P")
-	{
-		SendInput ^c
-		return
-	}
 	SendInput {Right}
 	return
 }
-else if WinActive("N1GD1")
+if WinActive("N1GD1")
 {
 	SendInput z
 	return
 }	
-else if WinActive("ahk_exe anki.exe")
+if WinActive("ahk_exe anki.exe")
 {
 	clipboard := ""
 	sendInput ^c
@@ -72,17 +69,21 @@ else if WinActive("ahk_exe anki.exe")
 	}
 	return
 }	
-else if WinActive("Netflix - Brave")
+if WinActive("Netflix - Brave")
 {
 	SendInput s
 	return
 }	
-else if WinActive("- Yomichan Search")
+if WinActive("- Yomitan Search")
 {
-	if GetKeyState("XButton2", "P")
+	clipboard := ""
+	sendInput ^c
+	ClipWait, 0.2
+	if ErrorLevel
+	{
 		SendInput !{Left}
-	else
-		SendInput ^c
+		return
+	}
 	return
 }	
 else	
@@ -96,23 +97,14 @@ return
 ; Mouse tilt Right
 ;==================================================
 F11::
+SetTitleMatchMode, 2
 if WinActive("YouTube - Brave")
 {
-	if GetKeyState("XButton2", "P")
-	{
-		SendInput ^+v
-		return
-	}
-	SendInput {Right} 
+	SendInput {Right}
 	return
 }
 else if WinActive("VNU Lic")
 {
-	if GetKeyState("XButton2", "P")
-	{
-		SendInput ^+v
-		return
-	}
 	SendInput {Left} 
 	return
 }
@@ -128,7 +120,7 @@ else if WinActive("Edit Current") or WinActive("Add") or WinActive("Browse") ;an
 }	
 else if WinActive("ahk_exe anki.exe")
 {
-	SendInput {F5}
+	SendInput {F5} ; r - repeat
 	return
 }
 else if WinActive("Netflix - Brave")
@@ -157,5 +149,15 @@ return
 
 F7 & F11:: 
 send ^+v
+return
+
+~F7::
+if (A_PriorHotkey != "~F7" or A_TimeSincePriorHotkey > 400)
+{
+    ; Too much time between presses, so this isn't a double-press.
+	KeyWait, F7
+	return
+}
+send ^x
 return
 

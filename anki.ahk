@@ -10,15 +10,7 @@ FileEncoding, UTF-8
 */
 #IfWinActive, Hideki - Anki
 
-F10::
-sendInput, {Enter}
-return
-
-F11::
-sendInput, r
-return
-
-::lalc:: ;look up on alc
+!c:: ;look up on alc
 Clipboard := ""
 SendInput, ^c
 ClipWait, 2
@@ -27,7 +19,6 @@ Run %searchKey%
 sleep 1000
 click MButton
 return
-
 
 F9::
 SendInput ^+d;
@@ -41,12 +32,9 @@ return
 SendInput *
 return	
 
-XButton1 & F11::
-SendInput e
-return
-
 XButton1 & F10::
 XButton1 & LButton::
+F7 & WheelDown::
 SendInput ^z
 return
 
@@ -73,11 +61,6 @@ return
 F7 & WheelUp::
 sendInput e
 return
-
-F7 & WheelDown::
-sendInput ^z
-return
-
 
 F6::
 Clipboard := ""

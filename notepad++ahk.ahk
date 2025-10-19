@@ -154,11 +154,11 @@ If InStr(Title,"ahk - Notepad++")
 	Run C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe /in %scriptName%
 	TrayTip, Success, %scriptName% is compiled, 1, 17
 	
-	if (scriptName = "D:\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.ahk")
+	if (scriptName = "D:\Code\AHK_CreoParametric\CreoAutomation.ahk")
 	{
 		Sleep 2000
-		destinationFile := "O:\PEC\Creo7CustomConfig2022\CreoAutomation.exe"
-		FileMove, D:\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.exe, %destinationFile%, 1
+		destinationFile := "O:\PEC\Creo7CustomConfig2022\UpdatedExecutable\CreoAutomation.exe"
+		FileMove, D:\Code\AHK_CreoParametric\CreoAutomation.exe, %destinationFile%, 1
 		Sleep 1000
 		Run, % "explorer /select," destinationFile
 	}
@@ -173,27 +173,36 @@ If InStr(Title,"ahk - Notepad++")
 }
 return
 
-F6:: ; compile ahk from notepad** and move exe file to O:\PEC\治具_creo\STD_\_All
-; this is created specifically for CreoAutomation.exe
+F6:: ; numbering lines for file to be used with Kachi.exe
 WinGetActiveTitle, Title
-If InStr(Title,"ahk - Notepad++")
-;If WinActive("ahk - Notepad++")
+If InStr(Title,"txt - Notepad++")
 {
-	; Set the source and destination paths
-	SourceFile := "D:\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.exe"
-	DestinationFolder := "O:\PEC\治具_creo\STD_\_All"
-	DestinationFile := "O:\PEC\治具_creo\STD_\_All\CreoAutomation.exe"
-
-	; Move the file
-	FileMove, %SourceFile%, %DestinationFolder%, 1
-
-	; Check if the move was successful
-	if ErrorLevel
-		MsgBox, Error moving file: %ErrorLevel%
-	else
+	SendInput ^s
+	Sleep 500
+	WinGetActiveTitle, Title
+	scriptNameEnd := InStr(Title,".txt")
+	scriptName := SubStr(Title,1,scriptNameEnd+3)
+	
+	FileRead, content, %scriptName%
+	lines := StrSplit(content, "`n", "`r")
+	out := ""
+	count := 1
+	loopCount := 0
+	Loop % lines.MaxIndex()
 	{
-		Run, % "explorer /select," DestinationFile
+		line := lines[A_Index]
+		if !trim(line)
+			continue ; skip lines contain only white spaces
+		loopCount += 1
+		if (Mod(loopCount, 2) = 1) ; every other line (1,3,5,...)
+			out .= count++ . " " . line . "`n"
+		else
+			out .= line . "`n"
 	}
+
+	FileDelete, %scriptName%
+	FileAppend, %out%, %scriptName%
+	MsgBox, 64, Done numbering, Line number for Kachi has been added, 3
 }
 return
 

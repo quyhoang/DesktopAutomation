@@ -86,7 +86,7 @@ else
 run https://calendar.google.com/calendar/u/0/r/week
 return
 
-:R0*:igram:: ;open google calendar
+:R0*:igram:: ;open Instagram
 if WinExist("Instagram -")
     WinActivate ;
 else

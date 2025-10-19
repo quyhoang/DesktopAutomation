@@ -35,7 +35,6 @@ searchFunction(normalizeSearchkey(setClipboard(), False), "https://mazii.net/sea
 return
 
 !y::
-F7::
 yomitanSearch:
 SetTitleMatchMode, 2  ; substring match
 setClipboard()

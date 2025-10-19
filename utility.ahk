@@ -7,6 +7,34 @@ FileEncoding, UTF-8
 
 #include %A_ScriptDir%\supportFunction.ahk
 
+!n:: ; Kachi Text File
+currentFolder := GetActiveExplorerPath()
+FormatTime, CurrentDateTime,, dd-MMM-yy
+
+success := false
+Loop, 1000
+{
+	fcounter += 1
+	filePath :=  currentFolder . "\" . CurrentDateTime . "-" . fcounter . ".txt"
+	if fileExist(filePath)
+		continue
+	else
+	{ 
+		success := true
+		break
+	}
+}
+
+if !success
+{
+	Msgbox, 64, Could not create file, Some error occur, 3
+	return
+}
+	
+FileAppend, %clipboard%, %filePath%
+Run, %filePath%
+return
+
 !b:: ; bulk rename with bulk rename utility
 If not Winactive("ahk_exe explorer.exe")
 	return
@@ -77,17 +105,15 @@ saveToFile(filePath)
     FileAppend, %Clipboard%`r`n`n, %filePath%
 
     ; Optional: Tray notification
-    TrayTip, Text Saved, %Clipboard% has been appended to the file., 2
-	
-    ; Restore the original clipboard content
-    Clipboard := ClipSaved
-    ClipSaved := ""
-	
-	KeyWait, MButton, D T3
-	if GetKeyState("MButton")
+	msgbox, 324, Text Saved, %Clipboard% has been appended to %filePath%. `n`nDo you want to open it?, 2
+	IfMsgBox Yes
 	{
 		run, %filePath%
 	}
+		
+    ; Restore the original clipboard content
+    Clipboard := ClipSaved
+    ClipSaved := ""
 	return
 }
 
