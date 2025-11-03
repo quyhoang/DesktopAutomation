@@ -57,6 +57,28 @@ return
 ;==================================================
 */
 
+!i:: ; process core 6000 text, Anki to paste to Quaderno note
+sendInput ^c
+clipboard := MoveBracketPartsToNewLine(clipboard)
+msgbox,,, %clipboard%,1
+return
+
+MoveBracketPartsToNewLine(text) {
+    ; Get all contents inside [ ]
+    bracketParts := ""
+    pos := 1
+    while pos := RegExMatch(text, "\[([^\]]+)\]", m, pos) {
+        bracketParts .= (bracketParts ? "   " : "") . m1  ; join with 3 spaces
+        pos += StrLen(m)  ; move search position
+    }
+
+    ; Remove [ ] and their contents from the original text
+    cleanText := RegExReplace(text, "\[.*?\]", "")
+
+    ; Combine result: bracket line first, then original line
+    return bracketParts . "`n" . cleanText
+}
+
 #IfWinActive, Foxit PDF Reader
 F7 & WheelUp::
 Send ^2

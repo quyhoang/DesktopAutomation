@@ -286,6 +286,10 @@ If InStr(Title,"- Notepad++")
 }
 return
 
+
+
+
+
 >^o:: ; Left Control O to open a file in the same folder as current file
 WinGetActiveTitle, Title
 fileName := SubStr(Title, 1, StrLen(Title)-12)
@@ -305,6 +309,9 @@ else
 return
 
 #IfWinActive
+
+
+
 
 ; Function to check whether there exists a file in a folder with a name containing a given string
 CheckFileNameInFolder(str, folderPath) 

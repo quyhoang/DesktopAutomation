@@ -115,7 +115,7 @@ else if WinActive("N1GD1")
 }
 else if WinActive("Edit Current") or WinActive("Add") or WinActive("Browse") ;anki
 {
-	sendInput ^+v
+	sendInput ^v
 	return
 }	
 else if WinActive("ahk_exe anki.exe")
@@ -133,12 +133,12 @@ else if WinActive("- Yomichan Search")
 	if GetKeyState("XButton2", "P")
 		SendInput !{Right}
 	else
-		SendInput ^+v
+		SendInput ^v
 	return
 }		
 else
 {
-	SendInput ^+v
+	SendInput ^v
 	return
 }
 return
