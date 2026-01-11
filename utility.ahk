@@ -1,4 +1,4 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force  ; force new attempt to run the program if it is already running
@@ -6,6 +6,51 @@ SetTitleMatchMode, 2
 FileEncoding, UTF-8
 
 #include %A_ScriptDir%\supportFunction.ahk
+
+
+#IfWinActive ahk_exe Obsidian.exe
+
+F5::
+colorText()
+return
+
+colorText()
+{
+	static colorNo := 0
+	colorNo := colorNo + 1
+	
+	temp := Mod(colorNo, 4)
+	
+	color := (temp = 0) ? "white"
+		   : (temp = 1) ? "orange"
+		   : (temp = 2) ? "blue" : "black"
+	
+	clipboard := ""
+	SendInput ^c
+	ClipWait
+
+	text := clipboard
+
+	; If text already has a <span style="color: ...;">...</span>, remove it
+	if RegExMatch(text, "<span style=""color:\s*[^""]+;"">") {
+		text := RegExReplace(text, "<span style=""color:\s*[^""]+;"">", "")
+		text := RegExReplace(text, "</span>", "")
+	} 
+	
+	if (color != "black")
+	{
+		text := "<span style=""color: " . color . ";"">" . text . "</span>"
+	}
+	
+	clipboard := text
+	SendInput ^v
+	return
+}
+
+#IfWinActive
+
+
+
 
 !n:: ; Kachi Text File
 currentFolder := GetActiveExplorerPath()
@@ -71,17 +116,22 @@ return
 	
 
 !e::   ; engineering
-filePath := "D:\Code\Robotics\Daily Notes\Engineering.md" 
+filePath := "D:\Code\My writings\Engineering.md" 
+saveToFile(filePath)
+return
+
+!o::   ; Pocket
+filePath := "D:\Code\My writings\Pocket.md" 
 saveToFile(filePath)
 return
 
 !s::  ; japanese
-filePath := "D:\Code\Robotics\Daily Notes\日本語ノート.md" 
+filePath := "D:\Code\My writings\日本語ノート.md" 
 saveToFile(filePath)
 return
 
-!k::  ;english
-filePath := "D:\Code\Robotics\Daily Notes\Keep.md" 
+!k::  ;keep
+filePath := "D:\Code\My writings\Keep.md" 
 saveToFile(filePath)
 return
 

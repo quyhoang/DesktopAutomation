@@ -9,6 +9,9 @@ message := "Let's try our best"
 global fcounter := 0 ; a counter to use in file name
 TrayTip, Have a nice day!, %message%, 1, 17
 
+Run, % "obsidian://open?vault=My%20writings&file=Notes%2FMorning%20pages"
+return
+
 #include %A_ScriptDir%\danshari.ahk
 ;================================================
 ; Search function
