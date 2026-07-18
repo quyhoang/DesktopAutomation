@@ -52,9 +52,9 @@ if WinActive("VNU Lic")
 	SendInput {Right}
 	return
 }
-if WinActive("N1GD1")
+else if WinActive(" - VLC media player")
 {
-	SendInput z
+	SendInput {Left}
 	return
 }	
 if WinActive("ahk_exe anki.exe")
@@ -108,12 +108,12 @@ else if WinActive("VNU Lic")
 	SendInput {Left} 
 	return
 }
-else if WinActive("N1GD1")
+else if WinActive(" - VLC media player")
 {
-	SendInput x
+	SendInput {Right}
 	return
 }
-else if WinActive("Edit Current") or WinActive("Add") or WinActive("Browse") ;anki
+else if WinActive("Edit Current") or WinActive("Add") or WinActive("Browse") ; anki
 {
 	sendInput ^v
 	return
@@ -148,7 +148,7 @@ send ^c
 return
 
 F7 & F11:: 
-send ^+v
+send ^v
 return
 
 ~F7::
@@ -160,4 +160,17 @@ if (A_PriorHotkey != "~F7" or A_TimeSincePriorHotkey > 400)
 }
 send ^x
 return
+
+F12::
+if WinActive("ahk_exe Obsidian.exe")
+SendRaw, ###
+return
+ 
+#IfWinActive  - VLC media player
+MButton::
+{
+	SendInput {Space}
+	return
+}
+#IfWinActive
 

@@ -139,7 +139,7 @@ return
 saveToFile(filePath)
 {
     ; Save the current clipboard content
-    ClipSaved := ClipboardAll
+    ; ClipSaved := ClipboardAll
 
     ; Clear the clipboard
     Clipboard := ""
@@ -162,14 +162,15 @@ saveToFile(filePath)
 	}
 		
     ; Restore the original clipboard content
-    Clipboard := ClipSaved
-    ClipSaved := ""
+    ; Clipboard := ClipSaved
+    ; ClipSaved := ""
 	return
 }
 
 
 
 ~ScrollLock & o:: ; Open file/folder from selected text 
+Ctrl & Numpad5::
 Clipboard := ""
 SendInput ^c
 ClipWait, 3

@@ -120,6 +120,12 @@ clipboard := CurrentDateTime
 SendInput ^v
 return
 
+:R*?:tdt::
+FormatTime, CurrentDateTime,, dd-MMM-yy-hhmmss
+clipboard := CurrentDateTime
+SendInput ^v
+return
+
 LShift & End:: ;complete code completion in VS Code
 SendInput {Tab}
 sleep 100
@@ -129,6 +135,5 @@ SendInput {Enter}
 return
 
 :*:///:: ; used with Notion
-sendInput /heading 1
-sendInput {Enter}
+sendRaw, ###
 return

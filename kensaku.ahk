@@ -34,6 +34,10 @@ RControl & Numpad2:: ; Copy selected text and search with mazii in default brows
 searchFunction(normalizeSearchkey(setClipboard(), False), "https://mazii.net/search/word?dict=javi&query=", "&hl=vi-VN")
 return
 
+!c:: ;look up on alc
+searchFunction(normalizeSearchkey(setClipboard()), "https://eow.alc.co.jp/search?q=")
+return
+
 !y::
 yomitanSearch:
 SetTitleMatchMode, 2  ; substring match

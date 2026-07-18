@@ -9,8 +9,7 @@ message := "Let's try our best"
 global fcounter := 0 ; a counter to use in file name
 TrayTip, Have a nice day!, %message%, 1, 17
 
-Run, % "obsidian://open?vault=My%20writings&file=Notes%2FMorning%20pages"
-return
+Run, % "obsidian://open?vault=Diary&file=DailyNoteImages%2FDaily%20Notes"
 
 #include %A_ScriptDir%\danshari.ahk
 ;================================================
@@ -55,4 +54,4 @@ return
 ;================================================
 #include %A_ScriptDir%\m-dux50bk.ahk
 
-
+return

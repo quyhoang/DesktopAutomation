@@ -8,7 +8,7 @@ FileEncoding, UTF-8
 ; ===============================================
 ; Hotkeys
 ; ===============================================
-
+/*
 ; Define the hotkeys to lookup online
 <^0::
 <^1::
@@ -22,6 +22,7 @@ FileEncoding, UTF-8
 <^9::
 index := SubStr(A_ThisHotkey, 0)
 lookup(index+0)
+*/
 return
 
 ; ===============================================

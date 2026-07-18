@@ -10,7 +10,8 @@ FileEncoding, UTF-8
 */
 #IfWinActive, Hideki - Anki
 
-!c:: ;look up on alc
+/*
+;!c:: ;look up on alc
 Clipboard := ""
 SendInput, ^c
 ClipWait, 2
@@ -19,6 +20,7 @@ Run %searchKey%
 sleep 1000
 click MButton
 return
+*/
 
 F9::
 SendInput ^+d;
@@ -28,23 +30,33 @@ SendInput ^v
 SendInput {Enter}
 return
 
-8::
-SendInput *
-return	
-
-XButton1 & F10::
-XButton1 & LButton::
-F7 & WheelDown::
+F7 & F10::
 SendInput ^z
 return
 
+
+
+;starred 
+F7 & WheelDown::
+F12::
+8::
+SendInput *
+return
+
 F8::
-XButton2 & LButton:: ; hard 
 Send 2
 return
 
-XButton2 & MButton:: ; blue flag
-Send ^4
+XButton2 & LButton:: ; hard and orange flag
+SendInput ^2
+sleep, 100
+Send 2
+return
+
+XButton2 & MButton:: ; red flag
+Send ^1
+sleep, 200
+send 2
 return
 
 End::
@@ -88,3 +100,25 @@ return
 
 #IfWinActive 
 
+LControl & F12::
+if (A_TimeSincePriorHotkey > 800)
+sendInput, ^z
+return
+
+~PgDn::
+IfWinActive, Hideki - Anki
+{
+sendInput, e
+WinWaitActive, Edit Current,,5
+MouseMove, 238, 659
+sleep 200
+Click
+return
+}
+IfWinActive, Edit Current
+{
+MouseMove, 742, 858
+Click
+return
+}
+return
