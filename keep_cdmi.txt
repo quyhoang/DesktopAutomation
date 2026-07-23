@@ -1,0 +1,196 @@
+﻿高出力設定有効（パワーモード）　　搬送質量により最高速度は変動します。可搬質量の単位はkgです。空欄は動作不可となります。
+
+拡張子
+
+不安を煽る/gây bất an
+
+受発信
+
+被写界深度
+
+ＳＭＫ株式会社富山事業所
+
+Ｈｏａｎｇ様
+
+ 
+
+いつも大変お世話になっております。
+
+株式会社キーエンス　営業アシスタントの前澤 佳奈と申します。
+
+本日は画像処理システムを担当しております矢野の代理でご連絡いたしました。
+
+ 
+
+Ｈｏａｎｇ様へ新商品のご紹介やお役立ち情報のご提供をさせていただければ幸いです。
+
+ 
+
+・【新商品】VS-Gシリーズ　～不良流出「ゼロ」と過検出「ゼロ」の両立へ～
+
+⇒ AI×ビジョンストレージ搭載 画像処理システム VS-Gシリーズ
+
+　　処理性能の大幅な向上に加え、従来難しかった検査を可能にするAIツールも搭載。
+
+　　また世界初のビジョンストレージ搭載で抜け漏れのない全数画像保存を実現。
+
+　　保存した画像を使って一度で誤判定ゼロの設定を実現する画像検査の新標準。
+
+ 
+
+品質向上や人件費削減などお困りごとがありましたら、
+
+弊社矢野よりＨｏａｎｇ様へ、ご紹介の機会を是非いただければと思っております。
+
+つきましては以下日程などはご都合いかがでしょうか。
+
+ 
+
+6月1日(月)
+
+6月3日(水)
+
+6月4日(木)
+
+ 
+
+ 
+
+ 
+
+別の日程でご都合がつきやすいとの事でございましたら、
+
+ご希望の日程をご指定いただけますと幸いです。
+
+ 
+
+突然のご連絡で恐縮ですが、ご返信をお待ちしております。
+
+どうぞよろしくお願いいたします。
+
+ 
+
+adopting new rules
+never delete features
+しがらみ Khúc mắc
+・人生には「人間関係のしがらみ」が付きものです。
+Trong cuộc sống luôn có những khúc mắc trong mối quan hệ con người.
+
+審査結果に不服のある場合
+
+
+empty_set = set()
+
+literal_set = {1, 2, 3, "apple"}
+
+list_to_set = set([1, 2, 2, 3])  # Results in {1, 2, 3}
+string_to_set = set("hello")    # Results in {'h', 'e', 'l', 'o'}
+
+squared_set = {x**2 for x in range(5) if x % 2 == 0}  # Results in {0, 4, 16}
+
+Writing my_set = {} does not create a set. Python interprets empty braces as an empty dictionary (dict). If you try to run a set method like .add() on it, your code will crash with an AttributeError.
+
+String Unpacking BehaviorWhen you pass a single string directly into set("orange"), Python treats the string as an iterable sequence of characters. It unpacks them into individual letters ({'o', 'r', 'a', 'n', 'g', 'e'}) rather than creating a set containing the single word "orange". To keep the string intact, wrap it inside a literal context like {"orange"} or a list set(["orange"])
+
+Sets require all of their elements to be hashable (immutable) so they can look up values in constant time. Trying to include mutable data structures like lists, dictionaries, or even other sets inside your initialization will throw a TypeError: unhashable type. Use tuple or frozenset if you need complex elements.
+
+# ❌ Throws TypeError
+invalid_set = {[1, 2], [3, 4]} 
+
+#  Fix with tuples
+valid_set = {(1, 2), (3, 4)}   
+
+The exact opposite of ord() is the chr() function, which converts an integer code point back into its corresponding character:pythonprint(chr(65))  # Output: 'A'
+
+class solution:
+same as
+class solution():
+
+inheritance
+class solution(base):
+
+b = [3, 1, 2]
+a = sorted(b)
+print(a)  # [1, 2, 3]
+print(b)  # [3, 1, 2]  ✅ unchanged
+
+When building a hash map with values as keys, duplicate values overwrite earlier indices.
+
+Instead of:
+Python1for i in range(len(nums)):その他の行を表示する
+Use:
+Python1for i, num in enumerate(nums):
+
+sorted(s)
+
+returns a list of characters sorted
+
+Python1sorted("cba") → ['a', 'b', 'c']その他の行を表示する
+
+
+''.join(...)
+
+joins the list into a string
+
+Python1''.join(['a', 'b', 'c']) → "abc"2 
+
+The code line res = defaultdict(list) initializes a special dictionary that automatically creates an empty list [] as the default value whenever you access a key that does not exist yet. This comes from Python's built-in collections module and completely eliminates the need to check if a key exists before adding items to it.Complete Code SetupTo use this code, you must first import the defaultdict class:pythonfrom collections import defaultdict
+
+# Initialize the default dictionary
+res = defaultdict(list)
+
+The primary difference is that defaultdict() acts like a standard dictionary and throws a KeyError for missing keys, while defaultdict(list) automatically initializes missing keys with a new, empty list.
+
+range() does not include the stop value.
+It returns a range object, not a list.
+Efficient → doesn’t store all values in memory.
+
+range(start, stop, step)
+
+If k > len(s1), then:
+Python1s1[:k]その他の行を表示する
+simply returns the entire string.
+
+下記にてご参集ください。
+
+Copilot said:
+
+番をしていること (ばんをしていること) can mean:
+
+“standing guard”
+“keeping watch”
+“watching over something/someone”
+“being on duty”
+
+Here, 番 (ばん) means a watch, shift, guard duty, or taking care of something.
+
+Examples:
+
+犬が家の番をしている。
+ → The dog is guarding/watching the house.
+
+子どもの番をしている。
+ → Looking after the child.
+
+店の番をしている。
+ → Watching the shop / minding the store.
+
+The exact meaning depends on the context and what is being watched or guarded.
+
+質問: 「番をしていること」とは何ですか？
+ 要約: 「番をしていること」は「見張る」「見守る」「留守番をする」「当番として世話をする」という意味です。文脈によって「guarding」「watching over」「looking after」などと訳せます。
+
+先行手配済みですので詳細確認取れ次第、再度ご連絡させていただきます。
+
+現在欠品中で概算納期確認中ですが、一旦添付にてお見積回答させていただきます。
+
+
+
+Translate
+nếu tôi nghỉ việc, có lẽ sau một tháng hoặc một tuần, mọi người ở nơi làm việc sẽ không nhớ về tôi nữa
+
+キツキツで申し訳ないです。
+A が お世話になっています → A is the person receiving help.
+B に お世話になっています → B is the person providing help.
+A が B に お世話になっています → A receives help from B.
+

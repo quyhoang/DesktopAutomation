@@ -27,4 +27,5 @@ test.py
 trail.txt**.exe
 *.ico
 *.txt
+!keep_cdmi.txt
 test.ahk
