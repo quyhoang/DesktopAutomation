@@ -6,8 +6,23 @@ SetTitleMatchMode, 2
 FileEncoding, UTF-8
 
 :*?:sharex:: ; Run ShareX. Evokable with last mouse button
-Run D:\ShareX-15.0.0-portable\ShareX.exe
+Run D:\ShareX-16.1.0-portable\ShareX.exe
 return
+
+:*?:sbrv:: ; set Brave as default browser shar
+;set Brave as default browser
+sleep 300
+sendInput {LWin}default
+sleep 300
+sendInput, {Enter}
+sleep 7000
+Click, 575 623
+sleep 500
+Click, 1116 148
+sleep 300
+SendInput, !{F4}
+return
+
 
 ;==================================================
 ; Open daily report

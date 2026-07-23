@@ -23,7 +23,7 @@ return
 
 ; Search similar Kanji
 RShift & F11::
-searchFunction(normalizeSearchkey(setClipboard(), False), "https://niai.mrahhal.net/similar?q=")
+searchFunction(normalizeSearchkey(%setClipboard(), False), "https://niai.mrahhal.net/similar?q=")
 return
 
 ; Search alc
@@ -35,13 +35,15 @@ return
 
 /*
 ; Search Google
-Xbutton2 & WheelUp::
-::sgg::
+;Xbutton2 & WheelUp::
+;::sgg::
+!g::
 searchFunction(normalizeSearchkey(setClipboard()), "https://www.google.com/search?q=")
 return
 
 ; Search Mazii
-Xbutton2 & WheelDown::
+;Xbutton2 & WheelDown::
+!m
 searchFunction(normalizeSearchkey(setClipboard(), False), "https://mazii.net/search/word?dict=javi&query=", "&hl=vi-VN")
 return
 */

@@ -8,7 +8,7 @@ FileEncoding, UTF-8
 /*
 	Anki - Context specific
 */
-#IfWinActive, ahk_exe anki.exe
+#IfWinActive, Hideki - Anki
 
 F10::
 sendInput, {Enter}

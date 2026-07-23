@@ -6,44 +6,26 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 2
 
 ;=======================================================================================
-; Cut - Copy - Paste
+; Temporary clipboard 
 ; ======================================================================================
 
-~F20::
-	Clipboard := ""
-	SendInput ^c ;copy selected text
-	ClipWait, 0.5
-	if ErrorLevel
-	{
-		SendInput {Left}
-	}
-	return
-	
-~F21::
-	SendInput ^v
-	if (Clipboard == "")
-	SendInput {Right}
-	return
+global tempClip
 
-~F19 & F20::
-	SendInput ^x
-	return
+LShift & XButton1::
+Clipboard := ""
+SendInput ^c ;copy selected text
+ClipWait, 0.5
+tempClip := Clipboard
+return
 	
-~F19 & Mbutton::
-	if WinActive("ahk_exe xtop.exe")
-	{
-		sendInput ^d
-	}
-	else
-	{
-		Clipboard := ""
-		SendInput, ^c
-		ClipWait, 0.2
-		if (Clipboard == "")
-		{
-			SendInput ^w
-			return
-		}
-	}
-	SendInput ^x
-	return
+LShift & XButton2::
+clip := Clipboard
+Clipboard := ""
+Clipboard := tempClip
+ClipWait, 0.5
+SendInput ^v
+sleep, 1000
+Clipboard := clip ; return to original Clipboard
+; using this mechanism instead of simply input clip to avoid problem with some languages
+return
+

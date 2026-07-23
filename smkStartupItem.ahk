@@ -14,26 +14,42 @@ SetWorkingDir %wdir%
 
 if not WinExist("ahk_exe xtop.exe") ;if Creo Parametric is not currently running
 {
-Run "C:\Program Files\PTC\Creo 7.0.9.0\Parametric\bin\parametric.exe" O:\PEC\Creo7CustomConfig2022\import_customconfig.txt
+	Run "C:\Program Files\PTC\Creo 11.0.4.0\Parametric\bin\parametric.exe" O:\PEC\Creo7CustomConfig2022\import_customconfig.txt
+	; select parametric
+	WinWait, ahk_exe parametric.exe,, 5
+	if ErrorLevel
+	{
+		MsgBox, WinWait timed out.
+		return
+	}
+	else
+	{
+		WinActivate ; Use the window found by WinExist.
+		SendInput {End} ; move selection to Parametric only
+		sleep, 300
+		SendInput {Enter}
+;		TrayTip, PARAMETRIC, Creo parametric is started!, 1, 17
+	}
+
 }
 
-DetectHiddenWindows, On
-Process, Exist , CreoAutomation.exe
-If (ErrorLevel = 0) ; CreoAutomation is not running
-{
-	Run O:\PEC\Creo7CustomConfig2022\Creo7_Companion.exe
-}
-DetectHiddenWindows, Off
+; DetectHiddenWindows, On
+; Process, Exist , CreoAutomation.exe
+; If (ErrorLevel = 0) ; CreoAutomation is not running
+; {
+	; Run O:\PEC\Creo7CustomConfig2022\Creo7_Companion.exe
+; }
+; DetectHiddenWindows, Off
+Run, "D:\AHK_CreoParametric\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.ahk"
 
 SetWorkingDir %A_ScriptDir%
 
-
-if not WinExist("ahk_exe msedge.exe")
+if not WinExist("ahk_exe brave.exe")
 {
-Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+Run "C:\Users\quyhoang\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe"
 }
 
-if not WinExist("ahk_exe notes2.exe")1012@timeflies
+if not WinExist("ahk_exe notes2.exe")
 {
 	Run "C:\Program Files (x86)\NotesUp\NotesUp.exe"
 
@@ -75,9 +91,19 @@ if WinExist("ahk_exe NLNOTES.EXE")
 	Sleep, 100
 	Click, 300 230
 }
+
 ; For unknown reason Teams is open on start
 if WinExist("ahk_exe Teams.exe")
 WinClose, Teams
+
+
+if WinExist("ahk_exe UnleashRGB.exe")
+{
+WinMinimize
+}
+
+
+
 
 mailfunction()
 {
@@ -102,5 +128,6 @@ WinClose
 	Click, 300 230
 ;	Return
 }
+
 
 
