@@ -7,6 +7,7 @@ SetTitleMatchMode, 2
 
 ;=======================================================================================
 ; Temporary clipboard 
+; Temporary clipboard 
 ; ======================================================================================
 
 global tempClip
@@ -17,7 +18,26 @@ SendInput ^c ;copy selected text
 ClipWait, 0.5
 tempClip := Clipboard
 return
+global tempClip
+
+LShift & XButton1::
+Clipboard := ""
+SendInput ^c ;copy selected text
+ClipWait, 0.5
+tempClip := Clipboard
+return
 	
+LShift & XButton2::
+clip := Clipboard
+Clipboard := ""
+Clipboard := tempClip
+ClipWait, 0.5
+SendInput ^v
+sleep, 1000
+Clipboard := clip ; return to original Clipboard
+; using this mechanism instead of simply input clip to avoid problem with some languages
+return
+
 LShift & XButton2::
 clip := Clipboard
 Clipboard := ""

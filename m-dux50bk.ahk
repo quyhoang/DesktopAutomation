@@ -20,7 +20,7 @@ gosub, launchClipGenie
 return
 
 ; Search
-Shift & F12:: ; yomichan search. Yomichan seperate search windows must exist.
+F7 & F11:: ; yomichan search. Yomichan seperate search windows must exist.
 gosub, yomitanSearch
 return
 
@@ -34,30 +34,33 @@ return
 ;==================================================
 
 F10::
-SetTitleMatchMode, 2
-if WinActive(" - YouTube - Brave")
+if WinActive("YouTube - Brave") ; when Youtube is opened, F10/F11 is used for winding
+	; but if XButton2 is pressed, the two keys will be used for copy/paste
 {
-	clipboard := ""
-	sendInput ^c
-	ClipWait, 0.2
-	if ErrorLevel
+	if GetKeyState("XButton2", "P")
 	{
-		SendInput {Left}
+		SendInput ^c
 		return
 	}
+	SendInput {Left}
 	return
 }
-if WinActive("VNU Lic")
+else if WinActive("VNU Lic")
 {
+	if GetKeyState("XButton2", "P")
+	{
+		SendInput ^c
+		return
+	}
 	SendInput {Right}
 	return
 }
-else if WinActive(" - VLC media player")
+else if WinActive("N1GD1")
 {
-	SendInput {Left}
+	SendInput z
 	return
 }	
-if WinActive("ahk_exe anki.exe")
+else if WinActive("ahk_exe anki.exe")
 {
 	clipboard := ""
 	sendInput ^c
@@ -69,21 +72,17 @@ if WinActive("ahk_exe anki.exe")
 	}
 	return
 }	
-if WinActive("Netflix - Brave")
+else if WinActive("Netflix - Brave")
 {
 	SendInput s
 	return
 }	
-if WinActive("- Yomitan Search")
+else if WinActive("- Yomichan Search")
 {
-	clipboard := ""
-	sendInput ^c
-	ClipWait, 0.2
-	if ErrorLevel
-	{
+	if GetKeyState("XButton2", "P")
 		SendInput !{Left}
-		return
-	}
+	else
+		SendInput ^c
 	return
 }	
 else	
@@ -97,30 +96,39 @@ return
 ; Mouse tilt Right
 ;==================================================
 F11::
-SetTitleMatchMode, 2
 if WinActive("YouTube - Brave")
 {
-	SendInput {Right}
+	if GetKeyState("XButton2", "P")
+	{
+		SendInput ^v
+		return
+	}
+	SendInput {Right} 
 	return
 }
 else if WinActive("VNU Lic")
 {
+	if GetKeyState("XButton2", "P")
+	{
+		SendInput ^v
+		return
+	}
 	SendInput {Left} 
 	return
 }
-else if WinActive(" - VLC media player")
+else if WinActive("N1GD1")
 {
-	SendInput {Right}
+	SendInput x
 	return
 }
-else if WinActive("Edit Current") or WinActive("Add") or WinActive("Browse") ; anki
+else if WinActive("Edit Current") or WinActive("Add") or WinActive("Browse") ;anki
 {
 	sendInput ^v
 	return
 }	
 else if WinActive("ahk_exe anki.exe")
 {
-	SendInput {F5} ; r - repeat
+	SendInput {F5}
 	return
 }
 else if WinActive("Netflix - Brave")
@@ -143,34 +151,13 @@ else
 }
 return
 
-F7 & F10:: 
-send ^c
-return
-
-F7 & F11:: 
-send ^v
-return
-
-~F7::
-if (A_PriorHotkey != "~F7" or A_TimeSincePriorHotkey > 400)
+F7 & F10:: ; refer synapse/razer
+if WinActive("Netflix - Brave")
 {
-    ; Too much time between presses, so this isn't a double-press.
-	KeyWait, F7
+	SendInput a
 	return
 }
+else
 send ^x
 return
-
-F12::
-if WinActive("ahk_exe Obsidian.exe")
-SendRaw, ###
-return
- 
-#IfWinActive  - VLC media player
-MButton::
-{
-	SendInput {Space}
-	return
-}
-#IfWinActive
 

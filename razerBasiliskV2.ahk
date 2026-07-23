@@ -24,3 +24,28 @@ if (!GetKeyState("F19"))
 }
 Send {WheelDown}
 return
+
+
+F13::
+copypasteF22()
+return
+
+copypasteF22()
+{
+	static copy := 1
+	
+	if (copy == 1)
+	{
+		sendInput ^c
+		copy := 0
+		return
+	}
+	if (copy == 0)
+	{
+		sendInput ^v
+		copy := 1
+		return
+	}
+	return
+}
+

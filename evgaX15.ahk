@@ -7,17 +7,17 @@ FileEncoding, UTF-8
 
 
 ; Danshari
-~XButton2 & WheelUp::
-gosub, launchHayanabi
-return
+; F18::
+; gosub, launchHayanabi
+; return
 
-~XButton1 & WheelUp::
-gosub, launchYukarilink
-return
+; F24::
+; gosub, launchYukarilink
+; return
 
-~XButton2 & WheelDown::
-gosub, launchClipGenie
-return
+; ~XButton2 & WheelDown::
+; gosub, launchClipGenie
+; return
 
 ; Search
 F7 & F11:: ; yomichan search. Yomichan seperate search windows must exist.
@@ -60,6 +60,7 @@ else if WinActive("N1GD1")
 	SendInput z
 	return
 }	
+
 else if WinActive("ahk_exe anki.exe")
 {
 	clipboard := ""
@@ -161,3 +162,6 @@ else
 send ^x
 return
 
+#IfWinNotActive ahk_exe xtop.exe
+
+#IfWinNotActive

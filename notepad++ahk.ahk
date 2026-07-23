@@ -154,13 +154,22 @@ If InStr(Title,"ahk - Notepad++")
 	Run C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe /in %scriptName%
 	TrayTip, Success, %scriptName% is compiled, 1, 17
 	
-	if (scriptName = "D:\Code\AHK_CreoParametric\CreoAutomation.ahk")
+	if (scriptName == "D:\AHK_CreoParametric\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.ahk")
 	{
 		Sleep 2000
 		destinationFile := "O:\PEC\Creo7CustomConfig2022\UpdatedExecutable\CreoAutomation.exe"
 		FileMove, D:\Code\AHK_CreoParametric\CreoAutomation.exe, %destinationFile%, 1
+	}
+	if (scriptName == "D:\AHK_CreoParametric\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.ahk")
+	{
+		Sleep 3000
+		destinationFile1 := "O:\PEC\Creo7CustomConfig2022\UpdatedExecutable\CreoAutomation.exe"
+		destinationFile2 := "O:\PEC\Creo7CustomConfig2022\PreviousCreoAutomation\CreoAutomation.exe"
+		FileMove, %destinationFile1%, %destinationFile2%, 1
+		Sleep 200
+		FileMove, D:\AHK_CreoParametric\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation.exe, %destinationFile1%, 1
 		Sleep 1000
-		Run, % "explorer /select," destinationFile
+		Run, % "explorer /select," destinationFile1
 	}
 	else
 	{
@@ -173,9 +182,11 @@ If InStr(Title,"ahk - Notepad++")
 }
 return
 
-F6:: ; numbering lines for file to be used with Kachi.exe
+
+F6:: ; compile ahk from notepad** and move exe file to O:\PEC\治具_creo\STD_\_All
+; this is created specifically for CreoAutomation.exe
 WinGetActiveTitle, Title
-If InStr(Title,"txt - Notepad++")
+If InStr(Title,"ahk - Notepad++")
 {
 	SendInput ^s
 	Sleep 500

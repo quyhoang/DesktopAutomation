@@ -1,0 +1,5 @@
+ERROR - C:\Program Files\PTC\Creo 7.0.12.0\Common Files\text\config.pro, linenum 877:  Keyword 'IMPORT_PROFILE_IGES' is not valid.
+ERROR - C:\Program Files\PTC\Creo 7.0.12.0\Common Files\text\config.pro, linenum 4641:  Keyword 'MAPKEY(CONTINUED)' is not valid.
+ERROR - O:\PEC\Creo7CustomConfig2022\config.pro, linenum 877:  Keyword 'IMPORT_PROFILE_IGES' is not valid.
+ERROR - O:\PEC\Creo7CustomConfig2022\config.pro, linenum 4641:  Keyword 'MAPKEY(CONTINUED)' is not valid.
+Connection restored with License Server(s)  1
