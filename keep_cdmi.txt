@@ -194,3 +194,5 @@ A が お世話になっています → A is the person receiving help.
 B に お世話になっています → B is the person providing help.
 A が B に お世話になっています → A receives help from B.
 
+thích thì làm mà không thích thì thôi, cũng không sao cả
+
