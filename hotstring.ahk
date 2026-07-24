@@ -1,4 +1,4 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -172,10 +172,8 @@ return
 
 :R0*:dnote:: ;open Daily Notes
 if WinExist("Nhật ký 2025 - Brave")
-if WinExist("Nhật ký 2025 - Brave")
     WinActivate ;
 else
-Run https://www.notion.so/smk-toyama/Nh-t-k-2025-1954cc8491b7807fa494e26ad5687802
 Run https://www.notion.so/smk-toyama/Nh-t-k-2025-1954cc8491b7807fa494e26ad5687802
 return
 

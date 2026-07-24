@@ -6,10 +6,10 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 2
 
 ; Danshari
-Run, %A_ScriptDir%\..\Danshari\Danshari.exe
+; Run, %A_ScriptDir%\..\Danshari\Danshari.exe
 
 ; Startup Items at work
-#include %A_ScriptDir%\startupItem.ahk
+; #include %A_ScriptDir%\startupItem.ahk
 
 
 ; Apps used at work

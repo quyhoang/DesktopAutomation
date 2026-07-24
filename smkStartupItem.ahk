@@ -14,9 +14,6 @@ SetWorkingDir %wdir%
 
 if not WinExist("ahk_exe xtop.exe") ;if Creo Parametric is not currently running
 {
-<<<<<<<< HEAD:startupItem.ahk
-Run "C:\Program Files\PTC\Creo 7.0.12.0\Parametric\bin\parametric.exe" O:\PEC\Creo7CustomConfig2022\import_customconfig.txt
-========
 	Run "C:\Program Files\PTC\Creo 11.0.4.0\Parametric\bin\parametric.exe" O:\PEC\Creo7CustomConfig2022\import_customconfig.txt
 	; select parametric
 	WinWait, ahk_exe parametric.exe,, 5
@@ -33,8 +30,6 @@ Run "C:\Program Files\PTC\Creo 7.0.12.0\Parametric\bin\parametric.exe" O:\PEC\Cr
 		SendInput {Enter}
 ;		TrayTip, PARAMETRIC, Creo parametric is started!, 1, 17
 	}
-
->>>>>>>> d922f4e7398e1c3082834fcb04e1aadcb17107f8:smkStartupItem.ahk
 }
 
 ; DetectHiddenWindows, On
@@ -48,10 +43,6 @@ Run, "D:\AHK_CreoParametric\AHK_CreoParametric\AHK_CreoParametric\CreoAutomation
 
 SetWorkingDir %A_ScriptDir%
 
-<<<<<<<< HEAD:startupItem.ahk
-
-========
->>>>>>>> d922f4e7398e1c3082834fcb04e1aadcb17107f8:smkStartupItem.ahk
 if not WinExist("ahk_exe brave.exe")
 {
 Run "C:\Users\quyhoang\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe"
@@ -104,21 +95,11 @@ if WinExist("ahk_exe NLNOTES.EXE")
 if WinExist("ahk_exe Teams.exe")
 WinClose, Teams
 
-<<<<<<<< HEAD:startupItem.ahk
-========
-
->>>>>>>> d922f4e7398e1c3082834fcb04e1aadcb17107f8:smkStartupItem.ahk
 if WinExist("ahk_exe UnleashRGB.exe")
 {
 WinMinimize
 }
 
-<<<<<<<< HEAD:startupItem.ahk
-========
-
-
-
->>>>>>>> d922f4e7398e1c3082834fcb04e1aadcb17107f8:smkStartupItem.ahk
 mailfunction()
 {
 Sleep 1000 ; wait for Notesup to start and the button to fully show up. Sometimes the windows appears but there is no button.
