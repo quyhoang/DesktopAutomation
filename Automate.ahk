@@ -11,6 +11,7 @@ TrayTip, Have a nice day!, %message%, 1, 17
 
 Run, % "obsidian://open?vault=Diary&file=DailyNoteImages%2FDaily%20Notes"
 
+#include %A_ScriptDir%\concepts-wacom.ahk
 #include %A_ScriptDir%\danshari.ahk
 ;================================================
 ; Search function
