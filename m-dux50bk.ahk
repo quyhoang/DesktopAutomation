@@ -5,6 +5,32 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, 2
 FileEncoding, UTF-8
 
+#IfWinActive, Hideki - Anki
+
+F8::
+Send 2
+return
+
+F9::
+SendInput ^+d;
+Sleep 100
+Clipboard := "1"
+SendInput ^v
+SendInput {Enter}
+return
+#IfWinActive
+
+#IfWinActive, - Obsidian
+
+F8::
+SendRaw ###
+SendInput {Space}
+return
+
+F9::
+SendInput ^b
+return
+#IfWinActive
 
 ; Danshari
 ~XButton2 & WheelUp::

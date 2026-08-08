@@ -22,13 +22,7 @@ click MButton
 return
 */
 
-F9::
-SendInput ^+d;
-Sleep 100
-Clipboard := "1"
-SendInput ^v
-SendInput {Enter}
-return
+
 
 F7 & F10::
 SendInput ^z
@@ -41,10 +35,6 @@ F7 & WheelDown::
 F12::
 8::
 SendInput *
-return
-
-F8::
-Send 2
 return
 
 XButton2 & LButton:: ; hard and orange flag
