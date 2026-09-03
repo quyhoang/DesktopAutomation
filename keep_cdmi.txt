@@ -200,3 +200,19 @@ turned out I have a lot to say
 
 is this way of practicing Japanese good
 
+主に互換性維持やバグ修正を行う
+
+graduated from trung sinh, quan truong, currently on Japanese, next is leetcode and robotic programm
+
+and AI
+
+A group of 100 people, no two of them of the same height, are placed in a random order in a line. At each step, a group of at most 4 people swap places so that they are now arranged in increasing order of height. Everybody else stays put. Prove that it is always possible to arrange the whole group by height in at most 49 steps.
+
+https://chatgpt.com/s/t_6a686e16c694819181373c67d4cf286chttps://www.amazon.co.jp/-/en/HYCDIYTS-Slitter-Circular-7-Piece-Ultra-hard/dp/B0DRJD2JD9/358-0103661-6260514?psc=1
+
+https://www.amazon.co.jp/-/en/Rechargeable-Electric-Compatible-Brushless-Rotation/dp/B0H4LFZ9LY?s=diy&sr=1-8
+
+設計提示基板stepデータにコネクタ欠落有り。
+
+どさっと捨てる／まとめて放出する
+
