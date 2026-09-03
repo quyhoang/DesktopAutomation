@@ -24,6 +24,10 @@ RControl & Numpad0:: ;Copy selected text and search with Google in default brows
 searchFunction(normalizeSearchkey(setClipboard()), "https://www.google.com/search?q=")
 return
 
+!j:: ;Youglish Japanese
+searchFunction(normalizeSearchkey(setClipboard()), "https://youglish.com/pronounce/", "/japanese")
+return
+
 RControl & Numpad1:: ;Copy selected text and translate with Google in default browser--
 !t::
 searchFunction(normalizeSearchkey(setClipboard(),, True), "https://translate.google.com/?sl=ja&tl=en&text=", "&op=translate")
