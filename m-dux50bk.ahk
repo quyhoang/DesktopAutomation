@@ -32,18 +32,19 @@ SendInput ^b
 return
 #IfWinActive
 
-; Danshari
-~XButton2 & WheelUp::
-gosub, launchHayanabi
-return
 
-~XButton1 & WheelUp::
-gosub, launchYukarilink
-return
+; ; Danshari
+; ~XButton2 & WheelUp::
+; gosub, launchHayanabi
+; return
 
-~XButton2 & WheelDown::
-gosub, launchClipGenie
-return
+; ~XButton1 & WheelUp::
+; gosub, launchYukarilink
+; return
+
+; ~XButton2 & WheelDown::
+; gosub, launchClipGenie
+; return
 
 ; Search
 F7 & F11:: ; yomichan search. Yomichan seperate search windows must exist.
