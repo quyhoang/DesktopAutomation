@@ -10,6 +10,21 @@ FileEncoding, UTF-8
 */
 #IfWinActive, Hideki - Anki
 
+LCtrl & F11::
+setflag()
+return
+
+setflag()
+{
+	static flag := 1
+	if (flag = 1)
+		sendInput, ^1 ; red
+	else
+		sendInput, ^4 ; blue
+	flag := 1-flag
+	return
+}
+
 /*
 ;!c:: ;look up on alc
 Clipboard := ""
@@ -28,13 +43,22 @@ F7 & F10::
 SendInput ^z
 return
 
+3::
+SendInput ^3
+SendInput {Enter}
+return
 
+5::
+SendInput {Enter}
+sleep, 100
+SendInput {Enter}
+return
 
-;starred 
+;starred and red flag
 F7 & WheelDown::
 F12::
 8::
-SendInput *
+SendInput *^1
 return
 
 XButton2 & LButton:: ; hard and orange flag

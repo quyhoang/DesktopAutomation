@@ -131,7 +131,7 @@ saveToFile(filePath)
 return
 
 !k::  ;keep
-if (A_computername == "PersonalLaptop")
+if (A_computername == "PERSONALLAPTOP")
 {
 	filePath := "G:\Other computers\Naresome\Diary\Diary\Nihongo Keep.md"
 }
