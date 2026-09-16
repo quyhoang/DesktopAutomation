@@ -36,9 +36,9 @@ if ErrorLevel
     MsgBox, WinWait timed out. Please open work log manually.
     return
 }
-MouseMove,375,474
-Sleep 3000
-Click, 375 474
+;MouseMove,255,577
+;Sleep 3000
+;Click, 255 577
 WinWaitActive,日報集計,, 180
 if ErrorLevel
 {
