@@ -257,3 +257,144 @@ Tuy nhiên, 御下命 hơi cứng và cổ điển. Trong email business hiện 
 
 貸出対応
 
+目盛 (memori) = scale markings, graduations, or index marks
+目盛なし (memori nashi) = without scale markings or no graduations
+
+利益相反（りえきそうはん、conflict of interest）とは、個人や組織の利益（私的な利益／立場の利益）と、職務・責任としての判断が結びつくことで、適切な意思決定がゆがめられる（またはそのように見えてしまう）状態のことです。
+
+「しがらみ」（しがらみ／shigarami）は、英語でいうと “obligation(s) / entanglements / ties” みたいな意味です。文脈によってニュアンスが変わります。
+
+（人間関係の）しがらみ：義理・上下関係・付き合いなどで、自由に動けない事情
+例：職場のしがらみ、地域のしがらみ、親戚付き合いのしがらみ
+（悪い縛りとしての）しがらみ：納得できないのに断れない、抜けられないような“しがらみ”
+よくある言い換え：
+
+義理（ぎり）
+束縛（そくばく）
+しがらみつきの関係 ＝ entangled relationship
+
+A programmable logic controller, or PLC, has a built-in microcomputer (central processing unit (CPU)) and memory (storage element).
+These useful devices operate with external input devices (push button switches and limit switches) that are mounted on the operating panel or system and allow you to freely control external output devices, such as indicator lights and solenoids.
+Programs are written into the PLC memory from a computer installed that has dedicated ladder programming software installed.
+
+https://www.electronics-tutorials.ws/blog/relay-switch-circuit.html
+
+A Programmable Logic Controller is a rugged industrial computer that reads inputs (buttons, sensors), runs your program, and drives outputs (motors, valves, lights). It's built to run for years without rebooting and to survive heat, vibration and electrical noise.
+
+The scan cycle
+
+A PLC doesn't run your program once and stop. It repeats the same loop continuously:
+
+Read inputs: take a snapshot of every input.
+Execute program: run your logic top to bottom using that snapshot.
+Write outputs: update all the physical outputs at once.
+Housekeeping: communications and diagnostics, then back to step 1.
+
+One loop takes roughly 1 to 20 ms, and that is called the scan time.
+
+Why this matters: because inputs are a snapshot, an input can't change halfway through your program. This keeps the logic predictable.
+
+A relay is an electrically controlled switch that uses a small electric current to switch a much larger current on or off. They are typically used for controlling high-power devices with a low-power signal, acting as a lever.
+
+Relays are vital in many electrical systems because they have the ability to isolate different circuits and protect sensitive components. This means you can use a small switch on your car’s dashboard to activate something power-hungry like your headlights without overloading the switch.
+
+Relay wiring is essential in many of the machines we depend on in daily life, from starter motors in the automotive industry to pumps in industrial control systems and relays can even be used to control lights and appliances in home automation systems.
+
+Relays are cheaper to switch high power or high bandwidth signals. Transistors are faster to switch signals and do not bounce. 
+
+https://www.swe-check.com.au/editorials/understanding_relays.php
+
+https://au.rs-online.com/web/content/discovery/ideas-and-advice/how-to-wire-relay-wiring-guide#relay-wiring-diagrams
+
+Two vertical power rails (left and right) have rungs between them. Each rung has conditions on the left (contacts) and an action on the right (a coil).
+
+Power flows left to right. If a path of closed contacts connects the left rail to the coil, the coil turns ON. The PLC evaluates this with logic, not real current.
+
+The ladder symbol: -| |- passes when the bit is 1, -|/|- passes when the bit is 0.
+
+Stop dominance. If Start and Stop are asserted together, the stop condition must win. 
+
+Physical pushbutton	Ladder instruction
+What it is	Hardware wired to an input terminal	Software test of a bit
+NO	Open at rest, closes when pressed	-] [- passes when the bit is 1
+NC	Closed at rest, opens when pressed	-]/[- passes when the bit is 0
+Ladder shows only the instruction symbols. A physical button's type doesn't change the ladder symbol. The wiring determines the bit value, and you then choose the instruction that tests it. Allen-Bradley calls the ] [ instruction XIC (Examine If Closed) and the ]/[ instruction XIO (Examine If Open).
+
+In a real PLC, an input bit is set by voltage at the input terminal. Supplying 24 V to the terminal sets the corresponding memory bit to 1, and 0 V clears it to 0.
+
+Seal-in (latching)
+The problem: a Start button is momentary. As soon as you release it, its bit goes back to 0, so the rung would go false and the motor would stop.
+
+The solution: put a contact of the output's own bit in parallel with Start. This is where the parallel symbol comes in.
+
+The standard stop-button example shows how this works. A stop button is wired NC, so at rest it passes 24 V and the input bit is 1. You then program a ] [ instruction, which passes when the bit is 1. If you press the button or a wire breaks, the input drops to 0, the rung goes false, and the motor stops. This is fail-safe.
+
+Note that this is different from what many beginners assume, which is an NO stop button with a ]/[ instruction.
+
+Logical or physical? The seal-in contact is logical (virtual). None of the contacts or coils in a ladder program are real. They are read and write operations on bits in PLC memory.
+
+Input or output? A contact is neither. A contact only reads a bit, and it can read any bit: an input, an output, or an internal bit. In the seal-in, it reads the output's bit.
+
+Why it's confusing
+The names "input contact" and "output coil" come from relay wiring. In a PLC, the useful split is read vs write
+
+The names "input contact" and "output coil" come from relay wiring. In a PLC, the useful split is read vs write. The coil Motor_Run writes the bit, and the contact labeled Motor_Run reads that same bit. Contacts do not write their bits; only coils do.
+
+ STOP_PB FWD_PB  REV_OUT    FWD_OUT
+|--| |--+--| |--+--|/|--------( )--|
+|       |       |                  |
+|       |FWD_OUT|                  |
+|       +--| |--+                  |
+
+ STOP_PB REV_PB  FWD_OUT    REV_OUT
+|--| |--+--| |--+--|/|--------( )--|
+|       |       |                  |
+|       |REV_OUT|                  |
+|       +--| |--+                  |
+
+Each rung has an NC contact of the other direction's output, so both cannot be on at once.
+
+Step	STOP_PB	FWD_PB	REV_PB	FWD_OUT	REV_OUT
+Idle	1	0	0	0	0
+Press FWD	1	1	0	1	0
+Release FWD	1	0	0	1 (sealed)	0
+Press REV while FWD runs	1	0	1	1	0 (NC contact blocks)
+Press STOP	0	0	0	0	0
+Press REV	1	0	1	0	1
+
+Tank fill with hysteresis
+
+LOW_LS = 1 when liquid covers the low probe, HIGH_LS = 1 when it covers the high probe. The pump starts when the level falls below the low probe and stops at the high probe.
+
+    LOW_LS   HIGH_LS      PUMP
+|--+--|/|--+--|/|---------( )--|
+|  |       |                   |
+|  | PUMP  |                   |
+|  +--| |--+                   |
+Situation	LOW_LS	HIGH_LS	PUMP
+Tank full	1	1	0
+Level falls below low probe	0	0	1
+Filling, passes low probe	1	0	1 (seal-in holds)
+Reaches high probe	1	1	0
+Level drops a little	1	0	0 (stays off)
+
+The seal-in gives the gap between start and stop levels, so the pump doesn't chatter on and off.
+
+"Same scan" and how it fits with the snapshot
+
+You're right to challenge that. My Lesson 1 description was too simplified, and the full picture has two kinds of data.
+
+1. Physical I/O is frozen for the whole scan.
+
+Input terminals are copied into an input image at the start of the scan, and that image doesn't change during the scan.
+Output terminals are only updated from the output image at the end of the scan, all at once.
+So if a sensor changes mid-scan, the program doesn't see it until the next scan. This part of your understanding is correct.
+
+2. Internal bits (and the output image) update immediately.
+
+When a rung's coil executes, it writes its bit right then.
+Any rung evaluated later in the same scan sees the new value.
+Rungs evaluated earlier still see the old value until the next scan.
+
+So the program is not "read everything, then update everything". Only the physical inputs and physical output terminals work that way.
+
