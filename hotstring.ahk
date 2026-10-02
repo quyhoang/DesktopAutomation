@@ -200,3 +200,14 @@ return
 :*:///:: ; used with Notion
 sendRaw, ###
 return
+
+F12::
+text := "Translate to natural, daily conversational Japanese that can be used directly. Do not translate human or place names. Just translate, give comment on nuance and usage, but minimal comment: `n"
+setClipboard()
+clipboard := text . clipboard
+sleep, 100
+mouseclick, left, 1677, 1308
+sendInput ^v
+sleep, 100
+sendInput {Enter}
+return

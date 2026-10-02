@@ -137,7 +137,7 @@ if (A_computername == "PERSONALLAPTOP")
 }
 else
 {
-	filePath := "D:\Code\My writings\Keep.md" 
+	filePath := "D:\Code\Diary\Diary\Notes\Keep.md" 
 }
 
 saveToFile(filePath)

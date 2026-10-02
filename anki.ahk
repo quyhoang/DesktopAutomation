@@ -56,9 +56,12 @@ return
 
 ;starred and red flag
 F7 & WheelDown::
-F12::
 8::
-SendInput *^1
+SendInput *
+return
+
+9::
+SendInput ^1
 return
 
 XButton2 & LButton:: ; hard and orange flag
